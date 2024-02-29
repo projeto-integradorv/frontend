@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import Search from "@/components/search";
 import Header from "@/components/header";
 import Categoria from "@/components/categoria";
+import BellWaiter from "@/components/bellWaiter";
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
       </div>
       <main className={styles.main}>
         <Categoria />
+        <BellWaiter />
       </main>
     </>
   );
