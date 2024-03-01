@@ -6,7 +6,7 @@ import Imagelanches from '../../assets/lanches.png';
 
 export default function Categoria() {
     return (
-        <Container maxWidth='md' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+        <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
             <Container maxWidth='xl' sx={{ backgroundColor: 'transparent', height: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1%',flexWrap:'wrap', }} disableGutters={true}>
                 <CardCategory icon={ImageMassa} nameCategory={'Massas'}/>
                 <CardCategory icon={ImageMassa} nameCategory={'Massas'}/>
@@ -20,7 +20,6 @@ export default function Categoria() {
                 <CardCategory icon={Imagelanches} nameCategory={'Lanches'}/>
                 <CardCategory icon={Imagelanches} nameCategory={'Lanches'}/>
                 <CardCategory icon={Imagelanches} nameCategory={'Lanches'}/>
-            
             </Container>
         </Container>
     );

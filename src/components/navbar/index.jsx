@@ -11,7 +11,7 @@ import Voltar from '../../assets/voltar.png';
 export default function Navbar() {
     return (
         <Container maxWidth='xl' disableGutters={true} sx={{backgroundColor:'#FF9800'}} >
-            <Container sx={{ display: 'flex' }} disableGutters={true} >
+            <Container sx={{ display: 'flex' }} maxWidth='lg' disableGutters={true} >
                 <Box
                     width={'50%'}
                     display='flex'
