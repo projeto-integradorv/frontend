@@ -1,25 +1,13 @@
-import Navbar from "@/components/navbar";
-import styles from "./page.module.css";
-import Search from "@/components/search";
-import Header from "@/components/header";
-import Categoria from "@/components/categoria";
-import BellWaiter from "@/components/bellWaiter";
+import React from 'react';
+import Home from './home/page';
 
-export default function Home() {
+
+export default function App() {
 
 
   return (
     <>
-
-      <Navbar />
-      <Header />
-      <div style={{ height: '100px', width: '100%', display: "flex", justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5E5E5' }}>
-        <Search />
-      </div>
-      <main className={styles.main}>
-        <Categoria />
-        <BellWaiter />
-      </main>
+      <Home />
     </>
   );
 };
