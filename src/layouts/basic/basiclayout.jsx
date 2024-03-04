@@ -1,10 +1,16 @@
+import Header from "@/components/header";
+import Navbar from "@/components/navbar";
 import React from "react";
 
 
-export default function BasicLayout({ children }) {
+export default function BasicLayout({ children, titulo}) {
     return (
-        <div>
+        <>
+            <Navbar />
+            <Header titulo={titulo}  />
             {children}
-        </div>
+
+        </>
+
     );
 }

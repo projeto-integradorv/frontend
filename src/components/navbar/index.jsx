@@ -31,6 +31,7 @@ export default function Navbar() {
                     ) : (
                         <Button
                             sx={{ color: 'white', display: 'flex', gap: '5px' }}
+                            href='/'
                         >
                             <Image src={Voltar} width={8} />
                             Voltar
@@ -44,7 +45,8 @@ export default function Navbar() {
                     justifyContent='flex-end'
                     gap={4}
                 >
-                    <Button sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                    <Button
+                        sx={{ color: 'white', display: 'flex', gap: '5px' }}>
                         <Image src={Rectangle} width={15} />
                         Cardápio
                     </Button>
