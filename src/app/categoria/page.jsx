@@ -5,21 +5,8 @@ import Navbar from "@/components/navbar";
 import Search from "@/components/search";
 import React from "react";
 import styles from '../page.module.css';
-
-
+import { CategoriaView } from '@/sections/categoria/view';
+ 
 export default function Categoria() {
-    return (
-        <>
-
-            <Navbar />
-            <Header titulo={"Categoria"} />
-            <div style={{ height: '100px', width: '100%', display: "flex", justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5E5E5' }}>
-                <Search />
-            </div>
-            <main className={styles.main}>
-                <Categorias />
-                <BellWaiter />
-            </main>
-        </>
-    )
+    return (<CategoriaView />)
 }
