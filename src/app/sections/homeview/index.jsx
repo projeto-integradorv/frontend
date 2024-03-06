@@ -14,7 +14,6 @@ export default function HomeView() {
                 </div>
                 <main className={styles.main}>
                     <CategoriaCarrossel />
-                    <BellWaiter />
                 </main>
             </BasicLayout>
 

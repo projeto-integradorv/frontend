@@ -14,7 +14,6 @@ export default function CategoriaView() {
             </div>
                 <main className={styles.main}>
                     <Categorias />
-                    <BellWaiter />
                 </main>
             </BasicLayout>
 
