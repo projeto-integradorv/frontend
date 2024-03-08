@@ -1,6 +1,6 @@
 
 'use client';
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Container, Typography, Button, Box, Grid } from "@mui/material";
 import React from "react";
 import Carousel from 'react-material-ui-carousel';
 import CardCategory from "../cardCategory";
@@ -10,7 +10,7 @@ import Imagelanches from '../../assets/lanches.png';
 export default function CategoriaCarrossel() {
     const categories = [
         { title: 'Massas', items: [ImageMassa, ImageMassa, ImageMassa, ImageMassa, ImageMassa, ImageMassa] },
-        { title: 'Lanches', items: [Imagelanches, Imagelanches, Imagelanches, Imagelanches, Imagelanches, Imagelanches] },
+        { title: 'Lanches', items: [Imagelanches, Imagelanches, Imagelanches, Imagelanches, Imagelanches] },
         // Adicione mais categorias conforme necessário
     ];
 
@@ -26,13 +26,25 @@ export default function CategoriaCarrossel() {
                 <Typography variant="h5" sx={{ marginBottom: '1rem', color: 'gray' }}>Categorias</Typography>
                 <Button href="/categoria" sx={{ marginBottom: '1rem', color: 'gray' }}>Ver mais +</Button>
             </Box>
-            <Carousel>
+            <Carousel 
+                autoPlay={false} 
+                animation="slide" 
+                indicators={false} 
+                navButtonsAlwaysVisible={true} 
+                cycleNavigation={true} 
+                navButtonsProps={{ style: { backgroundColor: 'transparent', color: 'black' } }} 
+                swipe={true} 
+                timeout={400}
+                sx={{ margin: 0, overflow: 'hidden' }} // Set margin to 0 to remove any spacing and overflow to hidden
+            >
                 {categories.map((category, index) => (
-                    <div key={index} style={{ display: 'flex', flexDirection: 'row' }}>
-                        {category.items.map((icon, index) => (
-                            <MyCarouselItem key={index} icon={icon} />
+                    <Grid key={index} container spacing={2} sx={{ flexWrap: 'nowrap', overflow: 'hidden', margin: 0, padding: 0, width: "100%", height: '100%' }}>
+                        {category.items.map((icon, innerIndex) => (
+                            <Grid key={innerIndex} item xs={12} sm={6} md={4} lg={3} sx={{ padding: 0, margin: 0 }}>
+                                <MyCarouselItem icon={icon} />
+                            </Grid>
                         ))}
-                    </div>
+                    </Grid>
                 ))}
             </Carousel>
         </Container>
