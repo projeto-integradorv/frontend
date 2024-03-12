@@ -12,14 +12,17 @@ export default function CategoriaCarrossel() {
     const categories = [
         { title: 'Massas', items: [ImageMassa, ImageMassa, ImageMassa, ImageMassa, ImageMassa, ImageMassa] },
         { title: 'Lanches', items: [Imagelanches, Imagelanches, Imagelanches, Imagelanches, Imagelanches] },
-        // Adicione mais categorias conforme necessário
+        // // Adicione mais categorias conforme necessário
     ];
 
     const MyCarouselItem = ({ icon }) => (
-        <CardCategory icon={icon} sx={{ margin: 0, }} /> // Adicione margin: 0 para remover espaçamento
+        <CardCategory icon={icon} sx={{ margin: 0, }} />
     );
 
     const itemsToShow = 6; // Número de itens a serem exibidos antes de rolar para o lado
+
+    const flattenIcons = categories.reduce((acc, category) => [...acc, ...category.items], []);
+    const hasIcons = flattenIcons.length > 0;
 
     return (
         <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', width: "100%" }}>
@@ -27,29 +30,32 @@ export default function CategoriaCarrossel() {
                 <Typography variant="h5" sx={{ marginBottom: '1rem', color: 'gray' }}>Categorias</Typography>
                 <Button href="/categoria" sx={{ marginBottom: '1rem', color: 'gray' }}>Ver mais +</Button>
             </Box>
-            <Carousel
-                autoPlay={false}
-                indicators={false}
-                navButtonsAlwaysVisible={true}
-                cycleNavigation={true}
-                navButtonsProps={{ style: { backgroundColor: 'transparent', color: 'black' } }}
-                swipe={false}
-                timeout={10}
-                sx={{ margin: 0, padding: "1%", overflow: 'hidden', width: "100%", height: "100%", display: 'flex', justifyContent: 'center' }} // Set margin to 0 to remove any spacing and overflow to hidden
-            >
-                {categories.map((category, index) => (
-                    <Grid key={index} container spacing={0.2} sx={{ flexWrap: 'nowrap', overflow: 'hidden', margin: 0, padding: 0, width: "100%", height: '100%' }}>
-                        {category.items.map((icon, innerIndex) => (
-                            <Grid key={innerIndex} item xs={12} sm={12} md={3} lg={5} sx={{ padding: 0, margin: 0 }}>
-                                <MyCarouselItem icon={icon} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                ))}
-            </Carousel>
+            {hasIcons ? (
+                <Carousel
+                    autoPlay={false}
+                    indicators={false}
+                    navButtonsAlwaysVisible={true}
+                    cycleNavigation={true}
+                    navButtonsProps={{ style: { backgroundColor: 'transparent', color: 'black' } }}
+                    swipe={false}
+                    timeout={10}
+                    sx={{ margin: 0, padding: "1%", overflow: 'hidden', width: "100%", height: "100%", display: 'flex', justifyContent: 'center' }} // Set margin to 0 to remove any spacing and overflow to hidden
+                >
+                    {categories.map((category, index) => (
+                        <Grid key={index} container spacing={0.2} sx={{ flexWrap: 'nowrap', overflow: 'hidden', margin: 0, padding: 0, width: "100%", height: '100%' }}>
+                            {category.items.map((icon, innerIndex) => (
+                                <Grid key={innerIndex} item xs={12} sm={12} md={3} lg={5} sx={{ padding: 0, margin: 0 }}>
+                                    <MyCarouselItem icon={icon} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ))}
+                </Carousel>
+            ) : (
+                <Typography variant="body1" sx={{ margin: 'auto',color:"gray" }}>
+                    Não há categorias disponíveis.
+                </Typography>
+            )}
         </Container>
     );
 }
-
-
-

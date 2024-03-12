@@ -1,4 +1,4 @@
-import CategoriaView from "../sections/categoriaview";
+import CategoriaView from "../../sections/categoriaview";
 
 
 export default function Categoria() {
