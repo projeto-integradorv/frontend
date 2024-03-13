@@ -15,8 +15,8 @@ export default function CardapioContainer() {
                 {isHomePage ? (
                     <>
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width:"100%" }}>
-                            <Typography variant="h5" sx={{ marginBottom: '1rem', color: 'gray' , marginLeft:'1.5rem ' }}>Cadápio</Typography>
-                            <Button href="/cardapio" sx={{ marginBottom: '1rem', color: 'gray',marginRight:'1.4rem ' }}>Ver mais +</Button>
+                            <Typography variant="h5" sx={{ marginBottom: '1rem', color: 'gray' }}>Cadápio</Typography>
+                            <Button href="/cardapio" sx={{ marginBottom: '1rem', color: 'gray' }}>Ver mais +</Button>
                         </Box>
                         <Grid container spacing={2}>
                             {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (

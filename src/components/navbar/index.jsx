@@ -19,7 +19,7 @@ export default function Navbar() {
 
     return (
         <Container maxWidth='xl' disableGutters={true} sx={{ backgroundColor: '#FF9800' }}>
-            <Container sx={{ display: 'flex' }} maxWidth='lg' disableGutters={true}>
+            <Container sx={{ display: 'flex', width:'100%' }} maxWidth='lg' disableGutters={true}>
                 <Box
                     width={'50%'}
                     display='flex'
