@@ -7,6 +7,14 @@ import { usePathname } from 'next/navigation'
 export default function Header({ titulo }) {
     const pathname = usePathname();
 
+    // Verifica se o pathname corresponde ao padrão "/cardapio/product/[ID]"
+    const match = pathname.match(/^\/cardapio\/product\/\d+$/);
+
+    // Se corresponder, retorna null para ocultar o header
+    if (match) {
+        return null;
+    }
+
     return (
         <header style={{ width: '100%', backgroundColor: '#FF9800' }}>
             <Container sx={{ backgroundColor: '#FF9800', height: '40vh' }} maxWidth='lg' disableGutters={true}>
@@ -24,15 +32,12 @@ export default function Header({ titulo }) {
                             Olá <br />
                             {titulo}
                         </Typography>
-
-                    ) : pathname != '/produtoadicionais' ? (
+                    ) : pathname !== '/produtoadicionais' ? (
                         <Typography variant="h3" component="h1">
                             {titulo}
                         </Typography>
                     ) : (
-
                         <></>
-
                     )}
                 </Box>
             </Container>
