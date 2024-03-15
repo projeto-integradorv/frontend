@@ -1,7 +1,6 @@
-import React from "react";
-import Image from "next/image";
-import { Box, Grid, Typography } from "@mui/material";
 import ImageProduct from "@/assets/x-bacon.jpeg";
+import { Box, Grid, Typography } from "@mui/material";
+import Image from "next/image";
 
 export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
   return (
@@ -13,7 +12,7 @@ export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
           height={'100%'}
           justifyContent={'center'}
           marginBottom={{ xs: "0", md: "0" }}
-          sx={{ marginY: 0, borderRadius: '10px', '@media (max-width: 768px)': { width: '90%', height: 350, justifyContent: 'center', margin: 0, paddingRight: 2 } }} // Estilização para dispositivos com largura máxima de 600px (celulares)
+          sx={{ marginY: 0, borderRadius: '10px', '@media (max-width: 768px)': { width: '90%', height: 350, justifyContent: 'center', margin: 0, paddingRight: 2 }, '@media (max-width: 912px) and (max-width: 1024px)': { paddingLeft: '1rem', paddingRight: '1rem' } }} // Estilização para dispositivos com largura máxima de 600px (celulares)
         >
           <Image
             src={ImageProduct}
@@ -38,8 +37,9 @@ export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
             backgroundColor: 'transparent',
             color: 'white',
             fontWeight: 400,
-            paddingLeft: '2rem', paddingTop: '4rem', marginY: '2rem',
-            '@media (max-width: 768px)': {  width:"100%",color: "black", paddingTop:12, margin:0  } // Mudança da cor do texto para preto em dispositivos móveis
+            paddingLeft: '2rem', paddingY: '4rem', marginY: 5,
+            '@media (max-width: 600px)': {  width:"90%",color: "black", margin:0, height:'100%'  }, // Mudança da cor do texto para preto em dispositivos móveis
+            '@media (max-width:768px) and (max-width: 1026px)': { paddingLeft: '1rem', marginLeft:2 } // Ajuste de padding para dispositivos com largura entre 912px e 1024px
           }}
         >
           <Typography variant="h3" component="h1">
@@ -51,6 +51,7 @@ export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
           <Typography sx={{fontWeight:400}} variant="h7" component="h4">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius esse nemo cumque eos, rem quaerat soluta, nesciunt minus error suscipit eum sunt illo at neque dicta consequatur non ratione laboriosam?
           </Typography>
+          
         </Box>
       </Grid>
     </Grid>

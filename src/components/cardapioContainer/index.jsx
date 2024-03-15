@@ -3,7 +3,7 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { usePathname } from 'next/navigation';
 import React from "react";
 import CardFood from "../cardFodd";
-import ImageHamburguer from '../../assets/x-salada.jpg';
+import ImageHamburguer from '../../assets/x-bacon.jpeg';
 
 export default function CardapioContainer() {
     const pathname = usePathname();
