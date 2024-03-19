@@ -1,10 +1,11 @@
 import ImageProduct from "@/assets/x-bacon.jpeg";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Image from "next/image";
+import FormAdd from "../FormAdd";
 
-export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
+export default function CardImageProduct({ titulo, imagem, preco, descricao, children}) {
   return (
-    <Grid container sx={{ width: "100%", padding: 0, backgroundColor: '#FF9800', display: 'flex', justifyContent: "center", alignItems: "center", height: '40vh', margin: 0 }} spacing={3}>
+    <Grid container sx={{ width: "100%", padding: 0, backgroundColor: '#FF9800', display: 'flex', justifyContent: "center", alignItems: "center", height: '40vh', margin: 0, flexDirection:'' }} spacing={3}>
       <Grid item xs={12} md={8} sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: { xs: 'column', md: 'row' } }}>
         <Box
           width={{ xs: "100%", md: "35%" }} // Alterado para ocupar 100% no celular
@@ -12,7 +13,7 @@ export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
           height={'100%'}
           justifyContent={'center'}
           marginBottom={{ xs: "0", md: "0" }}
-          sx={{ marginY: 0, borderRadius: '10px', '@media (max-width: 768px)': { width: '90%', height: 350, justifyContent: 'center', margin: 0, paddingRight: 2 }, '@media (max-width: 912px) and (max-width: 1024px)': { paddingLeft: '1rem', paddingRight: '1rem' } }} // Estilização para dispositivos com largura máxima de 600px (celulares)
+          sx={{ marginY: 0, borderRadius: '10px', '@media (max-width: 768px)': { width: '95%', height: 350, justifyContent: 'center', margin: 0, paddingRight: 2 }, '@media (max-width: 912px) and (max-width: 1024px)': { paddingLeft: '1rem', paddingRight: '1rem' } }} // Estilização para dispositivos com largura máxima de 600px (celulares)
         >
           <Image
             src={ImageProduct}
@@ -38,7 +39,7 @@ export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
             color: 'white',
             fontWeight: 400,
             paddingLeft: '2rem', paddingY: '4rem', marginY: 5,
-            '@media (max-width: 600px)': {  width:"90%",color: "black", margin:0, height:'100%'  }, // Mudança da cor do texto para preto em dispositivos móveis
+            '@media (max-width: 600px)': {  width:"95%",color: "black", margin:3, padding:0, height:'100%',  marginY:'-1%', textAlign:'left'}, // Mudança da cor do texto para preto em dispositivos móveis
             '@media (max-width:768px) and (max-width: 1026px)': { paddingLeft: '1rem', marginLeft:2 } // Ajuste de padding para dispositivos com largura entre 912px e 1024px
           }}
         >
@@ -52,7 +53,8 @@ export default function CardImageProduct({ titulo, imagem, preco, descricao }) {
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius esse nemo cumque eos, rem quaerat soluta, nesciunt minus error suscipit eum sunt illo at neque dicta consequatur non ratione laboriosam?
           </Typography>
           
-        </Box>
+        </Box>  
+   
       </Grid>
     </Grid>
   );

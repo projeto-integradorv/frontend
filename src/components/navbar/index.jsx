@@ -18,8 +18,8 @@ export default function Navbar() {
     pathname === '/'
 
     return (
-        <Container maxWidth='xl' disableGutters={true} sx={{ backgroundColor: '#FF9800' }}>
-            <Container sx={{ display: 'flex', width:'100%' }} maxWidth='lg' disableGutters={true}>
+        <Container disableGutters={true} maxWidth='xs' sx={{ backgroundColor: '#FF9800',width:'100%' }}>
+            <Container sx={{ display: 'flex', width:'100%' }}  disableGutters={true}>
                 <Box
                     width={'50%'}
                     display='flex'
