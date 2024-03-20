@@ -5,7 +5,7 @@ import Image from "next/image";
 
 
 
-export default function CardFood({ nome, descricao, preco, imagem, categoria }) {
+export default function CardFood({ nome, descricao, preco, imagem }) {
     return (
         <>
             <Button sx={{ backgroundColor: 'transparent', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '1%', padding: '0', borderRadius: '10px' }}>
