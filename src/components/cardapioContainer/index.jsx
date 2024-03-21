@@ -27,7 +27,7 @@ export default function CardapioContainer() {
 
     return (
         <>
-            <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom:'' }} disableGutters={true}>
+            <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom:'1%' }} disableGutters={true}>
                 {isHomePage ? (
                     <>
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
@@ -38,8 +38,8 @@ export default function CardapioContainer() {
                             {foods.map((food) => (
                                 <Grid item key={food.id} xs={12} sm={6} md={3}>
                                     <CardFood
-                                        nome={food.nome}
-                                        descricao={food.descricao}
+                                        nome={food.name}
+                                        descricao={food.description}
                                         imagem={food.image}
                                         preco={food.price}
                                     />
@@ -54,7 +54,7 @@ export default function CardapioContainer() {
                                 <CardFood
                                     nome={food.name}
                                     descricao={food.description}
-                                    imagem={ImageHamburguer}
+                                    imagem={food.image}
                                     preco={food.price}
                                 />
                             </Grid>
