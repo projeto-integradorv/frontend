@@ -1,45 +1,47 @@
-import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
+'use client';
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
-
-
-
-
-export default function CardFood({ nome, descricao, preco, imagem }) {
+export default function CardFood({ nome, descricao, preco, imagem ,id}) {
+    
+    const rota = `cardapio/product/${id}`;
+   
     return (
         <>
-            <Button sx={{ backgroundColor: 'transparent', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '1%', padding: '0', borderRadius: '10px' }}>
-                <Card sx={{ maxWidth: 345 }}>
-                    <Image
-                        src={imagem}
-                        alt={nome}
-                        width={290}
-                        height={200}
-                    />
-                    <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
-                        <Typography gutterBottom variant="h5">
-                            {nome}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
-                            {descricao}
-                        </Typography>
-                        <Box
-                            display={'flex'}
-                            flexDirection={'row'}
-                            justifyContent={'flex-end'}
-                            alignItems={'center'}
-                            sx={{ width: '100%' }}>
-                            <Typography variant="body2" color="text.secondary">
-                                a partir de
+            <Link style={{textDecorationLine:'none'}} href={rota}>
+                <Button sx={{ backgroundColor: 'transparent', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '1%', padding: '0', borderRadius: '10px' }}>
+                    <Card sx={{ maxWidth: 345 }}>
+                        <Image
+                            src={imagem}
+                            alt={nome}
+                            width={290}
+                            height={200}
+                        />
+                        <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
+                            <Typography gutterBottom variant="h5">
+                                {nome}
                             </Typography>
-                            <Typography variant="h6" color="text.primary" sx={{ color: '#52c5a6', paddingLeft: '10px' }}>
-                                {preco}
+                            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
+                                {descricao}
                             </Typography>
-                        </Box>
-                    </CardContent>
-                </Card>
-            </Button>
+                            <Box
+                                display={'flex'}
+                                flexDirection={'row'}
+                                justifyContent={'flex-end'}
+                                alignItems={'center'}
+                                sx={{ width: '100%' }}>
+                                <Typography variant="body2" color="text.secondary">
+                                    a partir de
+                                </Typography>
+                                <Typography variant="h6" color="text.primary" sx={{ color: '#52c5a6', paddingLeft: '10px' }}>
+                                    {preco} R$
+                                </Typography>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Button>
+            </Link>
         </>
     );
-
 }

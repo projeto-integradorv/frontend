@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from "react";
 import CardFood from "../cardFodd";
 import axiosInstance from '@/utils/axios'; // Importe sua instância Axios
-import ImageHamburguer from '../../assets/x-bacon.jpeg';
 
 export default function CardapioContainer() {
     const pathname = usePathname();
@@ -42,6 +41,7 @@ export default function CardapioContainer() {
                                         descricao={food.description}
                                         imagem={food.image}
                                         preco={food.price}
+                                        id={food.id}
                                     />
                                 </Grid>
                             ))}

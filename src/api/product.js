@@ -1,7 +1,7 @@
+'use client';
 import axiosInstance from '@/utils/axios';
 
 
-export function getProductList() {
-    console.log(axiosInstance)
-  return axiosInstance.get('/product');
-}
+const getProductById = (id) => axiosInstance.get(`/product/${id}`);
+
+export default getProductById;
