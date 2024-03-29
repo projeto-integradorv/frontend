@@ -1,8 +1,0 @@
-{
-    "rewrites": [
-      {
-        "source": "/api/v1/:path*",
-        "destination": "http://wellington.thunder.dev.br/api/v1/:path*"
-      }
-    ]
-  }
