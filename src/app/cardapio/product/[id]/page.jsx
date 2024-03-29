@@ -7,11 +7,7 @@ export default function Product() {
 
     const url = usePathname();
 
-    const id = url.split('/').pop()
-
-    console.log(id);
-
-
+    const id = url.split('/').pop(); 
 
     return (
         <>
