@@ -1,7 +1,14 @@
 {
-    "target": "serverless",
-    "routes": [
-      { "src": "/(.*)", "dest": "http://wellington.thunder.dev.br/api/v1/:1" }
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
     ]
   }
   
