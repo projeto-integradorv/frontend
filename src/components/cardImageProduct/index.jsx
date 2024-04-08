@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import {getProductById} from '@/api/product';
+import ImageProduct from "@/assets/x-bacon.jpeg";
 import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import getProductById from '@/api/product';
-import ImageProduct from "@/assets/x-bacon.jpeg";
+import { useEffect, useState } from "react";
 
 export default function CardImageProduct({ Id }) {
   const [product, setProduct] = useState(null);
@@ -25,6 +25,7 @@ export default function CardImageProduct({ Id }) {
   }
 
   return (
+    <>
     <Grid
       container
       sx={{
@@ -94,5 +95,7 @@ export default function CardImageProduct({ Id }) {
         </Box>
       </Grid>
     </Grid>
+    
+    </>
   );
 }

@@ -1,9 +1,10 @@
 'use client';
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { usePathname } from 'next/navigation';
-import React, { useState, useEffect } from "react";
-import CardFood from "../cardFodd";
-import axiosInstance from '@/utils/axios'; // Importe sua instância Axios
+import { useState, useEffect } from "react";
+import { getProducts } from '@/api/product';
+import CardFood from "@/components/cardFodd";
+import Hamburguer from '@/assets/x-bacon.jpeg';
 
 export default function CardapioContainer() {
     const pathname = usePathname();
@@ -13,16 +14,18 @@ export default function CardapioContainer() {
     useEffect(() => {
         const fetchFoods = async () => {
             try {
-                const response = await axiosInstance.get('/product/'); // Substitua '/sua-rota' pela rota desejada
-                setFoods(response.data); // Define os alimentos recebidos no estado
+                const response = await getProducts(); // Call getProductList function and await its response
+                setFoods(response.data); // Set the received food data in the state
             } catch (error) {
                 console.error('Erro ao obter alimentos:', error);
             }
         };
 
-        // Chama a função fetchFoods quando o componente é montado
+        // Call fetchFoods function when the component is mounted
         fetchFoods();
-    }, []); // O segundo argumento é uma matriz vazia, isso faz com que o useEffect só seja executado uma vez (após o componente ser montado)
+    }, []);
+    
+    console.log('os produtos:', foods)// The second argument is an empty array, which makes useEffect only execute once (after the component is mounted)
 
     return (
         <>
@@ -39,7 +42,7 @@ export default function CardapioContainer() {
                                     <CardFood
                                         nome={food.name}
                                         descricao={food.description}
-                                        imagem={food.image}
+                                        imagem={food.image ? food.image : Hamburguer}
                                         preco={food.price}
                                         id={food.id}
                                     />
@@ -54,7 +57,7 @@ export default function CardapioContainer() {
                                 <CardFood
                                     nome={food.name}
                                     descricao={food.description}
-                                    imagem={food.image}
+                                    imagem={food.image ? food.image : Hamburguer}
                                     preco={food.price}
                                 />
                             </Grid>

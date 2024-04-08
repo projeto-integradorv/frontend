@@ -14,6 +14,7 @@ export default function ProductView({Id}) {
                 <main className={styles.main}>
                     <CardImageProduct Id={Id} />
                     <FormAdd productId={Id} />
+                    
                 </main>
             </BasicLayout>
         </>

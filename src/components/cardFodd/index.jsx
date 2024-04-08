@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function CardFood({ nome, descricao, preco, imagem ,id}) {
+    // Limitar o nome do produto a no máximo 30 caracteres
+    const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
+    const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
     
     const rota = `cardapio/product/${id}`;
    
@@ -19,11 +22,12 @@ export default function CardFood({ nome, descricao, preco, imagem ,id}) {
                             height={200}
                         />
                         <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
-                            <Typography gutterBottom variant="h5">
-                                {nome}
+                            {/* Aplicando o estilo CSS para evitar quebra de linha */}
+                            <Typography gutterBottom variant="h5" sx={{ whiteSpace: 'nowrap' }}>
+                                {nomeLimitado} {/* Usando o nome limitado */}
                             </Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
-                                {descricao}
+                                {descricaoLimitada} {/* Usando a descrição limitada */}
                             </Typography>
                             <Box
                                 display={'flex'}
