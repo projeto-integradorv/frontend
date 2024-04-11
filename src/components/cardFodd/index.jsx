@@ -22,7 +22,6 @@ export default function CardFood({ nome, descricao, preco, imagem ,id}) {
                             height={200}
                         />
                         <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
-                            {/* Aplicando o estilo CSS para evitar quebra de linha */}
                             <Typography gutterBottom variant="h5" sx={{ whiteSpace: 'nowrap' }}>
                                 {nomeLimitado} {/* Usando o nome limitado */}
                             </Typography>

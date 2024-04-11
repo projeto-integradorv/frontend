@@ -4,7 +4,7 @@ import RoomServiceOutlinedIcon from '@mui/icons-material/RoomServiceOutlined';
 
 const fabStyle = {
   position: 'fixed',
-  bottom: 16,
+  bottom: 86,
   right: 16,
   transition: 'background-color 0.3s ease', // Adiciona transição suave para a cor de fundo
 };
@@ -15,12 +15,12 @@ export default function BellWaiter() {
       sx={{
         color: 'white',
         backgroundColor: '#FF9800',
-        ...fabStyle,
+         ...fabStyle,
         '@media (max-width:600px)': {
           margin: 'auto',
           left: 0,
           right: 0,
-          bottom: 16,
+          bottom: 76,
           top: 'auto',
           position: 'fixed',
         },
