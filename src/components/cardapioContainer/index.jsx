@@ -59,6 +59,7 @@ export default function CardapioContainer() {
                                     descricao={food.description}
                                     imagem={food.image ? food.image : Hamburguer}
                                     preco={food.price}
+                                    id={food.id}
                                 />
                             </Grid>
                         ))}

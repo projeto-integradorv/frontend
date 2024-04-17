@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { Container } from '@mui/material';
@@ -8,16 +7,14 @@ import Image from 'next/image';
 import Rectangle from '../../assets/Catalog.svg';
 import shopping from '../../assets/shopping-bag.png';
 import Voltar from '../../assets/voltar.png';
-import { usePathname } from 'next/navigation'
-
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-
     const pathname = usePathname();
 
-    pathname === '/'
-
-    
+    const handleVoltarClick = () => {
+        window.history.back();
+    };
 
     return (
         <Container disableGutters={true} maxWidth='' sx={{ backgroundColor: '#FF9800',width:'100%' }}>
@@ -33,7 +30,7 @@ export default function Navbar() {
                     ) : (
                         <Button
                             sx={{ color: 'white', display: 'flex', gap: '5px' }}
-                            href='/'
+                            onClick={handleVoltarClick}
                         >
                             <Image src={Voltar} width={8} />
                             Voltar
