@@ -67,7 +67,7 @@ export default function CardImageProduct({ Id }) {
               objectFit='cover'
               objectPosition='center center'
               height={300}
-              width={300}
+              width={350}
               style={{ borderRadius: '10px', '@media (max-width: 768px)': { width: '100%', height: 400 } }}
             />
           </Box>

@@ -1,7 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['wellington.thunder.dev.br'], // Adicione o domínio da sua imagem aqui
+        // Remove the deprecated 'domains' configuration
+        remotePatterns: [
+            {
+                protocol: 'http',
+                hostname: 'wellington.thunder.dev.br',
+            },
+            {
+                protocol: 'https',
+                hostname: 'example.com',
+            },
+        ],
     },
 };
 

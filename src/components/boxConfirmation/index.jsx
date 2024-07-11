@@ -1,14 +1,16 @@
+import React, { useState } from "react";
+import { Button, Container, FormControl, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button, Container, FormControl, Grid } from '@mui/material';
-import { useState } from 'react';
+import ModalPagamento from '@/components/modalpagament'
 
-export default function BoxConfirmation({ title, message, onConfirm, onCancel, valorFinal }) {
+export default function BoxConfirmation({ title, message, onConfirm, onCancel, valorFinal , productImage, productName , productDescription}) {
     const [count, setCount] = useState(0);
+    const [modalAberto, setModalAberto] = useState(false);
 
-    const handleDownload = () => {
-        // Coloque aqui a lógica para o download
-        console.log('Arquivo baixado!');
+    const handleModal = () => {
+        // Lógica para abrir o modal
+        setModalAberto(true);
     };
 
     const handleQuantidadeChange = (nome, quantidade) => {
@@ -16,6 +18,7 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
     };
 
     return (
+        <>
         <Container 
             maxWidth='' 
             disableGutters={true}
@@ -25,7 +28,7 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                 width: '100%',
                 backgroundColor: 'white',
                 display: 'flex',
-                justifyContent: 'flex-end',
+                justifyContent: 'center',
                 alignItems: 'center',
                 position: 'fixed',
                 gap: 2,
@@ -44,7 +47,7 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
             }}
         >
             <Grid container sx={{flexGrow: 1}}>
-                <Grid item xs={9} container sx={{ justifyContent: 'flex-end', alignItems: 'center',order:'1px solid #ff9800'}}>
+                <Grid item xs={6} container sx={{width:'50%', display:'flex', justifyContent: 'flex-end', alignItems: 'center',order:'1px solid #ff9800'}}>
                     <FormControl>
                         <Button
                             onClick={() => handleQuantidadeChange('nome', -1)}
@@ -68,25 +71,40 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                         </Button>
                     </FormControl>
                 </Grid>
-                <Grid item xs={3} sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+                <Grid item xs={6} sx={{width:'50%',display: 'flex', justifyContent:'flex-end', alignItems: 'center'}}>
                     <Button
                         sx={{
-                            width: '100%',
+                            flexDirection: 'row',
+                            width: '60%',
                             display: 'flex',
-                            justifyContent: 'space-between',
+                            justifyContent: 'space-evenly',
+                            padding: '10px',
+                            textAlign:'center',
                             backgroundColor: '#ff9800',
                             '&:hover': { // Estilo para hover
-                                backgroundColor: '#ffcc80', // Cor para hover
-                            }
+                                backgroundColor: '#fda116', // Cor para hover
+                            },
+                            '@media (max-width: 600px)': {
+                                width: '100%', // Largura total para dispositivos menores
+                                            }
                         }}
                         variant="contained"
-                        onClick={handleDownload}
+                        onClick={handleModal}
                     >
-                        <span>Adicionar</span>
+                        <span>Adicionar</span> 
                         <span>R$ 23,00</span>
                     </Button>
+
+                    <ModalPagamento 
+                        isOpen={modalAberto} 
+                        onClose={() => setModalAberto(false)} 
+                        nomeProduto={productName} 
+                        imagemProduto={productImage} 
+                        descricaoProduto={productDescription} 
+                    />
                 </Grid>
             </Grid>
         </Container>
+        </>
     );
 }

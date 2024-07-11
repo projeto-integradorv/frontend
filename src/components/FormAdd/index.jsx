@@ -3,12 +3,31 @@ import { useState, useEffect } from 'react';
 import BoxConfirmation from '../boxConfirmation';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { getProductById } from '@/api/product';
+import Hamburguer from '@/assets/x-bacon.jpeg';
 
-export default function FormAdd() {
+export default function FormAdd({ productId }) {
     const [selectedAdicionais, setSelectedAdicionais] = useState({});
     const [selectedCarne, setSelectedCarne] = useState('');
     const [adicionais, setAdicionais] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [foods, setFoods] = useState([]);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+          try {
+            const response = await getProductById(productId);
+            setFoods(response.data);
+            setLoading(false);
+          } catch (error) {
+            console.error("Erro ao obter o produto por ID:", error);
+          }
+        };
+        fetchProduct();
+      }, [productId]);
+
+      console.log(foods);
+
 
     useEffect(() => {
         // Simulando uma requisição assíncrona para buscar os adicionais
@@ -79,7 +98,7 @@ export default function FormAdd() {
                         flexDirection: 'column',
                         justifyContent: 'flex-start',
                         padding: 0,
-                        marginRight: 15,
+                        marginRight: 13,
                         backgroundColor: "transparent",
                         marginY: -8,
                         color: 'gray',
@@ -121,7 +140,7 @@ export default function FormAdd() {
                         </Typography>
                     </Box>
                     <form onSubmit={handleSubmit}>
-                        <FormGroup sx={{ gap: 3 }}>
+                        <FormGroup sx={{ gap: 3 , padding:1 }}>
                             {adicionais.map((adicional, index) => (
                                 <Grid
                                     key={index}
@@ -144,7 +163,7 @@ export default function FormAdd() {
                                     alignItems="center"
                                 >
                                     <Grid item padding={0} xs={6}>
-                                        <Typography>{`${adicional.nome} `}
+                                        <Typography sx={{borderRadius:'10px'}}>{`${adicional.nome} `}
                                             <br />{`R$ ${adicional.preco}`}</Typography>
                                     </Grid>
                                     <Grid item xs={6}  container sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: "center", flexWrap: 'nowrap' }} spacing={0} alignItems="center">
@@ -186,7 +205,11 @@ export default function FormAdd() {
                     </form>
                 </Container>
             )}
-            <BoxConfirmation />
+            <BoxConfirmation
+                productImage={foods.image || Hamburguer}
+                productName={foods.name || ''}
+                productDescription={foods.description || ''}
+            />
         </>
     );
 }
