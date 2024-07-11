@@ -45,7 +45,11 @@ export default function CardImageProduct({ Id }) {
           margin: 0,
           flexDirection: ''
         }}
-        spacing={3}
+        spacing={{
+          xs: 3,
+          md: 0
+        
+        }}
       >
         <Grid item xs={12} md={8} sx={{
           display: "flex",
@@ -96,7 +100,7 @@ export default function CardImageProduct({ Id }) {
               A partir de R${product.price} {/* Exibindo o preço do produto */}
             </Typography>
             <Typography sx={{ fontWeight: 400 }} variant="h7" component="h4">
-              {product.description} {/* Exibindo a descrição do produto */}
+              {product.description} {/* Exibindo a descrição do produto */} Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sed, quibusdam facilis repellendus vero non nostrum cumque fugit eaque voluptatem quaerat dolor nesciunt debitis rerum temporibus voluptate eos dolorum accusamus.
             </Typography>
           </Box>
         </Grid>

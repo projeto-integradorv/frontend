@@ -18,9 +18,9 @@ export default function Navbar() {
 
     return (
         <Container disableGutters={true} maxWidth='' sx={{ backgroundColor: '#FF9800',width:'100%' }}>
-            <Container maxWidth='xl' sx={{ display: 'flex', width:'100%' }}  disableGutters={true}>
+            <Container maxWidth='' sx={{ display: 'flex', flexWrap:"wrap", width:'100%' }}  disableGutters={true}>
                 <Box
-                    width={'50%'}
+                    width={'25%'}
                     display='flex'
                     alignItems='center'
                     justifyContent='flex-start'
@@ -38,11 +38,11 @@ export default function Navbar() {
                     )}
                 </Box>
                 <Box
-                    width={'50%'}
+                    width={'75%'}
                     display='flex'
                     alignItems='flex-end'
                     justifyContent='flex-end'
-                    gap={4}
+                    gap={2}
                 >
                     <Button
                         sx={{ color: 'white', display: 'flex', gap: '5px' }}>
