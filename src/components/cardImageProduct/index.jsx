@@ -89,18 +89,18 @@ export default function CardImageProduct({ Id }) {
               color: 'white',
               fontWeight: 400,
               paddingLeft: '2rem', paddingY: '4rem', marginY: 5,
-              '@media (max-width: 600px)': { width: "95%", color: "black", margin: 3, padding: 0, height: '100%', marginY: '-1%', textAlign: 'left' },
-              '@media (max-width:768px) and (max-width: 1026px)': { paddingLeft: '1rem', marginLeft: 2 }
+              '@media (max-width: 600px)': { width: "95%", color: "black", margin: 0, padding: 0, height: '100%', textAlign: 'left', marginLeft:"1.5rem"},
+              '@media (max-width:768px) and (max-width: 1026px)': { paddingLeft: '1rem', }
             }}
           >
-            <Typography variant="h3" component="h1">
+            <Typography variant="h" component="h1" sx={{ fontWeight: 400 , width:"80%"}} >
               {product.name} {/* Exibindo o nome do produto */}
             </Typography>
             <Typography variant="h6" component="h3">
-              A partir de R${product.price} {/* Exibindo o preço do produto */}
+              A partir de R$ {product.price} {/* Exibindo o preço do produto */}
             </Typography>
-            <Typography sx={{ fontWeight: 400 }} variant="h7" component="h4">
-              {product.description} {/* Exibindo a descrição do produto */} Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sed, quibusdam facilis repellendus vero non nostrum cumque fugit eaque voluptatem quaerat dolor nesciunt debitis rerum temporibus voluptate eos dolorum accusamus.
+            <Typography sx={{ fontWeight: 400 , width:"80%"}} variant="h7" component="h4">
+              {product.description} {/* Exibindo a descrição do produto */} 
             </Typography>
           </Box>
         </Grid>

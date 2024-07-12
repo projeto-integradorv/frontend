@@ -117,6 +117,7 @@ export default function FormAdd({ productId }) {
                             marginY: 20,
                             marginRight: 0,
                         },
+                    
                     }}
                     disableGutters={true}
                 >
@@ -152,9 +153,9 @@ export default function FormAdd({ productId }) {
                                         alignItems: "flex-start",
                                         borderRadius: '10px',
                                         '@media (max-width: 600px)': {
-                                            width: '90%',
+                                            width: 350,
                                             padding: 0,
-                                            marginX: 3,
+                                            marginX: 1.6,
                                             color: "black",
                                         }
                                     }}
@@ -206,6 +207,7 @@ export default function FormAdd({ productId }) {
                 </Container>
             )}
             <BoxConfirmation
+                productPrice={foods.price}
                 productImage={foods.image || Hamburguer}
                 productName={foods.name || ''}
                 productDescription={foods.description || ''}

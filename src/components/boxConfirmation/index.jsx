@@ -4,8 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ModalPagamento from '@/components/modalpagament';
 
-export default function BoxConfirmation({ title, message, onConfirm, onCancel, valorFinal, productImage, productName, productDescription }) {
-    const [count, setCount] = useState(0);
+export default function BoxConfirmation({ title, message, onConfirm, onCancel, valorFinal, productImage, productName, productDescription, productPrice}) {
+    const [count, setCount] = useState(1);
     const [modalAberto, setModalAberto] = useState(false);
 
     const handleModal = () => {
@@ -46,7 +46,7 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                 }}
             >
                 <Grid container sx={{ flexGrow: 1 }}>
-                    <Grid item xs={6} container sx={{ display: 'flex', alignItems: 'center'}}>
+                    <Grid item  xs={6} container sx={{ display: 'flex', alignItems: 'center'}}>
                         <FormControl>
                             <Button
                                 onClick={() => handleQuantidadeChange(-1)}
@@ -94,7 +94,7 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                             onClick={handleModal}
                         >
                             <span>Adicionar</span> 
-                            <span>R$ {(valorFinal * count).toFixed(2)}</span>
+                            <span>R$ {(productPrice * count).toFixed(2)}</span>
                         </Button>
 
                         <ModalPagamento 
