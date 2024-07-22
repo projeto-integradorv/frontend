@@ -42,7 +42,6 @@ export default function Navbar() {
                     display='flex'
                     alignItems='flex-end'
                     justifyContent='flex-end'
-                    padding={1}
                 >
                     <Button
                         sx={{ color: 'white', display: 'flex', gap: '5px' }}>
