@@ -2,7 +2,7 @@ import CardFood from "@/components/cardFodd";
 import BasicLayout from "@/layouts/basic/basiclayout";
 import { Container } from "@mui/material";
 import React from "react";
-import img from "../../assets/x-salada.jpg"
+import img from "../../assets/x-bacon.jpeg";
 import BoxConfirmation from "@/components/boxConfirmation";
 
 
@@ -11,12 +11,12 @@ export default function CartView() {
     return (
         <>
 
-            <BasicLayout titulo="Carrinho">
+            <BasicLayout titulo="Carrinho/Comanda">
 
-                <Container maxWidth='' disableGutters={true} sx={{display:'flex', justifyContent:'center',alignItems:'center' , marginTop:-10}}>
-                    <Container maxWidth='' sx={{display:'flex', flexWrap:'wrap' , padding:2 , gap:3, justifyContent:'center'}}>
+                <Container maxWidth='' disableGutters={true} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: -10 , padding:0}}>
+                    <Container maxWidth='lg' sx={{ display: 'flex', flexWrap: 'wrap',  gap: 1.5, justifyContent: 'center' }}>
                         <CardFood nome="X-Salada" descricao="Pão, hambúrguer, queijo, alface e tomate" preco="15,00" imagem={img} id="1" quant="1" />
-                        <CardFood nome="X-Bacon" descricao="Pão, hambúrguer, queijo, bacon, alface e tomate" preco="18,00" imagem={img} id="1" quant="1" />
+                        <CardFood nome ="X-Bacon" descricao="Pão, hambúrguer, queijo, bacon, alface e tomate" preco="18,00" imagem={img} id="1" quant="1" />
                         <CardFood nome="X-Tudo" descricao="Pão, hambúrguer, queijo, bacon, ovo, alface e tomate" preco="20,00" imagem={img} id="1" quant="1" />
                         <CardFood nome="X-Frango" descricao="Pão, frango, queijo, alface e tomate" preco="15,00" imagem={img} id="1" quant="1" />
                         <CardFood nome="X-Calabresa" descricao="Pão, calabresa, queijo, alface e tomate" preco="15,00" imagem={img} id="1" quant="1" />
@@ -37,11 +37,13 @@ export default function CartView() {
                         <CardFood nome="X-Tudo" descricao="Pão, hambúrguer, queijo, bacon, ovo, alface e tomate" preco="20,00" imagem={img} id="1" quant="1" />
                         <CardFood nome="X-Frango" descricao="Pão, frango, queijo, alface e tomate" preco="15,00" imagem={img} id="1" quant="1" />
                         <CardFood nome="X-Calabresa" descricao="Pão, calabresa, queijo, alface e tomate" preco="15,00" imagem={img} id="1" quant="1" />
-                        
+
                     </Container>
+                    <BoxConfirmation />
+
+
                 </Container>
 
-                <BoxConfirmation/>
 
 
             </BasicLayout>
