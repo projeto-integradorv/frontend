@@ -1,12 +1,9 @@
 import { getProductById } from '@/api/product';
-import ImageProduct from "@/assets/x-bacon.jpeg";
-import { Box, Grid, Typography, CircularProgress } from "@mui/material";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import FormAdd from "@/components/FormAdd";
 import CardImageProduct from "@/components/cardImageProduct";
 import BasicLayout from "@/layouts/basic/basiclayout";
-import styles from "../../app/page.module.css";
+import { Box, CircularProgress, Container } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function ProductView({ Id }) {
   const [loading, setLoading] = useState(true);
@@ -26,7 +23,8 @@ export default function ProductView({ Id }) {
   return (
     <>
       <BasicLayout>
-        <main className={styles.main}>
+        <Container disableGutters={true} maxWidth=''sx={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:"flex-start", gap:2, padding:0, margin:0, backgroundColor:'#f5f5f5',height:'100%'
+        ,gap:15 ,'@media (max-width: 768px)': { gap:32 }}} >
           {loading ? (
             <Box
               display="flex"
@@ -38,11 +36,12 @@ export default function ProductView({ Id }) {
             </Box>
           ) : (
             <>
+              
               <CardImageProduct Id={Id} />
               <FormAdd productId={Id} />
             </>
           )}
-        </main>
+        </Container>
       </BasicLayout>
     </>
   );

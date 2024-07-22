@@ -12,22 +12,20 @@ export default function FormAdd({ productId }) {
     const [adicionais, setAdicionais] = useState([]);
     const [loading, setLoading] = useState(true);
     const [foods, setFoods] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0); // Estado para armazenar o preço total
 
     useEffect(() => {
         const fetchProduct = async () => {
-          try {
-            const response = await getProductById(productId);
-            setFoods(response.data);
-            setLoading(false);
-          } catch (error) {
-            console.error("Erro ao obter o produto por ID:", error);
-          }
+            try {
+                const response = await getProductById(productId);
+                setFoods(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Erro ao obter o produto por ID:", error);
+            }
         };
         fetchProduct();
-      }, [productId]);
-
-      console.log(foods);
-
+    }, [productId]);
 
     useEffect(() => {
         // Simulando uma requisição assíncrona para buscar os adicionais
@@ -71,10 +69,39 @@ export default function FormAdd({ productId }) {
             [nome]: (prevState[nome] || 0) + quantidade
         }));
     };
-    
+
     const handleCarneChange = (event) => {
         setSelectedCarne(event.target.value);
     };
+
+    const calculateTotalPrice = () => {
+        let total = parseFloat(foods.price) || 0; // Começa com o preço base do produto
+
+        // Verifica se há adicionais selecionados
+        const hasAdicionaisSelecionados = Object.keys(selectedAdicionais).some(adicional => selectedAdicionais[adicional] > 0);
+
+        // Se houver adicionais selecionados, adiciona seus preços ao total
+        if (hasAdicionaisSelecionados) {
+            Object.keys(selectedAdicionais).forEach(adicional => {
+                if (selectedAdicionais[adicional] > 0) {
+                    const adicionalPrice = parseFloat(adicionais.find(a => a.nome === adicional)?.preco) || 0;
+                    total += adicionalPrice * selectedAdicionais[adicional];
+                }
+               
+            });
+        }
+
+        // Adiciona o preço da carne selecionada, se houver
+        if (selectedCarne) {
+            total += parseFloat(selectedCarne); // Assumindo que selectedCarne já contém o preço da carne
+        }
+
+        setTotalPrice(total);
+    };
+
+    useEffect(() => {
+        calculateTotalPrice();
+    }, [selectedAdicionais, selectedCarne]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -93,10 +120,10 @@ export default function FormAdd({ productId }) {
                     sx={{
                         backgroundColor: 'white',
                         width: '50%',
-                        height: '100%',
+                        height: 'fit-content',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'flex-start',
+                        justifyContent: 'center',
                         padding: 0,
                         marginRight: 13,
                         backgroundColor: "transparent",
@@ -104,20 +131,17 @@ export default function FormAdd({ productId }) {
                         color: 'gray',
                         gap: 2,
                         marginBottom: 20,
-                        zIndex: 1000,
-                        overflowY: 'auto', // Adicionando scroll invisível
-                        msOverflowStyle: 'none', // Para IE e Edge
-                        scrollbarWidth: 'none', // Para Firefox
-                        '&::-webkit-scrollbar': {
-                            display: 'none' // Para Chrome, Safari, e Opera
-                        },
+                       
+                       
                         '@media (max-width: 600px)': {
                             width: '100%',
                             padding: 0,
-                            marginY: 20,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             marginRight: 0,
+                            
                         },
-                    
                     }}
                     disableGutters={true}
                 >
@@ -141,7 +165,7 @@ export default function FormAdd({ productId }) {
                         </Typography>
                     </Box>
                     <form onSubmit={handleSubmit}>
-                        <FormGroup sx={{ gap: 3 , padding:1 }}>
+                        <FormGroup sx={{ gap: 3 }}>
                             {adicionais.map((adicional, index) => (
                                 <Grid
                                     key={index}
@@ -153,21 +177,18 @@ export default function FormAdd({ productId }) {
                                         alignItems: "flex-start",
                                         borderRadius: '10px',
                                         '@media (max-width: 600px)': {
-                                            width: 350,
-                                            padding: 0,
-                                            marginX: 1.6,
+                                            width: '100%',
+                                            padding: "10px",
                                             color: "black",
                                         }
                                     }}
                                     container
-                                    spacing={1}
                                     alignItems="center"
                                 >
                                     <Grid item padding={0} xs={6}>
-                                        <Typography sx={{borderRadius:'10px'}}>{`${adicional.nome} `}
-                                            <br />{`R$ ${adicional.preco}`}</Typography>
+                                        <Typography>{`${adicional.nome} `}<br />{`R$ ${adicional.preco}`}</Typography>
                                     </Grid>
-                                    <Grid item xs={6}  container sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: "center", flexWrap: 'nowrap' }} spacing={0} alignItems="center">
+                                    <Grid item xs={6} container sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: "center", flexWrap: 'nowrap' }} spacing={0} alignItems="center">
                                         <Grid item padding={1}>
                                             <FormControl>
                                                 <Button
@@ -207,7 +228,7 @@ export default function FormAdd({ productId }) {
                 </Container>
             )}
             <BoxConfirmation
-                productPrice={foods.price}
+                productPrice={totalPrice || foods.price || 0}
                 productImage={foods.image || Hamburguer}
                 productName={foods.name || ''}
                 productDescription={foods.description || ''}

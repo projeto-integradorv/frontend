@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Container, Grid, Modal, Box, Typography } from '@mui/material';
 import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
+import BoxConfirmation from "../boxConfirmation";
 
 export default function ModalPagamento({ isOpen, onClose, nomeProduto, imagemProduto, descricaoProduto }) {
   return (
@@ -24,6 +25,7 @@ export default function ModalPagamento({ isOpen, onClose, nomeProduto, imagemPro
             </Grid>
           </Grid>
         </Container>
+        <BoxConfirmation />
       </Box>
     </Modal>
   );

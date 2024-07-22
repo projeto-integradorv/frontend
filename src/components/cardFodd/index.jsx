@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CardFood({ nome, descricao, preco, imagem ,id}) {
+export default function CardFood({ nome, descricao, preco, imagem ,id ,quant}) {
     // Limitar o nome do produto a no máximo 30 caracteres
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;

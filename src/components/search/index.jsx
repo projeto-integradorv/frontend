@@ -2,6 +2,16 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
+import styled from 'styled-components';
+
+const ResponsiveDiv = styled.div`
+  width: 49%;
+  
+  @media (max-width: 768px) {
+    width: 74%;
+  }
+`;
+
 
 const SearchInput = ({ placeholder, onSearch }) => {
   const handleSearchChange = (event) => {
@@ -37,10 +47,10 @@ const Search = () => {
   const { searchText, SearchInput } = useSearch();
 
   return (
-    <div style={{width:'49%'}}>
+    <ResponsiveDiv>
       {SearchInput}
       {/* Restante do seu componente */}
-    </div>
+    </ResponsiveDiv>
   );
 };
 
