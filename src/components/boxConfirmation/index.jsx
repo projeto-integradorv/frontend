@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from "react";
-import { Button, Container, FormControl, Grid } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { usePathname, useRouter } from "next/navigation";
@@ -42,7 +42,8 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                         bottom: 0,
                         height: '10%',
                         padding: '20px',
-                        zIndex: 1000, // Para garantir que esteja sempre na frente de outros elementos
+                        zIndex: 1000,
+                        boxShadow:'0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.449)' , // Para garantir que esteja sempre na frente de outros elementos
 
                         // Media query para dispositivos menores
                         '@media (max-width: 600px)': {
@@ -111,7 +112,78 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                         </Grid>
                     </Grid>
                 </Container>
-            ) : null}
+            ) :<Container 
+            maxWidth='' 
+            disableGutters={true}
+            sx={{
+                margin: 0,
+                padding: 0,
+                width: '100%',
+                backgroundColor: 'white',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'fixed',
+                gap: 2,
+                bottom: 0,
+                height: '10%',
+                padding: '20px',
+                zIndex: 1000,
+                boxShadow:'0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.449)' ,// Para garantir que esteja sempre na frente de outros elementos
+
+                // Media query para dispositivos menores
+                '@media (max-width: 600px)': {
+                    height: '10%', 
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center' // Altura aumentada para dispositivos menores
+                }
+            }}
+        >
+            <Grid container sx={{ flexGrow: 1 }}>
+                <Grid item xs={6} container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+                    '@media (max-width: 600px)': {
+                        justifyContent: 'center',
+                    }
+                }}>
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width:'100%' }}>
+                    <Typography variant="h6" component="h2" sx={{ fontSize: '1.5rem',display:'flex',flexDirection:'column',alignItems:'flex-start', color: 'black' }}>
+                       Total 
+                       <Typography variant="body2" component="p" sx={{ fontSize: '1rem',display:'flex',flexDirection:'column', fontWeight: 'bold', color: '#52c5a6' , marginLeft:'2px'}}>
+                            R$ {valorFinal}
+                        </Typography>
+                    </Typography>
+                </Box>
+                    
+                   
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                    <Button
+                        sx={{
+                            flexDirection: 'row',
+                            width: '60%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            padding: '10px',
+                            textAlign: 'center',
+                            backgroundColor: '#ff9800',
+                            '&:hover': {
+                                backgroundColor: '#fda116',
+                            },
+                            '@media (max-width: 600px)': {
+                                width: '100%',
+                            }
+                        }}
+                        variant="contained"
+                        onClick={handleRedirect}
+                    >
+                        <span>Adicionar</span> 
+                        
+                    </Button>
+                </Grid>
+            </Grid>
+        </Container> }
         </>
     );
 }

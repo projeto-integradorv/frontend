@@ -17,7 +17,17 @@ export default function Header({ titulo }) {
 
     return (
         <header style={{ width: '100%', backgroundColor: '#FF9800' }}>
-            <Container sx={{ backgroundColor: '#FF9800', height: '40vh' }} maxWidth='lg' disableGutters={true}>
+            <Container 
+                sx={{ 
+                    backgroundColor: '#FF9800', 
+                    height: '40vh', 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center' 
+                }} 
+                maxWidth='lg' 
+                disableGutters={true}
+            >
                 <Box
                     width={"100%"}
                     height={'100%'}
@@ -28,12 +38,24 @@ export default function Header({ titulo }) {
                     sx={{ color: 'white' }}
                 >
                     {pathname === '/' ? (
-                        <Typography variant="h3" component="h1" >
+                        <Typography 
+                            variant="h3" 
+                            component="h1" 
+                            sx={{ 
+                                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.75rem' }
+                            }}
+                        >
                             Olá <br />
                             {titulo}
                         </Typography>
                     ) : pathname !== '/produtoadicionais' ? (
-                        <Typography variant="h3" component="h1">
+                        <Typography 
+                            variant="h3" 
+                            component="h1" 
+                            sx={{ 
+                                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.75rem' }
+                            }}
+                        >
                             {titulo}
                         </Typography>
                     ) : (
