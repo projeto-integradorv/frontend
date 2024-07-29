@@ -178,7 +178,7 @@ export default function BoxConfirmation({ title, message, onConfirm, onCancel, v
                         variant="contained"
                         onClick={handleRedirect}
                     >
-                        <span>Adicionar</span> 
+                        <span>Confirmar</span> 
                         
                     </Button>
                 </Grid>

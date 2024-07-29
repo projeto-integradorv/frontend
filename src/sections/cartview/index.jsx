@@ -2,7 +2,7 @@
 
 import React from "react";
 import BasicLayout from "@/layouts/basic/basiclayout";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd";
 import img from "../../assets/x-bacon.jpeg";
@@ -73,6 +73,9 @@ const mockFoodItems = [
         id: "4",
         quanto: 1,
     },
+   
+
+
 
 
 ];
@@ -108,14 +111,15 @@ function CartView() {
                     disableGutters={true}
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '0fr', sm: '0fr 0fr', lg: '1fr 1fr 1fr 1fr' },
+                        gridTemplateColumns: { xs: '1fr', sm: '0fr 0fr', lg: '1fr 1fr 1fr 1fr' },
                         gap: 1.5,
                         justifyContent: 'center',
                         marginBottom: '10vh',
                         alignItems: 'center',
-                        padding: 0,
+                        padding: 5.5,
                         width: { xs: '100%', md: '80%' },
                         paddingRight: 0,
+                    
                     }}
                 >
                     {mockFoodItems.map(item => (
@@ -129,7 +133,26 @@ function CartView() {
                             quant={item.quanto}
                         />
                     ))}
+                    <Button sx={{
+                        width: '100%',
+                        color: 'black',
+                        border: '1px solid #ff9800',
+                        backgroundColor:'white',
+                        '&:hover': {
+                            backgroundColor: '#fda116',
+                            color: 'white',
+                        },
+                        fontSize: '20px',
+                        padding: '10px',
+                        textAlign: 'center',
+                        '@media (max-width: 600px)': {
+                            width: '90%',
+                        }
+                    }}>
+                    Adcionar mais intens
+                    </Button>
                 </Container>
+
                 <BoxConfirmation
                 valorFinal={totalValue}
                 sx={{ width: { xs: '100%', md: '30%' } }}>
