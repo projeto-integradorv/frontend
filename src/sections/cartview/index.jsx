@@ -74,7 +74,7 @@ const mockFoodItems = [
         id: "4",
         quanto: 2,
     },
-   
+
 
 
 
@@ -93,11 +93,11 @@ function CartView() {
         .reduce((acc, value) => acc + value, 0)
         .toFixed(2);
 
-        const router = useRouter();
+    const router = useRouter();
 
-        const handleRedirect = () => {
-            router.push('/');
-        };
+    const handleRedirect = () => {
+        router.push('/');
+    };
     return (
         <BasicLayout titulo="Carrinho/Comanda">
             <Container
@@ -126,7 +126,7 @@ function CartView() {
                         padding: 5.5,
                         width: { xs: '100%', md: '80%' },
                         paddingRight: 0,
-                    
+
                     }}
                 >
                     {mockFoodItems.map(item => (
@@ -140,31 +140,39 @@ function CartView() {
                             quant={item.quanto}
                         />
                     ))}
-                    <Button onClick={handleRedirect} sx={{
-                        width: '100%',
-                        color: 'black',
-                        border: '1px solid #ff9800',
-                        backgroundColor:'white',
-                        '&:hover': {
-                            backgroundColor: '#fda116',
+                    <Button
+                        onClick={handleRedirect}
+                        sx={{
+                            width: '100%',
                             color: 'white',
-                        },
-                        fontSize: '20px',
-                        padding: '10px',
-                        textAlign: 'center',
-                        '@media (max-width: 600px)': {
-                            width: '90%',
-                        }
-                    }}>
-                    Adcionar mais intens
+                            border: '2px solid #ff9800',
+                            backgroundColor: '#ff9800',
+                            '&:hover': {
+                                backgroundColor: '#fda116',
+                                borderColor: '#fda116',
+                                color: 'white',
+                            },
+                            fontSize: '16px',
+                            padding: '12px',
+                            textAlign: 'center',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                            transition: 'all 0.3s ease',
+                            '@media (max-width: 600px)': {
+                                width: '90%',
+                            }
+                        }}
+                    >
+                        Adicionar mais itens
                     </Button>
+
                 </Container>
 
                 <BoxConfirmation
-                valorFinal={totalValue}
-                sx={{ width: { xs: '100%', md: '30%' } }}>
+                    valorFinal={totalValue}
+                    sx={{ width: { xs: '100%', md: '30%' } }}>
 
-                      
+
                 </BoxConfirmation>
             </Container>
         </BasicLayout>

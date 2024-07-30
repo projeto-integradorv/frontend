@@ -1,13 +1,12 @@
 import React from 'react';
-import pedidosView from '@/sections/pedidosView';
+import PedidosView from '@/sections/pedidosView'
 
-export default function Pedidos(){
+export default function Pedidos() {
 
     return (
         <>
-        
-        <pedidosView/>
-        
+
+            <PedidosView/>
         </>
     );
 }

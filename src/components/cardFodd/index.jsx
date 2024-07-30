@@ -1,4 +1,5 @@
-'use client';
+'use client'; // Diretiva para garantir que este código seja executado apenas no cliente
+
 import React, { useState } from 'react';
 import { Box, Button, Card, CardContent, Container, Grid, Typography } from "@mui/material";
 import Image from "next/image";
@@ -40,7 +41,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        padding: '0',
+                        padding: 0,
                         borderRadius: '20px',
                         position: 'relative',
                         '@media (max-width: 1024px)': {
@@ -52,17 +53,19 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                         },
                         '@media (max-width: 480px)': {
                             width: '90%',
-                        }
+                        },
+                        cursor: 'pointer',
                     }}
-                    onClick={handleCardClick} // Clique no card inteiro
+                    onClick={handleCardClick}
                 >
-                    <Card sx={{ width: '100%', position: 'relative' }}>
+                    <Card sx={{ width: '100%', position: 'relative', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)' }}>
                         <Image
                             src={imagem}
-                            alt={'imagem'}
+                            alt={nome}
                             width={350}
                             height={250}
                             objectFit="cover"
+                            style={{ borderRadius: '20px 20px 0 0' }}
                         />
                         <Button
                             aria-label="delete"
@@ -71,51 +74,49 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 top: '8px',
                                 right: '8px',
                                 zIndex: 1,
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                padding: '4px',
+                                minWidth: 0,
                             }}
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.stopPropagation();
                                 // Função para deletar o item
                             }}
                         >
                             <Image
                                 src={iconDel}
                                 alt={'delete'}
-                                width={50}
-                                height={50}
+                                width={34}
+                                height={34}
                             />
                         </Button>
-                        <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
+                        <CardContent sx={{ padding: 2 }}>
                             <Box
-                                width={'100%'}
-                                display={"flex"}
-                                justifyContent={'flex-start'}
-                                flexDirection={'column'}
+                                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}
                             >
-                                <Typography gutterBottom variant="h5" sx={{ width: '100%', textAlign: 'left' }}>
+                                <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
                                     {nomeLimitado}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
+                                <Typography variant="body2" color="textSecondary">
                                     {descricaoLimitada}
                                 </Typography>
                             </Box>
                             <Box
-                                display={'flex'}
-                                flexDirection={'row'}
-                                justifyContent={'flex-start'}
-                                padding={0}
-                                alignItems={'center'}
                                 sx={{
-                                    width: '100%',
-                                }}>
-                                <Container maxWidth='' disableGutters={true} sx={{ display: 'flex', width: '100%', gap: 1, padding: 0, justifyContent: 'flex-start', alignItems: 'center' }}>
-                                    <Typography variant="body2" color="text.secondary" sx={{ width: '15%', display: 'flex', justifyContent: 'center' }}>
-                                        qt: {quant}
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography variant="body2" color="textSecondary">
+                                    qt: {quant}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    a partir de&nbsp;
+                                    <Typography variant="body2" component="span" sx={{ color: '#52c5a6' }}>
+                                        {preco} R$
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary" sx={{ width: '70%', display: 'flex', justifyContent: '', alignItems: 'center' }}>
-                                        a partir:  <Typography variant='body2' color="text.secondary" sx={{ color: '#52c5a6', width: '50%', textAlign: 'left', paddingLeft: '3px' }}>
-                                            {preco} R$
-                                        </Typography>
-                                    </Typography>
-                                </Container>
+                                </Typography>
                             </Box>
                         </CardContent>
                     </Card>
@@ -127,42 +128,36 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                         descricaoProduto={descricao}
                         productPrice={preco}
                         quanty={quant}
-                        handleUpdate={handleUpdate} // Passando a função de atualização
+                        handleUpdate={handleUpdate}
                     />
                 </Grid>
             ) : (
-                <Link style={{ textDecorationLine: 'none' }} href={rota}>
-                    <Button sx={{ backgroundColor: 'transparent', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '1%', padding: '0', borderRadius: '10px' }}>
-                        <Card sx={{ maxWidth: 345, position: 'relative' }}>
+                <Link href={rota} passHref style={{textDecoration:'none'}}>
+                    <Box component="div" sx={{ textDecoration: 'none', width: '100%', display: 'block', margin: '1%' }}>
+                        <Card sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px' }}>
                             <Image
                                 src={imagem}
                                 alt={nome}
                                 width={290}
                                 height={200}
+                                style={{ borderRadius: '20px 20px 0 0' }}
                             />
-                            <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
-                                <Typography gutterBottom variant="h5" sx={{ whiteSpace: 'nowrap' }}>
+                            <CardContent sx={{ padding: 2 }}>
+                                <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
                                     {nomeLimitado}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
+                                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
                                     {descricaoLimitada}
                                 </Typography>
-                                <Box
-                                    display={'flex'}
-                                    flexDirection={'row'}
-                                    justifyContent={'flex-end'}
-                                    alignItems={'center'}
-                                    sx={{ width: '100%' }}>
-                                    <Typography variant="body2" color="text.secondary">
-                                        a partir de
-                                    </Typography>
-                                    <Typography variant="h6" color="text.primary" sx={{ color: '#52c5a6', paddingLeft: '10px' }}>
+                                <Typography variant="body2" color="textSecondary">
+                                    a partir de&nbsp;
+                                    <Typography variant="h6" component="span" sx={{ color: '#52c5a6', fontWeight: 'bold' }}>
                                         {preco} R$
                                     </Typography>
-                                </Box>
+                                </Typography>
                             </CardContent>
                         </Card>
-                    </Button>
+                    </Box>
                 </Link>
             )}
         </>

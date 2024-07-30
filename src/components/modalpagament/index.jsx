@@ -15,12 +15,12 @@ export default function ModalPagamento({
   handleRedirect,
   productPrice
 }) {
-
-  const[count, setCount] = useState(quanty || 1);
+  const [count, setCount] = useState(quanty || 1);
 
   const handleQuantidadeChange = (quantidade) => {
     setCount((prevCount) => Math.max(0, prevCount + quantidade));
-};
+  };
+
   return (
     <Modal
       open={isOpen}
@@ -30,106 +30,100 @@ export default function ModalPagamento({
           onClick: onClose
         }
       }}
-        
     >
       <Box
-        margin={0}
-        padding={0}
         sx={{
           position: 'absolute',
-          top: '0',
-          right: '0',
+          top: 0,
+          right: 0,
           width: '400px',
           height: '100%',
           bgcolor: '#E5E5E5',
-          overflow: 'auto', // Ensure content scrolls if it overflows
+          overflowY: 'auto', // Ensure content scrolls if it overflows
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '16px'
         }}
         onClick={(e) => e.stopPropagation()} // Prevent clicks inside Box from closing the modal
       >
-        <Container maxWidth='' disableGutters={true} sx={{ margin: 0 }}>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item xs={12} width={'100%'}>
-              <Button
-                onClick={onClose}
-                sx={{
-                  position: 'absolute',
-                  gap: 1,
-                  top: '10px',
-                  left: '10px',
-                  backgroundColor: 'orange',
-                  color: 'white',
-                  zIndex: 1
-                }}
-              >
-                <Image src={Voltar} width={8} />
-                Voltar
-              </Button>
-              <div style={{ width: '100%', marginBottom: 10 }}>
-                <Image
-                  width={400}
-                  height={300}
-                  src={imagemProduto}
-                />
-              </div>
-              <Typography sx={{ marginLeft: 3 }} variant="h4" align='left' gutterBottom>
-                {nomeProduto}
-              </Typography>
-              <Typography sx={{ marginLeft: 3 }} variant="body1" align="left">
-                {descricaoProduto}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Container>
-
-        {/* Container Adicionado na Parte Inferior */}
-        <Container
-          maxWidth=''
-          disableGutters={true}
+        <Button
+          onClick={onClose}
           sx={{
-            margin: 0,
-            padding: 0,
-            width: '100%',
-            backgroundColor: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             position: 'absolute',
-            gap: 2,
-            bottom: 0,
-            height: '10%',
-            padding: '20px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.449)', // Para garantir que esteja sempre na frente de outros elementos
-
-            // Media query para dispositivos menores
-            '@media (max-width: 600px)': {
-              height: '10%',
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center' // Altura aumentada para dispositivos menores
+            top: '16px',
+            left: '16px',
+            backgroundColor: '#ff9800',
+            color: 'white',
+            zIndex: 1,
+            textAlign: 'center',
+            borderRadius: '4px',
+            gap:1,
+            padding: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            '&:hover': {
+              backgroundColor: '#fda116'
             }
           }}
         >
-          <Grid container sx={{ flexGrow: 1 }}>
-            <Grid
-              item
-              xs={5}
-              container
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                '@media (max-width: 600px)': {
-                  justifyContent: 'center',
-                }
-              }}
-            >
+          <Image src={Voltar} width={12} height={12} alt="Voltar" />
+          Voltar
+        </Button>
+        <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
+          <Image
+            src={imagemProduto}
+            width={350}
+            height={250}
+            alt={nomeProduto}
+            style={{ borderRadius: '8px' }}
+          />
+        </Box>
+        <Typography variant="h4" align='center' gutterBottom sx={{ fontWeight: 'bold', marginBottom: '8px' }}>
+          {nomeProduto}
+        </Typography>
+        <Typography variant="body1" align="center" sx={{ marginBottom: '16px' }}>
+          {descricaoProduto}
+        </Typography>
+        
+        {/* Container Adicionado na Parte Inferior */}
+        <Box
+          sx={{
+            width: '100%',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '16px',
+            borderTop: '1px solid #ddd',
+            boxShadow: '0 -4px 6px rgba(0, 0, 0, 0.1)',
+            bottom: 0,
+            position: 'absolute',
+            left: 0,
+            borderRadius: '8px',
+            gap: '16px',
+            backgroundColor: '#f5f5f5',
+            '@media (max-width: 600px)': {
+              flexDirection: 'column',
+              alignItems: 'center'
+            }
+          }}
+        >
+          <Grid container sx={{ flexGrow: 1, alignItems: 'center' }}>
+            <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FormControl>
                 <Button
                   onClick={() => handleQuantidadeChange(-1)}
                   disabled={count <= 0}
-                  sx={{ border: 'none', minWidth: '50px', fontSize: '20px' }}
+                  sx={{
+                    minWidth: '50px',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: 'red'
+                  }}
                 >
-                  <RemoveIcon sx={{ color: 'red', fontSize: '20px' }} />
+                  <RemoveIcon sx={{ fontSize: '20px' }} />
                 </Button>
               </FormControl>
               <FormControl>
@@ -137,41 +131,46 @@ export default function ModalPagamento({
                   type="number"
                   value={count}
                   readOnly
-                  style={{ fontSize: '20px', width: '50px', height: '100%', textAlign: 'center', border: 'none', pointerEvents: 'none', borderSolid: '1px #ff9800' }}
+                  style={{ fontSize: '20px', width: '60px', height: '40px', textAlign: 'center', border: '1px solid #ff9800', borderRadius: '4px', margin: '0 8px' }}
                 />
               </FormControl>
               <FormControl>
                 <Button
-                  sx={{ border: 'none', minWidth: '50px', fontSize: '20px' }}
                   onClick={() => handleQuantidadeChange(1)}
+                  sx={{
+                    minWidth: '50px',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: 'red'
+                  }}
                 >
-                  <AddIcon sx={{ color: 'red', fontSize: '20px' }} />
+                  <AddIcon sx={{ fontSize: '20px' }} />
                 </Button>
               </FormControl>
             </Grid>
-            <Grid item xs={7} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Button 
                 sx={{
                   flexDirection: 'row',
-                  width: '80%',
-                  display: 'flex',
-                  justifyContent: 'space-evenly',
+                  width: '100%',
                   padding: '10px',
                   textAlign: 'center',
                   backgroundColor: '#ff9800',
+                  color: 'white',
+                  borderRadius: '4px',
                   '&:hover': {
-                    backgroundColor: '#fda116',
+                    backgroundColor: '#fda116'
                   }
                 }}
                 variant="contained"
                 onClick={handleRedirect}
               >
                 <span>Atualizar</span>
-                <span>R$ {productPrice * count}</span>
+                <span>R$ {(productPrice * count).toFixed(2)}</span>
               </Button>
             </Grid>
           </Grid>
-        </Container>
+        </Box>
       </Box>
     </Modal>
   );
