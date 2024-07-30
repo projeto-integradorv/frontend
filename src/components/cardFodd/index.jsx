@@ -132,14 +132,16 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                     />
                 </Grid>
             ) : (
-                <Link href={rota} passHref style={{textDecoration:'none'}}>
-                    <Box component="div" sx={{ textDecoration: 'none', width: '100%', display: 'block', margin: '1%' }}>
+                <Link href={rota} passHref style={{textDecoration:'none', display:'flex', justifyContent:'center'}}>
+                    <Box component="div" sx={{ textDecoration: 'none', width: '100%', display: 'block', margin: '1%' ,'@media (max-width: 600px)': {
+                                width: '70%',
+                            } }}>
                         <Card sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px' }}>
                             <Image
                                 src={imagem}
                                 alt={nome}
                                 width={290}
-                                height={200}
+                                height={250}
                                 style={{ borderRadius: '20px 20px 0 0' }}
                             />
                             <CardContent sx={{ padding: 2 }}>

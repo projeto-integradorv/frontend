@@ -21,90 +21,65 @@ export default function CardImageProduct({ Id }) {
     fetchProduct();
   }, [Id]);
 
-  // Renderiza o componente somente quando o produto estiver carregado
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="40vh">
-        <CircularProgress sx={{color:'#FF9800'}} />
+        <CircularProgress sx={{ color: '#FF9800' }} />
       </Box>
     );
   }
 
   return (
-    <>
-      <Grid
-        container
-        sx={{
-          width: "100%",
-          padding: 0,
-          backgroundColor: '#FF9800',
-          display: 'flex',
-          justifyContent: "center",
-          alignItems: "center",
-          height: '40vh',
-          margin: 0,
-          flexDirection: ''
-        }}
-        spacing={{
-          xs: 3,
-          md: 0
-        
-        }}
-      >
-        <Grid item xs={12} md={8} sx={{
-          display: "flex",
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: { xs: 'column', md: 'row' }
-        }}>
-          <Box
-            width={{ xs: "100%", md: "35%" }}
-            display={'flex'}
-            height={'100%'}
-            justifyContent={'center'}
-            marginBottom={{ xs: "0", md: "0" }}
-            sx={{ marginY: 0, borderRadius: '10px', '@media (max-width: 768px)': { width: '95%', height: 350, justifyContent: 'center', margin: 0, paddingRight: 2 }, '@media (max-width: 912px) and (max-width: 1024px)': { paddingLeft: '1rem', paddingRight: '1rem' } }}
-          >
-            <Image
-              src={product.image || ImageProduct}
-              alt={'Imagem do produto'}
-              objectFit='cover'
-              objectPosition='center center'
-              height={300}
-              width={350}
-              style={{ borderRadius: '10px', '@media (max-width: 768px)': { width: '100%', height: 400 } }}
-            />
-          </Box>
-
-          <Box
-            display={'flex'}
-            flexDirection={'column'}
-            whiteSpace={'wrap'}
-            width={{ xs: '100%', md: '70%' }}
-            justifyContent={'flex-start'}
-            alignItems={'flex-start'}
-            height={'26rem'}
-            sx={{
-              backgroundColor: 'transparent',
-              color: 'white',
-              fontWeight: 400,
-              paddingLeft: '2rem', paddingY: '4rem', marginY: 5,
-              '@media (max-width: 600px)': { width: "95%", color: "black", margin: 0, padding: 0, height: '100%', textAlign: 'left', marginLeft:"1.5rem"},
-              '@media (max-width:768px) and (max-width: 1026px)': { paddingLeft: '1rem', }
-            }}
-          >
-            <Typography variant="h" component="h1" sx={{ fontWeight: 400 , width:"80%"}} >
-              {product.name} {/* Exibindo o nome do produto */}
-            </Typography>
-            <Typography variant="h6" component="h3">
-              A partir de R$ {product.price} {/* Exibindo o preço do produto */}
-            </Typography>
-            <Typography sx={{ fontWeight: 400 , width:"80%"}} variant="h7" component="h4">
-              {product.description} {/* Exibindo a descrição do produto */} 
-            </Typography>
-          </Box>
-        </Grid>
+    <Grid
+      container
+      sx={{
+        width: '100%',
+        padding: 0,
+        backgroundColor: '#FF9800',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 'auto',
+        margin: 0,
+        flexDirection: { xs: 'column', md: 'row' },
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        overflow: 'hidden',
+      }}
+      spacing={2}
+    >
+      <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          sx={{
+            borderRadius: '10px',
+            overflow: 'hidden',
+          }}
+        >
+          <Image
+            src={product.image || ImageProduct}
+            alt="Imagem do produto"
+            objectFit="cover"
+            objectPosition="center center"
+            height={300}
+            width={350}
+            style={{ borderRadius: '10px' }}
+          />
+        </Box>
       </Grid>
-    </>
+
+      <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
+        <Typography variant="h4" component="h1" sx={{ fontWeight: 500, color: '#fff', mb: 1 }}>
+          {product.name}
+        </Typography>
+        <Typography variant="h6" component="h2" sx={{ color: '#fff', mb: 2 }}>
+          A partir de R$ {product.price}
+        </Typography>
+        <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.5 }}>
+          {product.description}
+        </Typography>
+      </Grid>
+    </Grid>
   );
 }
