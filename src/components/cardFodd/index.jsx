@@ -1,33 +1,48 @@
 'use client';
+import React, { useState } from 'react';
 import { Box, Button, Card, CardContent, Container, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DeleteIcon from '@mui/icons-material/Delete';
-import iconDel from '@/assets/Group 33.png'
+import ModalPagamento from '../modalpagament';
+import iconDel from '@/assets/Group 33.png';
 
-export default function CardFood({ nome, descricao, preco, imagem, id, quant }) {
+export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity }) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
     const rota = `cardapio/product/${id}`;
     const pathname = usePathname();
 
+    const handleCardClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleUpdate = (newQuantity) => {
+        onUpdateQuantity(id, newQuantity);
+        handleCloseModal();
+    };
+
     return (
         <>
             {pathname === '/cart' ? (
-                <Grid 
-                    container 
+                <Grid
+                    container
                     sx={{
-                        backgroundColor: 'transparent', 
-                        height: '100%', 
-                        width: '95%', 
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        justifyContent: 'center', 
-                        alignItems: 'center', 
-                        padding: '0', 
+                        backgroundColor: 'transparent',
+                        height: '100%',
+                        width: '95%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '0',
                         borderRadius: '20px',
-                        position: 'relative', // Adiciona posição relativa ao contêiner
+                        position: 'relative',
                         '@media (max-width: 1024px)': {
                             width: '100%',
                         },
@@ -39,6 +54,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant }) 
                             width: '90%',
                         }
                     }}
+                    onClick={handleCardClick} // Clique no card inteiro
                 >
                     <Card sx={{ width: '100%', position: 'relative' }}>
                         <Image
@@ -47,25 +63,24 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant }) 
                             width={350}
                             height={250}
                             objectFit="cover"
-                            
                         />
                         <Button
                             aria-label="delete"
                             sx={{
-                            
                                 position: 'absolute',
                                 top: '8px',
                                 right: '8px',
-                                zIndex: 1, // Garantir que o botão esteja acima do conteúdo
+                                zIndex: 1,
                             }}
-                            onClick={() => {}}
+                            onClick={() => {
+                                // Função para deletar o item
+                            }}
                         >
                             <Image
                                 src={iconDel}
                                 alt={'delete'}
                                 width={50}
                                 height={50}
-                                
                             />
                         </Button>
                         <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
@@ -95,7 +110,6 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant }) 
                                     <Typography variant="body2" color="text.secondary" sx={{ width: '15%', display: 'flex', justifyContent: 'center' }}>
                                         qt: {quant}
                                     </Typography>
-                
                                     <Typography variant="body2" color="text.secondary" sx={{ width: '70%', display: 'flex', justifyContent: '', alignItems: 'center' }}>
                                         a partir:  <Typography variant='body2' color="text.secondary" sx={{ color: '#52c5a6', width: '50%', textAlign: 'left', paddingLeft: '3px' }}>
                                             {preco} R$
@@ -105,6 +119,16 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant }) 
                             </Box>
                         </CardContent>
                     </Card>
+                    <ModalPagamento
+                        isOpen={isModalOpen}
+                        onClose={handleCloseModal}
+                        nomeProduto={nome}
+                        imagemProduto={imagem}
+                        descricaoProduto={descricao}
+                        productPrice={preco}
+                        quanty={quant}
+                        handleUpdate={handleUpdate} // Passando a função de atualização
+                    />
                 </Grid>
             ) : (
                 <Link style={{ textDecorationLine: 'none' }} href={rota}>
@@ -118,10 +142,10 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant }) 
                             />
                             <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
                                 <Typography gutterBottom variant="h5" sx={{ whiteSpace: 'nowrap' }}>
-                                    {nomeLimitado} {/* Usando o nome limitado */}
+                                    {nomeLimitado}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
-                                    {descricaoLimitada} {/* Usando a descrição limitada */}
+                                    {descricaoLimitada}
                                 </Typography>
                                 <Box
                                     display={'flex'}

@@ -1,11 +1,12 @@
 // src/pages/CartView.js
-
+'use client';
 import React from "react";
 import BasicLayout from "@/layouts/basic/basiclayout";
 import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd";
 import img from "../../assets/x-bacon.jpeg";
+import { useRouter } from "next/navigation";
 
 // Dados Mocados
 const mockFoodItems = [
@@ -15,7 +16,7 @@ const mockFoodItems = [
         preco: 15.00,
         imagem: img,
         id: "1",
-        quanto: 1,
+        quanto: 2,
     },
     {
         nome: "X-Bacon",
@@ -71,7 +72,7 @@ const mockFoodItems = [
         preco: 15.00,
         imagem: img,
         id: "4",
-        quanto: 1,
+        quanto: 2,
     },
    
 
@@ -91,6 +92,12 @@ function CartView() {
         })
         .reduce((acc, value) => acc + value, 0)
         .toFixed(2);
+
+        const router = useRouter();
+
+        const handleRedirect = () => {
+            router.push('/');
+        };
     return (
         <BasicLayout titulo="Carrinho/Comanda">
             <Container
@@ -133,7 +140,7 @@ function CartView() {
                             quant={item.quanto}
                         />
                     ))}
-                    <Button sx={{
+                    <Button onClick={handleRedirect} sx={{
                         width: '100%',
                         color: 'black',
                         border: '1px solid #ff9800',
