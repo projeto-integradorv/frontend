@@ -5,86 +5,16 @@ import BasicLayout from "@/layouts/basic/basiclayout";
 import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd";
-import img from "../../assets/x-bacon.jpeg";
 import { useRouter } from "next/navigation";
 
-// Dados Mocados
-const mockFoodItems = [
-    {
-        nome: "X-Salada",
-        descricao: "Pão, hambúrguer, queijo, alface e tomate",
-        preco: 15.00,
-        imagem: img,
-        id: "1",
-        quanto: 2,
-    },
-    {
-        nome: "X-Bacon",
-        descricao: "Pão, hambúrguer, queijo, bacon, alface e tomate",
-        preco: 18.00,
-        imagem: img,
-        id: "2",
-        quanto: 1,
-    },
-    {
-        nome: "X-Tudo",
-        descricao: "Pão, hambúrguer, queijo, bacon, ovo, alface e tomate",
-        preco: 20.00,
-        imagem: img,
-        id: "3",
-        quanto: 1,
-    },
-    {
-        nome: "X-Burguer",
-        descricao: "Pão, hambúrguer, queijo, alface e tomate",
-        preco: 15.00,
-        imagem: img,
-        id: "4",
-        quanto: 1,
-    },
-    {
-        nome: "X-Salada",
-        descricao: "Pão, hambúrguer, queijo, alface e tomate",
-        preco: 15.00,
-        imagem: img,
-        id: "1",
-        quanto: 1,
-    },
-    {
-        nome: "X-Bacon",
-        descricao: "Pão, hambúrguer, queijo, bacon, alface e tomate",
-        preco: 18.00,
-        imagem: img,
-        id: "2",
-        quanto: 1,
-    },
-    {
-        nome: "X-Tudo",
-        descricao: "Pão, hambúrguer, queijo, bacon, ovo, alface e tomate",
-        preco: 20.00,
-        imagem: img,
-        id: "3",
-        quanto: 1,
-    },
-    {
-        nome: "X-Burguer",
-        descricao: "Pão, hambúrguer, queijo, alface e tomate",
-        preco: 15.00,
-        imagem: img,
-        id: "4",
-        quanto: 2,
-    },
+import { useSelector } from "react-redux";
 
-
-
-
-
-];
-
-// Componente CartView
 function CartView() {
     // Calcular o valor total dos produtos
-    const totalValue = mockFoodItems
+
+    const { carrinho } = useSelector(state);
+
+    const totalValue = carrinho
         .map(item => {
             const preco = parseFloat(item.preco);
             const quanto = parseInt(item.quanto, 10);
@@ -129,7 +59,7 @@ function CartView() {
 
                     }}
                 >
-                    {mockFoodItems.map(item => (
+                    {carrinho.map(item => (
                         <CardFood
                             key={item.id}
                             nome={item.nome}
