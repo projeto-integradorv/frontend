@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 function CartView() {
-    // Calcular o valor total dos produtos
-
-    const { carrinho } = useSelector(state);
+    const { carrinho } = useSelector(state => {
+        return state
+    });
 
     const totalValue = carrinho
         .map(item => {
@@ -56,10 +56,9 @@ function CartView() {
                         padding: 5.5,
                         width: { xs: '100%', md: '80%' },
                         paddingRight: 0,
-
                     }}
                 >
-                    {carrinho.map(item => (
+                    {carrinho && carrinho.map(item => (
                         <CardFood
                             key={item.id}
                             nome={item.nome}
@@ -95,15 +94,12 @@ function CartView() {
                     >
                         Adicionar mais itens
                     </Button>
-
                 </Container>
 
                 <BoxConfirmation
                     valorFinal={totalValue}
-                    sx={{ width: { xs: '100%', md: '30%' } }}>
-
-
-                </BoxConfirmation>
+                    sx={{ width: { xs: '100%', md: '30%' } }}
+                />
             </Container>
         </BasicLayout>
     );
