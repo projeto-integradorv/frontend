@@ -24,8 +24,7 @@ export default function BoxConfirmation({ title,Additional, message, onConfirm, 
     const productId = match ? match[1] : null;
 
     return (
-        <Container 
-            maxWidth='xl'
+        <Box 
             disableGutters
             sx={{
                 position: 'fixed',
@@ -164,6 +163,6 @@ export default function BoxConfirmation({ title,Additional, message, onConfirm, 
                     </>
                 )}
             </Grid>
-        </Container>
+        </Box>
     );
 }
