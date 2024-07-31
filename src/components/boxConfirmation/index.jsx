@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { usePathname, useRouter } from "next/navigation";
 
-export default function BoxConfirmation({ title, message, onConfirm, onCancel, valorFinal, productImage, productName, productDescription, productPrice }) {
+export default function BoxConfirmation({ title,Additional, message, onConfirm, onCancel, valorFinal, productImage, productName, productDescription, productPrice }) {
     const [count, setCount] = useState(1);
     const pathname = usePathname();
     const router = useRouter();

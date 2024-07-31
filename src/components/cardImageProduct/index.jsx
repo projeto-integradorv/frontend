@@ -45,16 +45,17 @@ export default function CardImageProduct({ Id }) {
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
         overflow: 'hidden',
       }}
-      spacing={2}
     >
       <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Box
           width="100%"
           display="flex"
           justifyContent="center"
+          alignItems={{ xs: 'center', md: 'flex-start' }}
           sx={{
             borderRadius: '10px',
             overflow: 'hidden',
+            
           }}
         >
           <Image

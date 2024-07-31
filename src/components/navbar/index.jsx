@@ -7,10 +7,20 @@ import Image from 'next/image';
 import Rectangle from '../../assets/Catalog.svg';
 import shopping from '../../assets/shopping-bag.png';
 import Voltar from '../../assets/voltar.png';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const pathname = usePathname();
+
+    const router = useRouter();
+
+    const handlePedidosClick = () => {
+        router.push('/pedidos');
+    }
+
+    const handlecardapioClick = () => {
+        router.push('/cardapio');
+    };
 
     const handleVoltarClick = () => {
         window.history.back();
@@ -44,12 +54,12 @@ export default function Navbar() {
                     justifyContent='flex-end'
                 >
                     <Button
-                        sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                        sx={{ color: 'white', display: 'flex', gap: '5px' }} onClick={handlecardapioClick}>
                         <Image src={Rectangle} width={15} />
                         Cardápio
                     </Button>
                     <Button sx={{ color: 'white', display: 'flex', gap: '5px' }}>
-                        <Image src={shopping} width={13} />
+                        <Image src={shopping} width={13} onClick={handlePedidosClick} />
                         Pedidos
                     </Button>
                 </Box>

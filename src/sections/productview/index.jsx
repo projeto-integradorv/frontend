@@ -24,7 +24,7 @@ export default function ProductView({ Id }) {
     <>
       <BasicLayout>
         <Container disableGutters={true} maxWidth=''sx={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:"flex-start", gap:2, padding:0, margin:0, backgroundColor:'#f5f5f5',height:'100%'
-        ,gap:15 ,'@media (max-width: 768px)': { gap:32 }}} >
+        ,gap:15 ,'@media (max-width: 768px)': { gap:10}}} >
           {loading ? (
             <Box
               display="flex"
