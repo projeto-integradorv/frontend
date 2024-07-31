@@ -53,7 +53,7 @@ export default function Header({ titulo }) {
                             variant="h3" 
                             component="h1" 
                             sx={{ 
-                                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.75rem' }
+                                fontSize: { xs: '1rem', sm: '2.5rem', md: '3rem', lg: '3.75rem' }
                             }}
                         >
                             {titulo}

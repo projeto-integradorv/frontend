@@ -58,8 +58,8 @@ export default function Navbar() {
                         <Image src={Rectangle} width={15} />
                         Cardápio
                     </Button>
-                    <Button sx={{ color: 'white', display: 'flex', gap: '5px' }}>
-                        <Image src={shopping} width={13} onClick={handlePedidosClick} />
+                    <Button onClick={handlePedidosClick}  sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                        <Image src={shopping} width={13} />
                         Pedidos
                     </Button>
                 </Box>
