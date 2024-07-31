@@ -8,11 +8,12 @@ import Link from 'next/link'; // Importa o componente Link do Next.js
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
   margin: 'auto',
+  border:'none',
   padding: theme.spacing(3),
   backgroundColor: '#ffffff',
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', // Sombra suave para profundidade
   borderRadius: theme.shape.borderRadius, // Bordas arredondadas para suavidade
   textAlign: 'center', // Centralizar o texto
+  boxShadow: 'none', // Sombra para profundidade
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -67,12 +68,12 @@ const LoginCard = () => {
   return (
     <StyledCard>
       <CardContent>
-        <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
+        {/* <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
           Login
         </Typography>
         <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 3 }}>
           Acesse sua conta para continuar.
-        </Typography>
+        </Typography> */}
         <StyledTextField
           fullWidth
           label="Email"

@@ -31,7 +31,7 @@ export default function LoginView() {
                     }}
                 >
                     <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                        Login
+                        Seja bem-vindo!
                     </Typography>
                     <Typography variant="body1" color="textSecondary" sx={{ marginBottom: 4 }}>
                         Entre com suas credenciais para acessar sua conta.

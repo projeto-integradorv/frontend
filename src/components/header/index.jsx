@@ -35,7 +35,7 @@ export default function Header({ titulo }) {
                     alignItems={'flex-start'}
                     justifyContent={'center'}
                     flexDirection={'column'}
-                    sx={{ color: 'white' }}
+                    sx={{ color: 'white', alignItems:{ xs: 'center', sm: 'flex-start' }  ,padding: { xs: '0 1rem', sm: '0' } }}
                 >
                     {pathname === '/' ? (
                         <Typography 
@@ -53,7 +53,7 @@ export default function Header({ titulo }) {
                             variant="h3" 
                             component="h1" 
                             sx={{ 
-                                fontSize: { xs: '1rem', sm: '2.5rem', md: '3rem', lg: '3.75rem' }
+                                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.75rem' }
                             }}
                         >
                             {titulo}

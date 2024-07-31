@@ -10,9 +10,9 @@ const StyledCard = styled(Card)(({ theme }) => ({
   marginTop: theme.spacing(4),
   padding: theme.spacing(3),
   backgroundColor: '#ffffff',
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', // Sombra suave para profundidade
   borderRadius: theme.shape.borderRadius, // Bordas arredondadas para suavidade
   textAlign: 'center', // Centralizar o texto
+  boxShadow: 'none', // Sombra para profundidade
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -56,12 +56,7 @@ const RegisterCard = () => {
   return (
     <StyledCard>
       <CardContent>
-        <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
-          Cadastro
-        </Typography>
-        <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 3 }}>
-          Crie sua conta para começar a usar o nosso serviço.
-        </Typography>
+        
         <StyledTextField
           fullWidth
           label="Nome"
