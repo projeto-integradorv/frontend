@@ -13,6 +13,7 @@ export default function FormAdd({ productId }) {
     const [loading, setLoading] = useState(true);
     const [foods, setFoods] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [quantidade, setQuantidade] = useState(1);
 
 
     useEffect(() => {
@@ -47,6 +48,8 @@ export default function FormAdd({ productId }) {
             ...prevState,
             [name]: (prevState[name] || 0) + quantity
         }));
+
+        setQuantidade(quantity);
     };
 
     const handleCarneChange = (event) => {
@@ -225,7 +228,9 @@ export default function FormAdd({ productId }) {
                 Additional={selectedAdicionais}
                 productPrice={totalPrice || foods.price || 0}
                 productImage={foods.image || Hamburguer}
+                valorFinal={totalPrice}
                 productName={foods.name || ''}
+                quantity={quantidade}
                 productDescription={foods.description || ''}
             />
         </>

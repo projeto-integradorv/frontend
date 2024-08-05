@@ -5,8 +5,12 @@ import { Box, Button, Container, FormControl, Grid, Typography } from '@mui/mate
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { usePathname, useRouter } from "next/navigation";
+import{useEffect} from 'react';
+import{createCart} from '@/api/cart';
+import{getCartById} from '@/api/cart';
 
-export default function BoxConfirmation({ title,Additional, message, onConfirm, onCancel, valorFinal, productImage, productName, productDescription, productPrice }) {
+
+export default function BoxConfirmation({ title,Additional, message, onConfirm, onCancel, valorFinal, productImage, productName, productDescription, productPrice , quantity}) {
     const [count, setCount] = useState(1);
     const pathname = usePathname();
     const router = useRouter();
@@ -16,7 +20,9 @@ export default function BoxConfirmation({ title,Additional, message, onConfirm, 
     };
 
     const handleRedirect = () => {
-        router.push('/cart');
+
+      router.push('/cart');
+        
     };
 
     const idPattern = /\/cardapio\/product\/([^\/]+)/;

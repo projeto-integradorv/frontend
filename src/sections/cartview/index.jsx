@@ -6,7 +6,6 @@ import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd";
 import { useRouter } from "next/navigation";
-
 import { useSelector } from "react-redux";
 
 function CartView() {
