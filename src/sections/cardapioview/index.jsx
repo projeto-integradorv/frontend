@@ -8,9 +8,6 @@ import BasicLayout from "@/layouts/basic/basiclayout";
 
 export default function CardapioView() {
 
-    // /
-    
-
     return (
         <>
 
