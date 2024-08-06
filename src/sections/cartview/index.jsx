@@ -13,6 +13,8 @@ function CartView() {
         return state
     });
 
+    console.log(carrinho);
+
     const totalValue = carrinho
         .map(item => {
             const preco = parseFloat(item.preco);
@@ -62,7 +64,7 @@ function CartView() {
                             key={item.id}
                             nome={item.nome}
                             descricao={item.descricao}
-                            preco={item.preco.toFixed(2)}
+                            preco={item.preco}
                             imagem={item.imagem}
                             id={item.id}
                             quant={item.quanto}

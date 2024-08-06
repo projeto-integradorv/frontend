@@ -225,6 +225,7 @@ export default function FormAdd({ productId }) {
                 </Container>
             )}
             <BoxConfirmation
+                productId={productId}
                 Additional={selectedAdicionais}
                 productPrice={totalPrice || foods.price || 0}
                 productImage={foods.image || Hamburguer}
