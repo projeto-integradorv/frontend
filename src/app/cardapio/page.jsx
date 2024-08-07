@@ -3,9 +3,5 @@ import CardapioView from "../../sections/cardapioview";
 
 
 export default function Cardapio() {
-    return (
-        <>
-            <CardapioView />
-        </>
-    );
+    return <CardapioView />
 }

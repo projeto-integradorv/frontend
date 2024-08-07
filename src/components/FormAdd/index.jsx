@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { getProductById } from '@/api/product';
 import Hamburguer from '@/assets/x-bacon.jpeg';
+import PropTypes from 'prop-types';
 
 export default function FormAdd({ productId }) {
     const [selectedAdicionais, setSelectedAdicionais] = useState({});
@@ -52,10 +53,6 @@ export default function FormAdd({ productId }) {
         setQuantidade(quantity);
     };
 
-    const handleCarneChange = (event) => {
-        setSelectedCarne(event.target.value);
-    };
-
     const calculateTotalPrice = () => {
         let total = parseFloat(foods.price) || 0;
 
@@ -80,13 +77,7 @@ export default function FormAdd({ productId }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(selectedAdicionais);
-        console.log(selectedCarne);
     };
-
-    console.log(totalPrice);
-    console.log(selectedAdicionais);
-
 
     return (
         <>
@@ -237,3 +228,7 @@ export default function FormAdd({ productId }) {
         </>
     );
 }
+
+FormAdd.propTypes = {
+    productId: PropTypes.string,
+};

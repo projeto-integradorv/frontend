@@ -1,10 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import img from '../../assets/x-bacon.jpeg';
 
 
-const initialState = [
- 
-];
+const initialState = [];
 
 const carrinhoSlice = createSlice({
   name: 'carrinho',

@@ -9,10 +9,6 @@ export default function Product() {
 
     const id = url.split('/').pop(); 
 
-    return (
-        <>
-            <ProductView  Id={id} /> {/* Passe o valor do parâmetro 'id' para ProductView */}
-        </>
-    );
+    return <ProductView  Id={id} />;
 }
 

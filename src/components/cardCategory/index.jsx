@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 
 export default function CardCategory({ icon, nameCategory, }) {
     return (
@@ -10,8 +11,14 @@ export default function CardCategory({ icon, nameCategory, }) {
                 width={60}
                 height={60}
                 sx={{ borderRadius: '50%', backgroundColor: '#665858' }}
+                alt="icon"
             />
             <p style={{ color: '#665858' }}>{nameCategory}</p>
         </Button>
     );
 }
+
+CardCategory.propTypes = {
+    icon: PropTypes.object,
+    nameCategory: PropTypes.string,
+};

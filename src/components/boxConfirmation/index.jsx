@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
-import { Box, Button, Container, FormControl, Grid, Typography } from '@mui/material';
+import { Box, Button, FormControl, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { usePathname, useRouter } from "next/navigation";
@@ -34,7 +34,6 @@ export default function BoxConfirmation({
   const handleRedirect = () => {
     router.push('/cart');
   };
-  console.log("freifnr" , productName)
 
 
   const handleAddToCart = () => {
@@ -42,18 +41,18 @@ export default function BoxConfirmation({
       dispatch(mudarCarrinho(
         {
           id: productId,
-        nome: productName,
-        descricao: productDescription,
-        preco: productPrice,
-        quantidade: quantity,
-      }
+          nome: productName,
+          descricao: productDescription,
+          preco: productPrice,
+          quantidade: quantity,
+        }
 
       ));
     }
   };
 
   return (
-    <Box 
+    <Box
       disableGutters
       sx={{
         position: 'fixed',
@@ -81,10 +80,10 @@ export default function BoxConfirmation({
                 <Button
                   onClick={() => handleQuantidadeChange(-1)}
                   disabled={count <= 1}
-                  sx={{ 
-                    minWidth: '40px', 
-                    fontSize: '18px', 
-                    color: '#ff9800', 
+                  sx={{
+                    minWidth: '40px',
+                    fontSize: '18px',
+                    color: '#ff9800',
                     '&:disabled': { color: '#bdbdbd' }
                   }}
                 >
@@ -97,10 +96,10 @@ export default function BoxConfirmation({
                   value={count}
                   readOnly
                   style={{
-                    fontSize: '18px', 
-                    width: '60px', 
-                    textAlign: 'center', 
-                    border: '1px solid #ff9800', 
+                    fontSize: '18px',
+                    width: '60px',
+                    textAlign: 'center',
+                    border: '1px solid #ff9800',
                     borderRadius: '4px',
                     margin: '0 8px',
                     padding: '4px',
@@ -111,9 +110,9 @@ export default function BoxConfirmation({
               <FormControl>
                 <Button
                   onClick={() => handleQuantidadeChange(1)}
-                  sx={{ 
-                    minWidth: '40px', 
-                    fontSize: '18px', 
+                  sx={{
+                    minWidth: '40px',
+                    fontSize: '18px',
                     color: '#ff9800'
                   }}
                 >
@@ -144,7 +143,7 @@ export default function BoxConfirmation({
                 }}
                 variant="contained"
                 onClick={() => {
-                //   handleAddToCart();
+                  //   handleAddToCart();
                   handleRedirect(); // Redireciona para o carrinho
                 }}
               >

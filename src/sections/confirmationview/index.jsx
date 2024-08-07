@@ -14,10 +14,13 @@ export default function VerifideView() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowConfirmation(false);
-        }, 10000); // 3000ms = 3 segundos
+        }, 10000);
 
-        return () => clearTimeout(timer) , router.push('/pedidos'); // Limpa o temporizador se o componente desmontar
-    }, []);
+        return () => {
+            clearTimeout(timer);
+            router.push('/pedidos');
+        };
+    }, [router]);
 
     return (
         showConfirmation && (
@@ -32,16 +35,17 @@ export default function VerifideView() {
                 >
                     <Grid container direction="column" alignItems="center">
                         <Grid item>
-                            <Image src={imgConfirmation} alt="imagem de confirmação"/>
+                            <Image src={imgConfirmation} alt="imagem de confirmação" />
                         </Grid>
                         <Grid item >
-                            <Typography variant="h5" style={{ color: 'white',textAlign: 'center', marginTop: '20px'
+                            <Typography variant="h5" style={{
+                                color: 'white', textAlign: 'center', marginTop: '20px'
                             }}>
                                 Ação Confirmada
                             </Typography>
 
-                            <Typography variant="body1" style={{ color: 'white', textAlign:'center' }}>
-                            O seu pedido foi enviado para a cozinha, agora aguarde alguns minutos, por gentileza
+                            <Typography variant="body1" style={{ color: 'white', textAlign: 'center' }}>
+                                O seu pedido foi enviado para a cozinha, agora aguarde alguns minutos, por gentileza
                             </Typography>
                         </Grid>
                     </Grid>

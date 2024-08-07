@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { Provider } from "react-redux";
 import store from '@/store';
-
+import PropTypes from 'prop-types';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,11 +25,13 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <Provider store={store}>
-          {
-            children
-          }
+          { children }
         </Provider>
       </body>
     </html>
   );
 }
+
+RootLayout.propTypes = {
+  children: PropTypes.node,
+};

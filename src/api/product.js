@@ -2,7 +2,12 @@
 
 import axiosInstance from '@/utils/axios';
 
-const getProducts = () => axiosInstance.get('/product');
+const getProducts = async () => {
+    const response = await axiosInstance.get('/product');
+    return response.data;
+}
+
+
 const getProductById = (id) => axiosInstance.get(`/product/${id}`);
 const postProduct = (data) => axiosInstance.post('/product', data);
 const putProduct = (id, data) => axiosInstance.put(`/product/${id}`, data);

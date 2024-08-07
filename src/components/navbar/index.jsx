@@ -42,7 +42,7 @@ export default function Navbar() {
                             sx={{ color: 'white', display: 'flex', gap: '5px' }}
                             onClick={handleVoltarClick}
                         >
-                            <Image src={Voltar} width={8} />
+                            <Image src={Voltar} width={8} alt='voltar'/>
                             Voltar
                         </Button>
                     )}
@@ -55,11 +55,11 @@ export default function Navbar() {
                 >
                     <Button
                         sx={{ color: 'white', display: 'flex', gap: '5px' }} onClick={handlecardapioClick}>
-                        <Image src={Rectangle} width={15} />
+                        <Image src={Rectangle} width={15} alt='cardapio' />
                         Cardápio
                     </Button>
                     <Button onClick={handlePedidosClick}  sx={{ color: 'white', display: 'flex', gap: '5px' }}>
-                        <Image src={shopping} width={13} />
+                        <Image src={shopping} width={13} alt='pedido' />
                         Pedidos
                     </Button>
                 </Box>
