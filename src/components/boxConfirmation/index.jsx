@@ -39,7 +39,15 @@ export default function BoxConfirmation({
 
   const handleAddToCart = () => {
     if (productId) {
-      dispatch(mudarCarrinho(productId   
+      dispatch(mudarCarrinho(
+        {
+          id: productId,
+        nome: productName,
+        descricao: productDescription,
+        preco: productPrice,
+        quantidade: quantity,
+      }
+
       ));
     }
   };
