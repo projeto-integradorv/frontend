@@ -8,6 +8,8 @@ import Rectangle from '../../assets/Catalog.svg';
 import shopping from '../../assets/shopping-bag.png';
 import Voltar from '../../assets/voltar.png';
 import { usePathname, useRouter } from 'next/navigation';
+import ImgLogin from '../../assets/login.png';
+import ImgCadastro from '../../assets/cadastro.png';
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -25,6 +27,14 @@ export default function Navbar() {
     const handleVoltarClick = () => {
         window.history.back();
     };
+
+    const handleLoginClick = () => {
+        router.push('/login');
+    }
+
+    const handleCadastroClick = () => {
+        router.push('/cadastro');
+    }
 
     return (
         <Container disableGutters={true} maxWidth='' sx={{ backgroundColor: '#FF9800',width:'100%' }}>
@@ -62,6 +72,17 @@ export default function Navbar() {
                         <Image src={shopping} width={13} alt='pedido' />
                         Pedidos
                     </Button>
+
+                    <Button onClick={handleLoginClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                        <Image src={ImgLogin} width={13} alt='pedido' />
+                        Login
+                    </Button>
+
+                    <Button onClick={handleCadastroClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                        <Image src={ImgCadastro} width={13} alt='pedido' />
+                        Cadastro
+                    </Button>
+
                 </Box>
             </Container>
         </Container>
