@@ -4,22 +4,19 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from "react";
 import CardFood from "@/components/cardFodd";
 import Hamburguer from '@/assets/x-bacon.jpeg';
-import { useDispatch, useSelector } from "react-redux";
-import { adicionarProduto } from "@/store/reducers/products";
-import { getProducts } from "@/api/product";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks"
+import { carregarProdutos } from "@/lib/features/produtos/produtoSlice"
 
 export default function CardapioContainer() {
     const pathname = usePathname();
     const isHomePage = pathname === '/';
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        getProducts().then((products) => {
-            dispatch(adicionarProduto(products));
-        });
+        dispatch(carregarProdutos())
     }, [dispatch]);
 
-    const foods = useSelector((state) => state.produtos);
+    const foods = useAppSelector((state) => state.produtos);
 
     return (
         <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: '1%' }} disableGutters={true}>
