@@ -23,7 +23,7 @@ export default function Navbar() {
 
     const handlePedidosClick = () => {
         router.push('/pedidos');
-        setDrawerOpen(false); 
+        setDrawerOpen(false);
     };
 
     const handlecardapioClick = () => {
@@ -37,12 +37,12 @@ export default function Navbar() {
 
     const handleLoginClick = () => {
         router.push('/login');
-        setDrawerOpen(false); 
+        setDrawerOpen(false);
     };
 
     const handleCadastroClick = () => {
         router.push('/cadastro');
-        setDrawerOpen(false); 
+        setDrawerOpen(false);
     };
 
     return (
@@ -98,21 +98,27 @@ export default function Navbar() {
                         </Button>
                     </Box>
 
-                    <Drawer anchor='right' open={drawerOpen} onClose={handleDrawerToggle}>
-                        <List sx={{ backgroundColor: '#FF9800', color:'white' }}>
-                            <ListItem sx={{gap:"5px"}}  ListItemButton onClick={handlecardapioClick}>
+                    <Drawer PaperProps={{
+                        sx: {
+                            backgroundColor: '#FF9800', 
+                            color: 'white', 
+                            width: 200, 
+                        }
+                    }} anchor = 'right' open={drawerOpen} onClose={handleDrawerToggle}>
+                        <List sx={{ backgroundColor: '#FF9800', color: 'white' }}>
+                            <ListItem sx={{ gap: '5px'}} ListItemButton onClick={handlecardapioClick}>
                                 <Image src={Rectangle} width={15} alt='cardapio' />
-                                <ListItemText primary='Cardápio' /> 
+                                <ListItemText primary='Cardápio' />
                             </ListItem>
-                            <ListItem sx={{gap:"5px"}} ListItemButton onClick={handlePedidosClick}>
+                            <ListItem sx={{ gap: '5px' }} ListItemButton onClick={handlePedidosClick}>
                                 <Image src={shopping} width={13} alt='pedido' />
                                 <ListItemText primary='Pedidos' />
                             </ListItem>
-                            <ListItem sx={{gap:"5px"}} ListItemButton onClick={handleLoginClick}>
+                            <ListItem sx={{ gap: '5px' }} ListItemButton onClick={handleLoginClick}>
                                 <Image src={ImgLogin} width={13} alt='pedido' />
                                 <ListItemText primary='Login' />
                             </ListItem>
-                            <ListItem  ListItemButton onClick={handleCadastroClick}>
+                            <ListItem ListItemButton sx={{ gap: '5px' }} onClick={handleCadastroClick}>
                                 <Image src={ImgCadastro} width={13} alt='pedido' />
                                 <ListItemText primary='Cadastro' />
                             </ListItem>
