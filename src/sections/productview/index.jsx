@@ -4,21 +4,21 @@ import CardImageProduct from "@/components/cardImageProduct";
 import BasicLayout from "@/layouts/basic/basiclayout";
 import { Box, CircularProgress, Container } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks"
+import { carregarProdutos } from "@/lib/features/produtos/produtoSlice"
 
 export default function ProductView({ Id }) {
   const [loading, setLoading] = useState(true);
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        await getProductById(Id);
-        setLoading(false);
-      } catch (error) {
-        console.error("Erro ao obter o produto por ID:", error);
-      }
-    };
-    fetchProduct();
-  }, [Id]);
+    dispatch(carregarProdutos())
+    setLoading(false)
+  }
+    , [dispatch]);
+
+    
 
   return (
     <>

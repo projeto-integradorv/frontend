@@ -1,25 +1,32 @@
-import { getProductById } from '@/api/product';
-import ImageProduct from "@/assets/x-bacon.jpeg";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { carregarProdutos } from '@/lib/features/produtos/produtoSlice';
 import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import ImageProduct from "@/assets/x-bacon.jpeg";
 
 export default function CardImageProduct({ Id }) {
-  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+
+  const product = useAppSelector((state) => {
+    console.log("Estado completo:", state.produtos); 
+    return state.produtos.find((produto) => produto.id === Id);
+  });
+
+  console.log("Produto selecionado:", product); 
+  useEffect(() => {
+    if (Id) {
+      console.log("Despachando ação carregarProduto com Id:", Id); 
+      dispatch(carregarProdutos({ produto: Id }));
+    }
+  }, [dispatch, Id]);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await getProductById(Id);
-        setProduct(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Erro ao obter o produto por ID:", error);
-      }
-    };
-    fetchProduct();
-  }, [Id]);
+    if (product) {
+      setLoading(false);
+    }
+  }, [product]);
 
   if (loading) {
     return (
@@ -27,6 +34,10 @@ export default function CardImageProduct({ Id }) {
         <CircularProgress sx={{ color: '#FF9800' }} />
       </Box>
     );
+  }
+
+  if (!product) {
+    return <Typography>Produto não encontrado</Typography>;
   }
 
   return (
@@ -55,14 +66,12 @@ export default function CardImageProduct({ Id }) {
           sx={{
             borderRadius: '10px',
             overflow: 'hidden',
-            
           }}
         >
           <Image
             src={product.image || ImageProduct}
             alt="Imagem do produto"
-            objectFit="cover"
-            objectPosition="center center"
+            layout="responsive"
             height={300}
             width={350}
             style={{ borderRadius: '10px' }}
@@ -72,13 +81,13 @@ export default function CardImageProduct({ Id }) {
 
       <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
         <Typography variant="h4" component="h1" sx={{ fontWeight: 500, color: '#fff', mb: 1 }}>
-          {product.name}
+          {product.name || 'Nome do produto'}
         </Typography>
         <Typography variant="h6" component="h2" sx={{ color: '#fff', mb: 2 }}>
-          A partir de R$ {product.price}
+          A partir de R$ {product.price || '0.00'}
         </Typography>
         <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.5 }}>
-          {product.description}
+          {product.description || 'Descrição do produto'}
         </Typography>
       </Grid>
     </Grid>

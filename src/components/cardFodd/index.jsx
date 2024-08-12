@@ -80,7 +80,6 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                             }}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                // Função para deletar o item
                             }}
                         >
                             <Image
@@ -132,18 +131,19 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                     />
                 </Grid>
             ) : (
-                <Link href={rota} passHref style={{textDecoration:'none', display:'flex', justifyContent:'center'}}>
-                    <Box component="div" sx={{ textDecoration: 'none', width: '100%', display: 'block', margin: '1%' ,'@media (max-width: 600px)': {
-                                width: '70%',
-                            } }}>
-                        <Card sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px' }}>
+                <Link href={rota} passHref style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center' }}>
+                    <Box component="div" sx={{ textDecoration: 'none', width: { xs: '100%', md: '90%' }, display: 'block', margin: '1%' }}>
+                        <Card sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px', minHeight: '300px' }}>
                             <Image
                                 src={imagem}
                                 alt={nome}
-                                width={290}
-                                height={250}
-                                style={{ borderRadius: '20px 20px 0 0' }}
+                                layout="responsive"
+                                width={100}
+                                height={100}
+
                             />
+
+
                             <CardContent sx={{ padding: 2 }}>
                                 <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
                                     {nomeLimitado}
