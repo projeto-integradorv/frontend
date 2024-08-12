@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { carregarProdutos, adicionarTodasProdutos } from './produtoSlice';
-import { getProducts , getProductById} from '../../../api/product'
+import { carregarProdutos, adicionarTodasProdutos, carregarProduto, adicionarProduto, mudarLoading } from './produtoSlice';
+import { getProducts, getProductById } from '../../../api/product'
 
 export const produtosListener = createListenerMiddleware();
 
@@ -12,22 +12,17 @@ produtosListener.startListening({
             dispatch(adicionarTodasProdutos(produtos));
         }
         );
-        unsubscribe(() => {
-            tarefa.abort();
-        });
     },
 });
 
 produtosListener.startListening({
-    actionCreator: getProductById,
+    actionCreator: carregarProduto,
     effect: async (action, { dispatch, fork, unsubscribe }) => {
         const tarefa = fork(async api => {
             const produto = await getProductById(action.payload);
-            dispatch(adicionarTodasProdutos(produto));
-        }
-        );
-        unsubscribe(() => {
-            tarefa.abort();
+            dispatch(mudarLoading(true));
+            dispatch(adicionarProduto(produto.data));
+            dispatch(mudarLoading(false));
         });
     },
 });

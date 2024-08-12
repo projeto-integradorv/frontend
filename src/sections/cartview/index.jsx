@@ -11,7 +11,6 @@ import { useAppSelector  } from "@/lib/hooks";
 function CartView() {
     const carrinho = useAppSelector(state => state.carrinho);
     console.log(carrinho);
-
     const totalValue = carrinho
         .map(item => {
             const preco = parseFloat(item.preco);

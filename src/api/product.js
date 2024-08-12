@@ -8,7 +8,10 @@ const getProducts = async () => {
 }
 
 
-const getProductById = (id) => axiosInstance.get(`/product/${id}`);
+const getProductById = (id) => {
+    const response = axiosInstance.get(`/product/${id}`);
+    return response;
+};
 const postProduct = (data) => axiosInstance.post('/product', data);
 const putProduct = (id, data) => axiosInstance.put(`/product/${id}`, data);
 const putProduct2 = (id, data) => axiosInstance.patch(`/product/${id}`, data);

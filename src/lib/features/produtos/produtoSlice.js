@@ -1,7 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 
 import { createAppSlice } from "../../createAppSlice";
-const initialState = [];
+const initialState = {
+    loading: false,
+    produtos: [],
+    produto: {},
+};
 
 export const carregarProdutos = createAction('produtos/carregarProdutos');
 export const carregarProduto = createAction('produtos/carregarProduto');
@@ -11,14 +15,16 @@ const produtosSlice = createAppSlice({
     initialState,
     reducers: {
         adicionarTodasProdutos: (state, { payload }) => {
-            return payload;
+            state.produtos = payload;
         },
         adicionarProduto: (state, { payload }) => {
-            state.push(payload);
+            state.produto = payload;
         },
-
+        mudarLoading: (state, { payload }) => {
+            state.loading = payload;
+        },
     },
 });
-export const { adicionarTodasProdutos } = produtosSlice.actions;
+export const { adicionarTodasProdutos, adicionarProduto, mudarLoading } = produtosSlice.actions;
 
 export default produtosSlice.reducer;

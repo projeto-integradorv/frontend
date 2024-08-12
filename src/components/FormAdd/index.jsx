@@ -1,48 +1,27 @@
 import { Box, Button, CircularProgress, Container, FormControl, FormGroup, Grid, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import BoxConfirmation from '../boxConfirmation';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { getProductById } from '@/api/product';
 import Hamburguer from '@/assets/x-bacon.jpeg';
 import PropTypes from 'prop-types';
 
-export default function FormAdd({ productId }) {
+export default function FormAdd({ produto }) {
     const [selectedAdicionais, setSelectedAdicionais] = useState({});
     const [selectedCarne, setSelectedCarne] = useState('');
     const [adicionais, setAdicionais] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [foods, setFoods] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [quantidade, setQuantidade] = useState(1);
 
-
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await getProductById(productId);
-                setFoods(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Erro ao obter o produto por ID:", error);
-            }
-        };
-        fetchProduct();
-    }, [productId]);
+        if (produto && produto.additionals) {
+            setFoods(produto);
+            setAdicionais(produto.additionals);
+        }
+    }, [produto]);
 
-    useEffect(() => {
-        const fetchAdicionais = async () => {
-            try {
-                const response = await getProductById(productId);
-                setAdicionais(response.data.additionals);
-                setLoading(false);
-            } catch (error) {
-                console.error("Erro ao obter os adicionais do produto:", error);
-            }
-        };
-
-        fetchAdicionais();
-    }, [productId]);
 
     const handleQuantidadeChange = (name, quantity) => {
         setSelectedAdicionais(prevState => ({
@@ -88,7 +67,6 @@ export default function FormAdd({ productId }) {
             ) : (
                 <Container
                     sx={{
-                        backgroundColor: 'white',
                         width: '50%',
                         height: 'fit-content',
                         display: 'flex',
@@ -216,7 +194,7 @@ export default function FormAdd({ productId }) {
                 </Container>
             )}
             <BoxConfirmation
-                productId={productId}
+                productId={produto}
                 Additional={selectedAdicionais}
                 productPrice={totalPrice || foods.price || 0}
                 productImage={foods.image || Hamburguer}

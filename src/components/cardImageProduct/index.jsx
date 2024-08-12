@@ -1,32 +1,12 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { carregarProdutos } from '@/lib/features/produtos/produtoSlice';
+import { useState } from "react";
 import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import ImageProduct from "@/assets/x-bacon.jpeg";
 
-export default function CardImageProduct({ Id }) {
-  const [loading, setLoading] = useState(true);
-  const dispatch = useAppDispatch();
+export default function CardImageProduct({ produto }) {
+  const [loading, setLoading] = useState(false);
 
-  const product = useAppSelector((state) => {
-    console.log("Estado completo:", state.produtos); 
-    return state.produtos.find((produto) => produto.id === Id);
-  });
-
-  console.log("Produto selecionado:", product); 
-  useEffect(() => {
-    if (Id) {
-      console.log("Despachando ação carregarProduto com Id:", Id); 
-      dispatch(carregarProdutos({ produto: Id }));
-    }
-  }, [dispatch, Id]);
-
-  useEffect(() => {
-    if (product) {
-      setLoading(false);
-    }
-  }, [product]);
+  console.log(produto, 'produto - cardImageProduct')
 
   if (loading) {
     return (
@@ -36,7 +16,7 @@ export default function CardImageProduct({ Id }) {
     );
   }
 
-  if (!product) {
+  if (!produto) {
     return <Typography>Produto não encontrado</Typography>;
   }
 
@@ -69,9 +49,8 @@ export default function CardImageProduct({ Id }) {
           }}
         >
           <Image
-            src={product.image || ImageProduct}
+            src={produto.image || ImageProduct}
             alt="Imagem do produto"
-            layout="responsive"
             height={300}
             width={350}
             style={{ borderRadius: '10px' }}
@@ -81,13 +60,13 @@ export default function CardImageProduct({ Id }) {
 
       <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
         <Typography variant="h4" component="h1" sx={{ fontWeight: 500, color: '#fff', mb: 1 }}>
-          {product.name || 'Nome do produto'}
+          {produto.name || 'Nome do produto'}
         </Typography>
         <Typography variant="h6" component="h2" sx={{ color: '#fff', mb: 2 }}>
-          A partir de R$ {product.price || '0.00'}
+          A partir de R$ {produto.price || '0.00'}
         </Typography>
         <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.5 }}>
-          {product.description || 'Descrição do produto'}
+          {produto.description || 'Descrição do produto'}
         </Typography>
       </Grid>
     </Grid>

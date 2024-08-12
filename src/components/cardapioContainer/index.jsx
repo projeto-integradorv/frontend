@@ -16,7 +16,7 @@ export default function CardapioContainer() {
         dispatch(carregarProdutos())
     }, [dispatch]);
 
-    const foods = useAppSelector((state) => state.produtos);
+    const foods = useAppSelector((state) => state.produtos.produtos);
 
     return (
         <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: '1%' }} disableGutters={true}>
