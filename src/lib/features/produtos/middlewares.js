@@ -1,44 +1,34 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { carregarProdutos, adicionarTodasProdutos, carregarProduto } from './produtoSlice';
-import { getProducts, getProductById } from '../../../api/product';
+import { carregarProdutos, adicionarTodasProdutos } from './produtoSlice';
+import { getProducts , getProductById} from '../../../api/product'
 
 export const produtosListener = createListenerMiddleware();
 
-export const produtoCarregado = (produto) => ({
-    type: 'produtos/adicionarProduto',
-    payload: produto,
-});
-
 produtosListener.startListening({
     actionCreator: carregarProdutos,
-    effect: async (action, { dispatch, fork }) => {
-        const tarefa = fork(async (api) => {
-            try {
-                const produtos = await getProducts();
-                dispatch(adicionarTodasProdutos(produtos));
-            } catch (error) {
-                console.error('Failed to load products:', error);
-            }
+    effect: async (action, { dispatch, fork, unsubscribe }) => {
+        const tarefa = fork(async api => {
+            const produtos = await getProducts();
+            dispatch(adicionarTodasProdutos(produtos));
+        }
+        );
+        unsubscribe(() => {
+            tarefa.abort();
         });
-
-        tarefa.cancel();
     },
 });
 
 produtosListener.startListening({
-    actionCreator: carregarProduto,
-    effect: async (action, { dispatch, fork }) => {
-        const tarefa = fork(async (api) => {
-            try {
-                console.log('Loading product:', action.payload);
-                const produto = await getProductById(action.payload);
-                dispatch(produtoCarregado(produto));
-            } catch (error) {
-                console.error('Failed to load product:', error);
-            }
+    actionCreator: getProductById,
+    effect: async (action, { dispatch, fork, unsubscribe }) => {
+        const tarefa = fork(async api => {
+            const produto = await getProductById(action.payload);
+            dispatch(adicionarTodasProdutos(produto));
+        }
+        );
+        unsubscribe(() => {
+            tarefa.abort();
         });
-
-        tarefa.cancel();
     },
 });
 

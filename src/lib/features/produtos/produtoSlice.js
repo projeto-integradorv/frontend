@@ -1,11 +1,12 @@
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
+
+import { createAppSlice } from "../../createAppSlice";
+const initialState = [];
 
 export const carregarProdutos = createAction('produtos/carregarProdutos');
 export const carregarProduto = createAction('produtos/carregarProduto');
 
-const initialState = [];
-
-const produtosSlice = createSlice({
+const produtosSlice = createAppSlice({
     name: 'produtos',
     initialState,
     reducers: {
@@ -13,15 +14,11 @@ const produtosSlice = createSlice({
             return payload;
         },
         adicionarProduto: (state, { payload }) => {
-            const produtoExistente = state.find(produto => produto.id === payload.id);
-            if (!produtoExistente) {
-                state.push(payload);
-            }
+            state.push(payload);
         },
+
     },
 });
-
-// Exort actions
-export const { adicionarTodasProdutos, adicionarProduto } = produtosSlice.actions;
+export const { adicionarTodasProdutos } = produtosSlice.actions;
 
 export default produtosSlice.reducer;
