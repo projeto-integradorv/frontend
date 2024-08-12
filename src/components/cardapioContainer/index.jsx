@@ -6,6 +6,7 @@ import CardFood from "@/components/cardFodd";
 import Hamburguer from '@/assets/x-bacon.jpeg';
 import { useAppSelector, useAppDispatch } from "@/lib/hooks"
 import { carregarProdutos } from "@/lib/features/produtos/produtoSlice"
+import { Fanwood_Text } from "next/font/google";
 
 export default function CardapioContainer() {
     const pathname = usePathname();
@@ -45,6 +46,7 @@ export default function CardapioContainer() {
                     {foods.map((food) => (
                         <Grid item key={food.id} xs={12} sm={6} md={3}>
                             <CardFood
+                                produto = {food}
                                 nome={food.name}
                                 descricao={food.description}
                                 imagem={food.image ? food.image : Hamburguer}
