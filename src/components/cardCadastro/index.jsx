@@ -1,7 +1,6 @@
-'use client'; // Certifique-se de que este arquivo está no cliente
-
+'use client';
 import React from "react";
-import { Card, CardContent, TextField, Typography, Button } from '@mui/material';
+import { Card, CardContent, TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -9,54 +8,53 @@ const StyledCard = styled(Card)(({ theme }) => ({
   margin: 'auto',
   marginTop: theme.spacing(4),
   padding: theme.spacing(3),
-  backgroundColor: '#ffffff',
-  borderRadius: theme.shape.borderRadius, // Bordas arredondadas para suavidade
-  textAlign: 'center', // Centralizar o texto
-  boxShadow: 'none', // Sombra para profundidade
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius, 
+  textAlign: 'center',
+  boxShadow: 'none', 
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
   width: '100%',
-  backgroundColor: '#ff9800',
-  color: '#ffffff',
+  backgroundColor: theme.palette.warning.main,
+  color: theme.palette.common.white,
   '&:hover': {
-    backgroundColor: '#fda116',
+    backgroundColor: theme.palette.warning.dark,
   },
   padding: theme.spacing(1.5),
   marginTop: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
-  textTransform: 'none', // Evitar que o texto seja todo maiúsculo
-  fontWeight: 'bold',
+  textTransform: 'none',
+  fontWeight: theme.typography.fontWeightBold,
 }));
 
-const StyledTextField = styled(TextField)({
+const StyledTextField = styled(TextField)(({ theme }) => ({
   '& label': {
-    color: '#333333',
+    color: theme.palette.text.primary,
   },
   '& label.Mui-focused': {
-    color: '#ff9800',
+    color: theme.palette.warning.main,
   },
   '& .MuiInput-underline:after': {
-    borderBottomColor: '#ff9800',
+    borderBottomColor: theme.palette.warning.main,
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: '#cccccc',
+      borderColor: theme.palette.grey[400],
     },
     '&:hover fieldset': {
-      borderColor: '#ff9800',
+      borderColor: theme.palette.warning.main,
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#ff9800',
+      borderColor: theme.palette.warning.main,
     },
   },
-});
+}));
 
 const RegisterCard = () => {
   return (
     <StyledCard>
       <CardContent>
-        
         <StyledTextField
           fullWidth
           label="Nome"

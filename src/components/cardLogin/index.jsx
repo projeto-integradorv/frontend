@@ -1,66 +1,78 @@
-'use client'; // Indica que este arquivo é um componente de cliente
-
+'use client'; 
 import React, { useState } from "react";
-import { Button, Card, CardContent, TextField, Typography, Box, Link as MuiLink, Alert } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  TextField,
+  Typography,
+  Box,
+  Link as MuiLink,
+  Alert
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Link from 'next/link'; // Importa o componente Link do Next.js
+import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
-import { carregarLogin } from '@/lib/features/login/loginSlice'; // Importe a ação de login
+import { carregarLogin ,adicionarUsuario, selectUsuario  } from '@/lib/features/login/loginSlice';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
   margin: 'auto',
-  border: 'none',
   padding: theme.spacing(3),
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
+  boxShadow: 'none', 
   textAlign: 'center',
-  boxShadow: 'none',
+}));
+
+const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  padding: theme.spacing(3),
+  boxShadow: 'none', 
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
   width: '100%',
-  backgroundColor: '#ff9800',
-  color: '#ffffff',
+  backgroundColor: theme.palette.warning.main,
+  color: theme.palette.common.white,
   '&:hover': {
-    backgroundColor: '#fda116',
+    backgroundColor: theme.palette.warning.dark,
   },
   padding: theme.spacing(1.5),
   marginTop: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
   textTransform: 'none',
-  fontWeight: 'bold',
+  fontWeight: theme.typography.fontWeightBold,
 }));
 
-const StyledTextField = styled(TextField)({
+const StyledTextField = styled(TextField)(({ theme }) => ({
   '& label': {
-    color: '#333333',
+    color: theme.palette.text.primary,
   },
   '& label.Mui-focused': {
-    color: '#ff9800',
+    color: theme.palette.warning.main,
   },
   '& .MuiInput-underline:after': {
-    borderBottomColor: '#ff9800',
+    borderBottomColor: theme.palette.warning.main,
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: '#cccccc',
+      borderColor: theme.palette.grey[400],
     },
     '&:hover fieldset': {
-      borderColor: '#ff9800',
+      borderColor: theme.palette.warning.main,
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#ff9800',
+      borderColor: theme.palette.warning.main,
     },
   },
-});
+}));
 
 const StyledLink = styled(MuiLink)(({ theme }) => ({
-  color: '#ff9800',
+  color: theme.palette.warning.main,
   textDecoration: 'none',
   '&:hover': {
     textDecoration: 'underline',
-    color: '#fda116',
+    color: theme.palette.warning.dark,
   },
   marginTop: theme.spacing(1),
   display: 'block',
@@ -73,13 +85,17 @@ const LoginCard = () => {
   const [senha, setSenha] = useState('');
 
   const handleLogin = () => {
-    const credentials = { email, senha };
-    dispatch(carregarLogin(credentials));
+    if (email && senha) {
+      dispatch(adicionarUsuario({ email, senha }));
+
+      console.log('-----', state.login.sucess);
+      // Aqui você passa as credenciais de login
+    }
   };
 
   return (
     <StyledCard>
-      <CardContent>
+      <StyledCardContent>
         <StyledTextField
           fullWidth
           label="Email"
@@ -87,6 +103,7 @@ const LoginCard = () => {
           margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
         />
         <StyledTextField
           fullWidth
@@ -96,12 +113,16 @@ const LoginCard = () => {
           margin="normal"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
+          autoComplete="current-password"
         />
-        <StyledButton variant="contained" onClick={handleLogin} disabled={loading}>
+        <StyledButton
+          variant="contained"
+          onClick={handleLogin}
+          disabled={loading}
+        >
           {loading ? 'Entrando...' : 'Entrar'}
         </StyledButton>
 
-        {/* Exibir mensagem de sucesso ou erro */}
         {success && (
           <Alert severity="success" sx={{ mt: 2 }}>
             Login realizado com sucesso!
@@ -113,7 +134,7 @@ const LoginCard = () => {
           </Alert>
         )}
 
-        <Box sx={{ marginTop: 2, textAlign: 'center' }}>
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
           <StyledLink component={Link} href="/cadastro">
             Criar uma conta
           </StyledLink>
@@ -121,7 +142,7 @@ const LoginCard = () => {
             Esqueceu a senha?
           </StyledLink>
         </Box>
-      </CardContent>
+      </StyledCardContent>
     </StyledCard>
   );
 };

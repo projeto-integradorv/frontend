@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { carregarCadastro } from './registerThunks'; 
+
+
 
 
 const registerSlice = createSlice({
