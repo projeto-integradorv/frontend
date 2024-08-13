@@ -7,6 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ModalProduto from '../modalIsertUpdate'; // Importe o ModalProduto
 import iconDel from '@/assets/Group 33.png';
+import Img from '@/assets/x-bacon.jpeg'
+
 
 export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -120,9 +122,9 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 </Box>
                             </CardContent>
                         </Card>
-                    {/* Renderize o ModalProduto Condicionalmente */}
                     {pathname === '/admin' && (
                         <ModalProduto
+                            Image={Img}
                             produto={produto}
                             isOpen={isModalOpen}
                             onClose={handleCloseModal}

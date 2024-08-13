@@ -1,12 +1,11 @@
-'use client';
-
+// BoxConfirmation.js
 import React, { useState } from "react";
 import { Box, Button, FormControl, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useDispatch } from 'react-redux';
-import { mudarCarrinho } from '@/lib/features/carrinho/carrinhoSlice'; // Ajuste o caminho conforme necessário
+import { adicionarAoCarrinho } from '@/lib/features/carrinho/carrinhoSlice';
 
 export default function BoxConfirmation({
   title,
@@ -23,7 +22,6 @@ export default function BoxConfirmation({
   productId
 }) {
   const [count, setCount] = useState(1);
-  const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -38,11 +36,19 @@ export default function BoxConfirmation({
   const handleAddToCart = () => {
     if (productId) {
       const item = {
-        id: productId,
-        quantidade: count
+        product: {
+          id: productId,
+          name: productName,
+          description: productDescription,
+          image: productImage,
+          price: productPrice
+        },
+        quantity: count,
+        observation: "", // Adicione observações se necessário
+        additionals: [] // Adicione adicionais se necessário
       };
 
-      dispatch(mudarCarrinho(item));
+      dispatch(adicionarAoCarrinho(item));
       handleRedirect(); // Redireciona para o carrinho
     }
   };

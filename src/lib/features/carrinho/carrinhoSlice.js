@@ -1,35 +1,32 @@
-import { createAction } from '@reduxjs/toolkit';
+// carrinhoSlice.js
+import { createSlice } from '@reduxjs/toolkit';
 
-import { createAppSlice } from "../../createAppSlice";
-const initialState = [];
+const initialState = {
+  items: []
+};
 
-export const carregarCarrinho = createAction('carrinho/carregarCarrinho');
-
-const carrinhoSlice = createAppSlice({
-    name: 'carrinho',
-    initialState,
-    reducers: {
-        mudarCarrinho: (state, { payload }) => {
-            const temItem = state.some(item => item.id === payload);
-            if (!temItem) return [
-                ...state,
-                {
-                    id: payload,
-                    quantidade: 1
-                }
-            ];
-            return state.filter(item => item.id !== payload);
-        },
-        mudarQuantidade: (state, { payload }) => {
-            state = state.map(itemNoCarrinho => {
-                if (itemNoCarrinho.id === payload.id) itemNoCarrinho.quantidade += payload.quantidade;
-                return itemNoCarrinho;
-            })
-        },
-        resetarCarrinho: () => initialState,
-    }
+const carrinhoSlice = createSlice({
+  name: 'carrinho',
+  initialState,
+  reducers: {
+    adicionarAoCarrinho: (state, { payload }) => {
+      const index = state.items.findIndex(item => item.product.id === payload.product.id);
+      if (index !== -1) {
+        state.items[index].quantity = payload.quantity;
+      } else {
+        state.items.push(payload);
+      }
+    },
+    atualizarQuantidade: (state, { payload }) => {
+      const item = state.items.find(item => item.product.id === payload.product.id);
+      if (item) {
+        item.quantity = payload.quantity;
+      }
+    },
+    resetarCarrinho: () => initialState,
+  }
 });
 
-export const { mudarCarrinho, mudarQuantidade, resetarCarrinho } = carrinhoSlice.actions;
+export const { adicionarAoCarrinho, atualizarQuantidade, resetarCarrinho } = carrinhoSlice.actions;
 
 export default carrinhoSlice.reducer;

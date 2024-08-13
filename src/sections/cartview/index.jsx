@@ -1,4 +1,3 @@
-// src/pages/CartView.js
 'use client';
 import React from "react";
 import BasicLayout from "@/layouts/basic/basiclayout";
@@ -6,15 +5,17 @@ import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd";
 import { useRouter } from "next/navigation";
-import { useAppSelector  } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
 
 function CartView() {
-    const carrinho = useAppSelector(state => state.carrinho);
+    // Acessa a estrutura de carrinho corretamente
+    const carrinho = useAppSelector(state => state.carrinho.items || []);
     console.log(carrinho);
+
     const totalValue = carrinho
         .map(item => {
-            const preco = parseFloat(item.preco);
-            const quanto = parseInt(item.quanto, 10);
+            const preco = parseFloat(item.product.price);
+            const quanto = parseInt(item.quantity, 10);
             return isNaN(preco) || isNaN(quanto) ? 0 : preco * quanto;
         })
         .reduce((acc, value) => acc + value, 0)
@@ -25,6 +26,7 @@ function CartView() {
     const handleRedirect = () => {
         router.push('/');
     };
+
     return (
         <BasicLayout titulo="Carrinho/Comanda">
             <Container
@@ -55,15 +57,15 @@ function CartView() {
                         paddingRight: 0,
                     }}
                 >
-                    {carrinho && carrinho.map(item => (
+                    {carrinho.map(item => (
                         <CardFood
-                            key={item.id}
-                            nome={item.nome}
-                            descricao={item.descricao}
-                            preco={item.preco}
-                            imagem={item.imagem}
-                            id={item.id}
-                            quant={item.quanto}
+                            key={item.product.id} // Supondo que item.product.id é o identificador único
+                            nome={item.product.name}
+                            descricao={item.product.description}
+                            preco={item.product.price}
+                            imagem={item.product.image}
+                            id={item.product.id}
+                            quant={item.quantity}
                         />
                     ))}
                     <Button

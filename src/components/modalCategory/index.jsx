@@ -1,30 +1,21 @@
 import React, { useState } from "react";
-import { Button, Modal, Box, Typography, TextField, FormControl, Grid, Select, MenuItem, InputLabel, Chip } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
-import RemoveIcon from '@mui/icons-material/Remove';
 
-const categoriasMock = ['Eletrônicos', 'Roupas', 'Alimentos', 'Casa e Jardim', 'Beleza'];
-
-export default function ModalProduto({
+export default function ModalCategoria({
   isOpen,
   onClose,
-  produto,
+  categoria,
   handleSave
 }) {
-  const [nome, setNome] = useState(produto?.name || '');
-  const [descricao, setDescricao] = useState(produto?.description || '');
-  const [preco, setPreco] = useState(produto?.price || 0);
-  const [imagemPreview, setImagemPreview] = useState(produto?.image || '');
-  const [categoria, setCategoria] = useState(produto?.category.name || categoriasMock[0]);
-  const [adicionais, setAdicionais] = useState(produto?.adicionais || []);
-  const [novoAdicional, setNovoAdicional] = useState('');
+  const [nome, setNome] = useState(categoria?.name || '');
+  const [descricao, setDescricao] = useState(categoria?.description || '');
+  const [imagemPreview, setImagemPreview] = useState(categoria?.image || '');
+  const [imagem, setImagem] = useState(null);
 
   const handleNomeChange = (e) => setNome(e.target.value);
   const handleDescricaoChange = (e) => setDescricao(e.target.value);
-  const handlePrecoChange = (e) => setPreco(parseFloat(e.target.value));
-  const handleCategoriaChange = (e) => setCategoria(e.target.value);
-
 
   const handleImagemChange = (e) => {
     const file = e.target.files[0];
@@ -38,30 +29,14 @@ export default function ModalProduto({
     }
   };
 
-  const handleNovoAdicionalChange = (e) => setNovoAdicional(e.target.value);
-
-  const adicionarAdicional = () => {
-    if (novoAdicional) {
-      setAdicionais((prev) => [...prev, novoAdicional]);
-      setNovoAdicional('');
-    }
-  };
-
-  const removerAdicional = (adicionalParaRemover) => {
-    setAdicionais((prev) => prev.filter(adicional => adicional !== adicionalParaRemover));
-  };
-
   const handleSubmit = () => {
-    const produtoAtualizado = {
-      ...produto,
-      nome,
-      descricao,
-      preco,
-      imagem: imagemPreview,
-      categoria,
-      adicionais,
+    const categoriaAtualizada = {
+      ...categoria,
+      name: nome,
+      description: descricao,
+      image: imagemPreview
     };
-    handleSave(produtoAtualizado);
+    handleSave(categoriaAtualizada);
     onClose();
   };
 
@@ -128,22 +103,8 @@ export default function ModalProduto({
           }}
         >
           <Typography variant="h4" align='center' gutterBottom sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
-            {produto ? 'Atualizar Produto' : 'Novo Produto'}
+            {categoria ? 'Atualizar Categoria' : 'Nova Categoria'}
           </Typography>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <InputLabel>Categoria</InputLabel>
-            <Select
-              value={categoria}
-              onChange={handleCategoriaChange}
-              label="Categoria"
-            >
-              {categoriasMock.map((cat) => (
-                <MenuItem key={cat} value={cat}>
-                  {cat}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
             <Box 
               sx={{
@@ -189,7 +150,7 @@ export default function ModalProduto({
           </Box>
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
             <TextField
-              label="Nome do Produto"
+              label="Nome da Categoria"
               value={nome}
               onChange={handleNomeChange}
               variant="outlined"
@@ -206,45 +167,6 @@ export default function ModalProduto({
               multiline
               rows={3}
             />
-          </FormControl>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <TextField
-              label="Preço (R$)"
-              value={preco}
-              onChange={handlePrecoChange}
-              variant="outlined"
-              fullWidth
-              type="number"
-              inputProps={{ min: 0, step: 0.01 }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <TextField
-              label="Adicionar Adicional"
-              value={novoAdicional}
-              onChange={handleNovoAdicionalChange}
-              variant="outlined"
-              fullWidth
-              sx={{ marginBottom: '8px' }}
-            />
-            <Button
-              onClick={adicionarAdicional}
-              variant="contained"
-              color="primary"
-              sx={{ marginBottom: '16px' }}
-            >
-              Adicionar
-            </Button>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {adicionais.map((adicional) => (
-                <Chip
-                  key={adicional}
-                  label={adicional}
-                  onDelete={() => removerAdicional(adicional)}
-                  deleteIcon={<RemoveIcon />}
-                />
-              ))}
-            </Box>
           </FormControl>
         </Box>
         <Box
@@ -283,8 +205,7 @@ export default function ModalProduto({
             variant="contained"
             onClick={handleSubmit}
           >
-            <span>{produto ? 'Atualizar' : 'Adicionar'}</span>
-            <span>R$ {(preco * (produto?.quantidade || 1)).toFixed(2)}</span>
+            <span>{categoria ? 'Atualizar' : 'Adicionar'}</span>
           </Button>
         </Box>
       </Box>

@@ -1,9 +1,8 @@
+import styles from '@/app/page.module.css';
 import CardapioContainer from "@/components/cardapioContainer";
-import CategoriaCarrossel from "@/components/categoriaCarrocel";
+import Categorias from "@/components/categoria";
 import Search from "@/components/search";
 import BasicLayout from "@/layouts/basic/basiclayout";
-import React from "react";
-import styles from '@/app/page.module.css';
 
 
 export default function AdminView() {
@@ -13,7 +12,7 @@ export default function AdminView() {
                 <Search />
             </div>
             <main className={styles.main}>
-                <CategoriaCarrossel />
+                <Categorias />
                 <CardapioContainer />
             </main>
         </BasicLayout>
