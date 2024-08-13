@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from 'react-redux';
+import { mudarCarrinho } from '@/lib/features/carrinho/carrinhoSlice'; // Ajuste o caminho conforme necessário
 
 export default function BoxConfirmation({
   title,
@@ -27,26 +28,22 @@ export default function BoxConfirmation({
   const dispatch = useDispatch();
 
   const handleQuantidadeChange = (quantidade) => {
-    setCount((prevCount) => Math.max(1, prevCount + quantidade)); // Garante que a quantidade não seja menor que 1
+    setCount((prevCount) => Math.max(1, prevCount + quantidade));
   };
 
   const handleRedirect = () => {
     router.push('/cart');
   };
 
-
   const handleAddToCart = () => {
     if (productId) {
-      dispatch(mudarCarrinho(
-        {
-          id: productId,
-          nome: productName,
-          descricao: productDescription,
-          preco: productPrice,
-          quantidade: quantity,
-        }
+      const item = {
+        id: productId,
+        quantidade: count
+      };
 
-      ));
+      dispatch(mudarCarrinho(item));
+      handleRedirect(); // Redireciona para o carrinho
     }
   };
 
@@ -141,10 +138,7 @@ export default function BoxConfirmation({
                   }
                 }}
                 variant="contained"
-                onClick={() => {
-                  //   handleAddToCart();
-                  handleRedirect(); // Redireciona para o carrinho
-                }}
+                onClick={handleAddToCart}
               >
                 <span>Adicionar</span>
                 <span>R$ {(productPrice * count).toFixed(2)}</span>

@@ -1,19 +1,21 @@
 'use client'; // Indica que este arquivo é um componente de cliente
 
-import React from "react";
-import { Button, Card, CardContent, TextField, Typography, Box, Link as MuiLink } from '@mui/material';
+import React, { useState } from "react";
+import { Button, Card, CardContent, TextField, Typography, Box, Link as MuiLink, Alert } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link'; // Importa o componente Link do Next.js
+import { useDispatch, useSelector } from 'react-redux';
+import { carregarLogin } from '@/lib/features/login/loginSlice'; // Importe a ação de login
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
   margin: 'auto',
-  border:'none',
+  border: 'none',
   padding: theme.spacing(3),
   backgroundColor: '#ffffff',
-  borderRadius: theme.shape.borderRadius, // Bordas arredondadas para suavidade
-  textAlign: 'center', // Centralizar o texto
-  boxShadow: 'none', // Sombra para profundidade
+  borderRadius: theme.shape.borderRadius,
+  textAlign: 'center',
+  boxShadow: 'none',
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -26,7 +28,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1.5),
   marginTop: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
-  textTransform: 'none', // Evitar que o texto seja todo maiúsculo
+  textTransform: 'none',
   fontWeight: 'bold',
 }));
 
@@ -65,20 +67,26 @@ const StyledLink = styled(MuiLink)(({ theme }) => ({
 }));
 
 const LoginCard = () => {
+  const dispatch = useDispatch();
+  const { loading, success, error } = useSelector((state) => state.login);
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const handleLogin = () => {
+    const credentials = { email, senha };
+    dispatch(carregarLogin(credentials));
+  };
+
   return (
     <StyledCard>
       <CardContent>
-        {/* <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
-          Login
-        </Typography>
-        <Typography variant="body2" color="textSecondary" sx={{ marginBottom: 3 }}>
-          Acesse sua conta para continuar.
-        </Typography> */}
         <StyledTextField
           fullWidth
           label="Email"
           variant="outlined"
           margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <StyledTextField
           fullWidth
@@ -86,10 +94,25 @@ const LoginCard = () => {
           type="password"
           variant="outlined"
           margin="normal"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
         />
-        <StyledButton variant="contained">
-          Entrar
+        <StyledButton variant="contained" onClick={handleLogin} disabled={loading}>
+          {loading ? 'Entrando...' : 'Entrar'}
         </StyledButton>
+
+        {/* Exibir mensagem de sucesso ou erro */}
+        {success && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            Login realizado com sucesso!
+          </Alert>
+        )}
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            Erro no login: {error}
+          </Alert>
+        )}
+
         <Box sx={{ marginTop: 2, textAlign: 'center' }}>
           <StyledLink component={Link} href="/cadastro">
             Criar uma conta
