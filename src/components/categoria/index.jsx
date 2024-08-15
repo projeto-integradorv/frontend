@@ -36,7 +36,7 @@ export default function Categorias() {
                 justifyContent: 'flex-start', 
                 alignItems:'center' 
             }} 
-            disableGutters
+            disableGutters={true} 
         >
             {pathname === '/admin' && (
                 <Box sx={{ 

@@ -55,7 +55,7 @@ export default function BoxConfirmation({
 
   return (
     <Box
-      disableGutters
+      disableGutters={true} 
       sx={{
         position: 'fixed',
         bottom: 0,

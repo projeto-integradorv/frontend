@@ -19,13 +19,14 @@ const carrinhoSlice = createSlice({
     },
     atualizarQuantidade: (state, { payload }) => {
       const item = state.items[payload.product.id];
-      console.log('------',item);
+      console.log('------ carrinho',item);
       if (item) {
+
         item.quantity = payload.quantity;
       }
     },
     atualizarObservacao: (state, { payload }) => {
-      const item = state.items.find(item => item.product.id === payload.product.id);
+      const item = state.items[payload.product.id];
       if (item) {
         item.observation = payload.observation;
       }

@@ -9,12 +9,15 @@ const axiosInstance = axios.create(
     { 
         baseURL: HOST_API,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json',   
             'Authorization': `Token 98c01c08bf0cc42f514007a8294a9306c1cdff2e`
-            
         }
     }
 );
+
+if (localStorage.getItem('token')) {
+    axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+}
 
 axiosInstance.interceptors.response.use(
   (res) => res,

@@ -101,7 +101,7 @@ export default function PedidosView() {
   return (
     <>
       {pathname === '/admin' ? (
-        <Container maxWidth="" disableGutters={true}>
+        <Container maxWidth="" disableGutters={true} >
           <Container maxWidth="lg" sx={{
             minHeight: '100vh', marginBottom: '20vh'
           }}>
@@ -120,7 +120,7 @@ export default function PedidosView() {
         </Container>
       ) : (
         <BasicLayout titulo="Pedidos">
-          <Container maxWidth="" disableGutters={true}>
+          <Container maxWidth="" disableGutters={true} >
             <Container maxWidth="lg" sx={{ marginTop: -10, marginBottom: '20vh' }}>
               {orderGrid}
               {orderButton}

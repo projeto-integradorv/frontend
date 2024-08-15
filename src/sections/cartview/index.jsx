@@ -34,7 +34,7 @@ function CartView() {
         <BasicLayout titulo="Carrinho/Comanda">
             <Container
                 maxWidth=''
-                disableGutters={true}
+                disableGutters={true} 
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -47,7 +47,7 @@ function CartView() {
             >
                 <Container
                     maxWidth='lg'
-                    disableGutters={true}
+                    disableGutters={true} 
                     sx={{
                         display: 'grid',
                         gridTemplateColumns: { xs: '1fr', sm: '0fr 0fr', lg: '1fr 1fr 1fr 1fr' },

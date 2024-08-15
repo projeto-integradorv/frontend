@@ -89,7 +89,7 @@ export default function CategoriaCarrossel() {
     const hasIcons = flattenIcons.length > 0;
 
     return (
-        <Container maxWidth='lg' disableGutters={true} sx={{ padding: "0", backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: "100%" }}>
+        <Container maxWidth='lg' disableGutters={true}  sx={{ padding: "0", backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: "100%" }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Typography variant="h5" sx={{ color: '#8A8080' }}>Categorias</Typography>
                 <Button href="/categoria" sx={{ color: '#8A8080', borderColor: '#8A8080' }}>

@@ -24,7 +24,7 @@ export default function VerifideView() {
 
     return (
         showConfirmation && (
-            <Container disableGutters={true} maxWidth={'xl'}>
+            <Container disableGutters={true}  maxWidth={'xl'}>
                 <Box
                     width={'100%'}
                     display="flex"

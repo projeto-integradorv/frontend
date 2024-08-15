@@ -33,7 +33,7 @@ export default function CardapioContainer() {
     };
 
     return (
-        <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: '1%' }} disableGutters={true}>
+        <Container maxWidth='lg' sx={{ backgroundColor: 'transparent', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginBottom: '1%' }} disableGutters={true} >
             {isHomePage || isAdmPage ? (
                 <>
                     {isAdmPage ? (

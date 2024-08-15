@@ -26,7 +26,7 @@ export default function Header({ titulo }) {
                     alignItems: 'center' 
                 }} 
                 maxWidth='lg' 
-                disableGutters={true}
+                disableGutters={true} 
             >
                 <Box
                     width={"100%"}

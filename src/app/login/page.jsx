@@ -3,11 +3,5 @@ import LoginView from "../../sections/loginView";
 
 
 export default function Login() {
-    return (
-        <>
-
-            <LoginView />
-
-        </>
-    )
+    return (<LoginView />)
 }
