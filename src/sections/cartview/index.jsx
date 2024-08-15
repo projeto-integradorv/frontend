@@ -60,7 +60,7 @@ function CartView() {
                         paddingRight: 0,
                     }}
                 >
-                    {carrinho.map(item => (
+                    {carrinho.map((item, index) => (
                         <CardFood
                             key={item.product.id} 
                             nome={item.product.name}
@@ -68,6 +68,7 @@ function CartView() {
                             preco={item.product.price}
                             imagem={item.product.image}
                             id={item.product.id}
+                            index={index}
                             quant={item.quantity}
                             obs={item.observation}
                         />

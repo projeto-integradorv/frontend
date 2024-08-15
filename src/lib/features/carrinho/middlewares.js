@@ -1,7 +1,7 @@
 // cartMiddleware.js
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { adicionarAoCarrinho, resetarCarrinho } from './carrinhoSlice';
-import { createCart, updateCart } from '@/utils/api'; // Ajuste o caminho conforme necessário
+import { createCart, updateCart } from '../../../api/cart'; // Ajuste o caminho conforme necessário
 
 export const cartListener = createListenerMiddleware();
 

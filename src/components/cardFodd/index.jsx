@@ -5,12 +5,12 @@ import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material"
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ModalProduto from '../modalIsertUpdate'; // Importe o ModalProduto
+import ModalProduto from '../modalIsertUpdate'; 
 import iconDel from '@/assets/Group 33.png';
 import Img from '@/assets/x-bacon.jpeg';
-import ModalPagamento from '../modalpagament'; // Importe o ModalPagamento
+import ModalPagamento from '../modalpagament'; 
 
-export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs }) {
+export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs , index}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
@@ -82,7 +82,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 minWidth: 0,
                             }}
                             onClick={(e) => {
-                                e.stopPropagation(); // Evitar que o clique no botão delete abra o modal
+                                e.stopPropagation(); 
                             }}
                         >
                             <Image
@@ -135,7 +135,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
 
                     {pathname === '/cart' && (
                         <ModalPagamento
-
+                            index = {index}
                             initialObs={obs}
                             isOpen={isModalOpen}
                             onClose={handleCloseModal}
