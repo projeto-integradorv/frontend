@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 // Custom styles for arrows
 const customArrowStyle = {
-    color: '#8A8080',
+    color: '#2f3837',
     fontSize: '24px',
     width: '40px',
     height: '40px',
@@ -23,17 +23,23 @@ const customArrowStyle = {
 };
 
 // Arrow components
-const PrevArrow = (props) => (
-    <div {...props} style={{ ...customArrowStyle, left: '10px' }}>
-        &#10094;
-    </div>
-);
+const PrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+        <div className={className} onClick={onClick} style={{ ...style, ...customArrowStyle, left: '10px' }}>
+            &#10094;
+        </div>
+    )
+};
 
-const NextArrow = (props) => (
-    <div {...props} style={{ ...customArrowStyle, right: '10px' }}>
-        &#10095;
-    </div>
-);
+const NextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+        <div onClick={onClick} className={className} style={{...style,  ...customArrowStyle, right: '10px' }}>
+            &#10095;
+        </div>
+    )
+};
 
 export default function CategoriaCarrossel() {
     const categories = [
@@ -91,7 +97,7 @@ export default function CategoriaCarrossel() {
                 </Button>
             </Box>
             {hasIcons ? (
-                <Slider {...settings} style={{ width: '100%', height: 'auto' , gap:1 }}>
+                <Slider {...settings} style={{ width: '100%', height: 'auto', gap: 1 }}>
                     {categories.flatMap((category, index) =>
                         category.items.map((icon, innerIndex) => (
                             <div key={`${index}-${innerIndex}`} style={{ padding: '0 10px' }}>
