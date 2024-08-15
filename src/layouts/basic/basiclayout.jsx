@@ -13,6 +13,5 @@ export default function BasicLayout({ children, titulo}) {
             <BellWaiter />
 
         </>
-
     );
 }

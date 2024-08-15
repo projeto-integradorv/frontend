@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Button, Container, Grid, Modal, Box, Typography, FormControl } from '@mui/material';
-import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
-import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
+import Image from "next/image";
+import { useState } from "react";
 
 export default function ModalPagamento({
   isOpen,
@@ -13,12 +13,18 @@ export default function ModalPagamento({
   descricaoProduto,
   quanty,
   handleRedirect,
-  productPrice
+  productPrice,
+  initialObs 
 }) {
   const [count, setCount] = useState(quanty || 1);
+  const [obs, setObs] = useState(initialObs || ""); 
 
   const handleQuantidadeChange = (quantidade) => {
     setCount((prevCount) => Math.max(0, prevCount + quantidade));
+  };
+
+  const handleObsChange = (event) => {
+    setObs(event.target.value);
   };
 
   return (
@@ -39,14 +45,14 @@ export default function ModalPagamento({
           width: '400px',
           height: '100%',
           bgcolor: '#E5E5E5',
-          overflowY: 'auto', // Ensure content scrolls if it overflows
+          overflowY: 'auto',
           borderRadius: '8px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           display: 'flex',
           flexDirection: 'column',
           padding: '16px'
         }}
-        onClick={(e) => e.stopPropagation()} // Prevent clicks inside Box from closing the modal
+        onClick={(e) => e.stopPropagation()} 
       >
         <Button
           onClick={onClose}
@@ -59,7 +65,7 @@ export default function ModalPagamento({
             zIndex: 1,
             textAlign: 'center',
             borderRadius: '4px',
-            gap:1,
+            gap: 1,
             padding: '8px',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             '&:hover': {
@@ -85,8 +91,18 @@ export default function ModalPagamento({
         <Typography variant="body1" align="center" sx={{ marginBottom: '16px' }}>
           {descricaoProduto}
         </Typography>
-        
-        {/* Container Adicionado na Parte Inferior */}
+
+        <TextField
+          label="Observação"
+          variant="outlined"
+          fullWidth
+          multiline
+          rows={4}
+          value={obs}
+          onChange={handleObsChange}
+          sx={{ marginBottom: '16px' }}
+        />
+
         <Box
           sx={{
             width: '100%',
@@ -163,7 +179,7 @@ export default function ModalPagamento({
                   }
                 }}
                 variant="contained"
-                onClick={handleRedirect}
+                onClick={() => handleRedirect({ count, obs })} // Passando count e obs ao redirecionar
               >
                 <span>Atualizar</span>
                 <span>R$ {(productPrice * count).toFixed(2)}</span>

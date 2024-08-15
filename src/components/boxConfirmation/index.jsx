@@ -1,6 +1,5 @@
-// BoxConfirmation.js
 import React, { useState } from "react";
-import { Box, Button, FormControl, Grid, Typography } from '@mui/material';
+import { Box, Button, FormControl, Grid, Typography, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useRouter } from "next/navigation";
@@ -22,6 +21,7 @@ export default function BoxConfirmation({
   productId
 }) {
   const [count, setCount] = useState(1);
+  const [observation, setObservation] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -44,12 +44,12 @@ export default function BoxConfirmation({
           price: productPrice
         },
         quantity: count,
-        observation: "", // Adicione observações se necessário
-        additionals: [] // Adicione adicionais se necessário
+        observation: observation, // Inclui a observação
+        additionals: [] 
       };
-
+      
       dispatch(adicionarAoCarrinho(item));
-      handleRedirect(); // Redireciona para o carrinho
+      handleRedirect(); 
     }
   };
 
@@ -77,6 +77,16 @@ export default function BoxConfirmation({
       <Grid container spacing={2} sx={{ maxWidth: '1200px', flexGrow: 1, alignItems: 'center' }}>
         {productId ? (
           <>
+            <Grid item xs={12} sx={{ marginBottom: 2 }}>
+              <TextField
+                fullWidth
+                label="Observações"
+                variant="outlined"
+                value={observation}
+                onChange={(e) => setObservation(e.target.value)}
+                placeholder="Adicione alguma observação (ex: sem cebola, mais molho, etc.)"
+              />
+            </Grid>
             <Grid item xs={6} container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
               <FormControl>
                 <Button

@@ -78,7 +78,7 @@ export default function FormAdd({ produto }) {
                         marginY: -8,
                         color: 'gray',
                         gap: 2,
-                        marginBottom: 20,
+                        marginBottom: 30,
                         '@media (max-width: 600px)': {
                             width: '100%',
                             padding: 0,

@@ -10,7 +10,8 @@ export default function ModalProduto({
   isOpen,
   onClose,
   produto,
-  handleSave
+  handleSave,
+  Obs
 }) {
   const [nome, setNome] = useState(produto?.name || '');
   const [descricao, setDescricao] = useState(produto?.description || '');

@@ -30,6 +30,7 @@ export default function Categorias() {
             sx={{ 
                 backgroundColor: 'transparent', 
                 height: '100%', 
+                minHeight: '100vh',
                 display: 'flex', 
                 flexDirection: 'column', 
                 justifyContent: 'flex-start', 

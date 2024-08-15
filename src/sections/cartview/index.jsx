@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/hooks";
 
 function CartView() {
-    // Acessa a estrutura de carrinho corretamente
+    const quantidade = useAppSelector(state => state.carrinho ||'')
     const carrinho = useAppSelector(state => state.carrinho.items || []);
-    console.log(carrinho);
+    
+
 
     const totalValue = carrinho
         .map(item => {
@@ -22,6 +23,8 @@ function CartView() {
         .toFixed(2);
 
     const router = useRouter();
+
+    const observacao = useAppSelector(state => state.carrinho.items || '').map(item => item.observation);
 
     const handleRedirect = () => {
         router.push('/');
@@ -59,20 +62,22 @@ function CartView() {
                 >
                     {carrinho.map(item => (
                         <CardFood
-                            key={item.product.id} // Supondo que item.product.id é o identificador único
+                            key={item.product.id} 
                             nome={item.product.name}
                             descricao={item.product.description}
                             preco={item.product.price}
                             imagem={item.product.image}
                             id={item.product.id}
                             quant={item.quantity}
+                            obs={item.observation}
                         />
                     ))}
                     <Button
                         onClick={handleRedirect}
                         sx={{
-                            width: '100%',
+                            gridColumn: '1/ -1', // O botão ocupa toda a largura disponível
                             color: 'white',
+                            Width: '20%',
                             border: '2px solid #ff9800',
                             backgroundColor: '#ff9800',
                             '&:hover': {
