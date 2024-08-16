@@ -1,27 +1,26 @@
 // categoriasMiddleware.js
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import {
-  carregarCategorias,
-  carregarCategoria,
-  inserirCategoria,
-  atualizarCategoria,
-  apagarCategoria,
-  adicionarTodasCategorias,
-  adicionarCategoria,
-  mudarLoading,
-  categoriaInserida,
-  categoriaAtualizada,
-  categoriaApagada,
-  setError
-} from './categoriaSlice';
-import {
+  createCategory,
+  deleteCategory,
   getCategories,
   getCategoryById,
-  createCategory,
-  updateCategory,
-  updateCateegory2,
-  deleteCategory
+  updateCategory
 } from '../../../api/category';
+import {
+  adicionarCategoria,
+  adicionarTodasCategorias,
+  apagarCategoria,
+  atualizarCategoria,
+  carregarCategoria,
+  carregarCategorias,
+  categoriaApagada,
+  categoriaAtualizada,
+  categoriaInserida,
+  inserirCategoria,
+  mudarLoading,
+  setError
+} from './categoriaSlice';
 const categoriasListener = createListenerMiddleware();
 
 categoriasListener.startListening({

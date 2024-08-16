@@ -59,7 +59,7 @@ export default function CardapioContainer() {
                                     produto={food}
                                     nome={food.name}
                                     descricao={food.description}
-                                    imagem={food.image === null ? Img : food.image}
+                                    imagem={food.image === null || food.image === '' ? Img : food.image}
                                     preco={food.price}
                                     id={food.id}
                                 />

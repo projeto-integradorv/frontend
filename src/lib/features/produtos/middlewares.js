@@ -1,30 +1,96 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { carregarProdutos, adicionarTodasProdutos, carregarProduto, adicionarProduto, mudarLoading } from './produtoSlice';
-import { getProducts, getProductById } from '../../../api/product'
+import {
+  carregarProdutos,
+  carregarProduto,
+  inserirProduto,
+  editarProduto,
+  apagarProduto,
+  adicionarTodasProdutos,
+  adicionarProduto,
+  mudarLoading,
+  produtoInserido,
+  produtoAtualizado,
+  produtoApagado,
+  setError
+} from './produtoSlice';
+import {
+  getProducts,
+  getProductById,
+  postProduct,
+  putProduct,
+  deleteProduct
+} from '../../../api/product';
 
-export const produtosListener = createListenerMiddleware();
+const produtosListener = createListenerMiddleware();
 
 produtosListener.startListening({
-    actionCreator: carregarProdutos,
-    effect: async (action, { dispatch, fork, unsubscribe }) => {
-        const tarefa = fork(async api => {
-            const produtos = await getProducts();
-            dispatch(adicionarTodasProdutos(produtos));
-        }
-        );
-    },
+  actionCreator: carregarProdutos,
+  effect: async (action, { dispatch }) => {
+    dispatch(mudarLoading(true));
+    try {
+      const produtos = await getProducts();
+      dispatch(adicionarTodasProdutos(produtos));
+    } catch (error) {
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(mudarLoading(false));
+    }
+  },
 });
 
 produtosListener.startListening({
-    actionCreator: carregarProduto,
-    effect: async (action, { dispatch, fork, unsubscribe }) => {
-        const tarefa = fork(async api => {
-            const produto = await getProductById(action.payload);
-            dispatch(mudarLoading(true));
-            dispatch(adicionarProduto(produto.data));
-            dispatch(mudarLoading(false));
-        });
-    },
+  actionCreator: carregarProduto,
+  effect: async (action, { dispatch }) => {
+    dispatch(mudarLoading(true));
+    try {
+      const produto = await getProductById(action.payload);
+      dispatch(adicionarProduto(produto.data));
+    } catch (error) {
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(mudarLoading(false));
+    }
+  },
+});
+
+produtosListener.startListening({
+  actionCreator: inserirProduto,
+  effect: async (action, { dispatch }) => {
+    try {
+      console.log('Inserindo produto:', action.payload);
+      const novoProduto = await postProduct(action.payload);
+      dispatch(produtoInserido(novoProduto.data));
+      dispatch(carregarProdutos()); 
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  },
+});
+
+produtosListener.startListening({
+  actionCreator: editarProduto,
+  effect: async (action, { dispatch }) => {
+    try {
+        console.log('Editando produto 0007:', action.payload);
+      const produtoAtualizadoData = await putProduct(action.payload.get('id'), action.payload);
+      console.log('Editando produto 0008:', produtoAtualizadoData);
+      dispatch(produtoAtualizado(produtoAtualizadoData));
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  },
+});
+
+produtosListener.startListening({
+  actionCreator: apagarProduto,
+  effect: async (action, { dispatch }) => {
+    try {
+      await deleteProduct(action.payload);
+      dispatch(produtoApagado(action.payload));
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  },
 });
 
 export default produtosListener;

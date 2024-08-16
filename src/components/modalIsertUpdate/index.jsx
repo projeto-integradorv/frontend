@@ -1,41 +1,47 @@
-import React, { useState } from "react";
-import { Button, Modal, Box, Typography, TextField, FormControl, Grid, Select, MenuItem, InputLabel, Chip } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Box, Typography, TextField, FormControl, Select, MenuItem, InputLabel, Chip } from '@mui/material';
 import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
+import { useDispatch } from "react-redux";
+import { editarProduto, inserirProduto } from '@/lib/features/produtos/produtoSlice';
 import RemoveIcon from '@mui/icons-material/Remove';
-
 const categoriasMock = ['Eletrônicos', 'Roupas', 'Alimentos', 'Casa e Jardim', 'Beleza'];
 
-export default function ModalProduto({
-  isOpen,
-  onClose,
-  produto,
-  handleSave,
-  Obs
-}) {
+export default function ModalProduto({ isOpen, onClose, produto }) {
   const [nome, setNome] = useState(produto?.name || '');
   const [descricao, setDescricao] = useState(produto?.description || '');
   const [preco, setPreco] = useState(produto?.price || 0);
   const [imagemPreview, setImagemPreview] = useState(produto?.image || '');
-  const [categoria, setCategoria] = useState(produto?.category.name || categoriasMock[0]);
+  const [imagem, setImagem] = useState(null);
+  const [categoria, setCategoria] = useState(produto?.category || categoriasMock[0]);
   const [adicionais, setAdicionais] = useState(produto?.adicionais || []);
   const [novoAdicional, setNovoAdicional] = useState('');
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (produto) {
+      setNome(produto.name);
+      setDescricao(produto.description);
+      setPreco(produto.price);
+      setImagemPreview(produto.image);
+      setCategoria(produto.category);
+      setAdicionais(produto.adicionais || []);
+    }
+  }, [produto]);
+
   const handleNomeChange = (e) => setNome(e.target.value);
   const handleDescricaoChange = (e) => setDescricao(e.target.value);
-  const handlePrecoChange = (e) => setPreco(parseFloat(e.target.value));
+  const handlePrecoChange = (e) => setPreco(parseFloat(e.target.value) || 0);
   const handleCategoriaChange = (e) => setCategoria(e.target.value);
-
 
   const handleImagemChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // setImagem(file);
-        setImagemPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const objectUrl = URL.createObjectURL(file);
+      setImagem(file);
+      setImagemPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
     }
   };
 
@@ -53,16 +59,29 @@ export default function ModalProduto({
   };
 
   const handleSubmit = () => {
-    const produtoAtualizado = {
-      ...produto,
-      nome,
-      descricao,
-      preco,
-      imagem: imagemPreview,
-      categoria,
-      adicionais,
-    };
-    handleSave(produtoAtualizado);
+    const formData = new FormData();
+    formData.append("name", nome);
+    formData.append("description", descricao);
+    formData.append("price", preco.toString()); // Certifique-se de enviar como string
+    formData.append("category", categoria);
+    formData.append("adicionais", JSON.stringify(adicionais)); // Serializa os adicionais
+    
+    if (imagem) {
+      formData.append("image", imagem);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    if (produto) {
+      console.log('Editando produto:', produto.id);
+      formData.append("id", produto.id); // Adiciona o ID para a edição
+      dispatch(editarProduto(formData));
+    } else {
+      dispatch(inserirProduto(formData));
+    }
+
     onClose();
   };
 
@@ -131,20 +150,6 @@ export default function ModalProduto({
           <Typography variant="h4" align='center' gutterBottom sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
             {produto ? 'Atualizar Produto' : 'Novo Produto'}
           </Typography>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <InputLabel>Categoria</InputLabel>
-            <Select
-              value={categoria}
-              onChange={handleCategoriaChange}
-              label="Categoria"
-            >
-              {categoriasMock.map((cat) => (
-                <MenuItem key={cat} value={cat}>
-                  {cat}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
             <Box 
               sx={{
@@ -189,6 +194,20 @@ export default function ModalProduto({
             </Button>
           </Box>
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
+            <InputLabel>Categoria</InputLabel>
+            <Select
+              value={categoria}
+              onChange={handleCategoriaChange}
+              label="Categoria"
+            >
+              {categoriasMock.map((cat) => (
+                <MenuItem key={cat} value={cat}>
+                  {cat}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
             <TextField
               label="Nome do Produto"
               value={nome}
@@ -221,71 +240,41 @@ export default function ModalProduto({
           </FormControl>
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
             <TextField
-              label="Adicionar Adicional"
+              label="Novo Adicional"
               value={novoAdicional}
               onChange={handleNovoAdicionalChange}
               variant="outlined"
               fullWidth
-              sx={{ marginBottom: '8px' }}
+              InputProps={{
+                endAdornment: (
+                  <Button
+                    variant="contained"
+                    onClick={adicionarAdicional}
+                    sx={{ marginLeft: '8px' }}
+                  >
+                    Adicionar
+                  </Button>
+                ),
+              }}
             />
-            <Button
-              onClick={adicionarAdicional}
-              variant="contained"
-              color="primary"
-              sx={{ marginBottom: '16px' }}
-            >
-              Adicionar
-            </Button>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {adicionais.map((adicional) => (
-                <Chip
-                  key={adicional}
-                  label={adicional}
-                  onDelete={() => removerAdicional(adicional)}
-                  deleteIcon={<RemoveIcon />}
-                />
-              ))}
-            </Box>
           </FormControl>
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            backgroundColor: 'white',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '16px',
-            borderTop: '1px solid #ddd',
-            boxShadow: '0 -4px 6px rgba(0, 0, 0, 0.1)',
-            borderRadius: '8px',
-            backgroundColor: '#f5f5f5',
-            '@media (max-width: 600px)': {
-              flexDirection: 'column',
-              alignItems: 'center'
-            }
-          }}
-        >
-          <Button 
-            sx={{
-              flexDirection: 'row',
-              width: '100%',
-              padding: '10px',
-              gap: '8px',
-              textAlign: 'center',
-              backgroundColor: '#ff9800',
-              color: 'white',
-              borderRadius: '4px',
-              '&:hover': {
-                backgroundColor: '#fda116'
-              }
-            }}
+          <Box>
+            {adicionais.map((adicional, index) => (
+              <Chip
+                key={index}
+                label={adicional}
+                onDelete={() => removerAdicional(adicional)}
+                deleteIcon={<RemoveIcon />}
+                sx={{ marginRight: '8px', marginBottom: '8px' }}
+              />
+            ))}
+          </Box>
+          <Button
             variant="contained"
             onClick={handleSubmit}
+            sx={{ marginTop: '16px' }}
           >
-            <span>{produto ? 'Atualizar' : 'Adicionar'}</span>
-            <span>R$ {(preco * (produto?.quantidade || 1)).toFixed(2)}</span>
+            {produto ? 'Atualizar Produto' : 'Adicionar Produto'}
           </Button>
         </Box>
       </Box>
