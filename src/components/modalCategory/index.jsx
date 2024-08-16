@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { Button, Modal, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, FormControl } from '@mui/material';
 import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
+import { useDispatch } from "react-redux";
+import { adicionarCategoria, atualizarCategoria } from '@/lib/features/categoria/categoriaSlice';
 
-export default function ModalCategoria({
-  isOpen,
-  onClose,
-  categoria,
-  handleSave
-}) {
+export default function ModalCategoria({ isOpen, onClose, categoria }) {
   const [nome, setNome] = useState(categoria?.name || '');
   const [descricao, setDescricao] = useState(categoria?.description || '');
   const [imagemPreview, setImagemPreview] = useState(categoria?.image || '');
   const [imagem, setImagem] = useState(null);
+
+  const dispatch = useDispatch();
 
   const handleNomeChange = (e) => setNome(e.target.value);
   const handleDescricaoChange = (e) => setDescricao(e.target.value);
@@ -20,23 +19,35 @@ export default function ModalCategoria({
   const handleImagemChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagem(file);
-        setImagemPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const objectUrl = URL.createObjectURL(file);
+      setImagem(file);
+      setImagemPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
     }
   };
 
   const handleSubmit = () => {
-    const categoriaAtualizada = {
-      ...categoria,
-      name: nome,
-      description: descricao,
-      image: imagemPreview
-    };
-    handleSave(categoriaAtualizada);
+    const formData = new FormData();
+    formData.append("id", categoria?.id);
+    formData.append("name", nome);
+    formData.append("description", descricao);
+
+    if (imagem) {
+      formData.append("image", imagem);
+    }
+
+    // Verificação do conteúdo do FormData
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    if (categoria) {
+      console.log('Atualizando categoria ---:', formData);
+      dispatch(atualizarCategoria(formData));
+    } else {
+      dispatch(adicionarCategoria(formData));
+    }
+
     onClose();
   };
 

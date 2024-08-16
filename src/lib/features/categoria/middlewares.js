@@ -1,26 +1,94 @@
-// cartMiddleware.js
+// categoriasMiddleware.js
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { adicionarAoCarrinho, resetarCarrinho } from './carrinhoSlice';
-import { createCart, updateCart } from '../../../api/cart'; // Ajuste o caminho conforme necessário
+import {
+  carregarCategorias,
+  carregarCategoria,
+  inserirCategoria,
+  atualizarCategoria,
+  apagarCategoria,
+  adicionarTodasCategorias,
+  adicionarCategoria,
+  mudarLoading,
+  categoriaInserida,
+  categoriaAtualizada,
+  categoriaApagada,
+  setError
+} from './categoriaSlice';
+import {
+  getCategories,
+  getCategoryById,
+  createCategory,
+  updateCategory,
+  updateCateegory2,
+  deleteCategory
+} from '../../../api/category';
+const categoriasListener = createListenerMiddleware();
 
-export const cartListener = createListenerMiddleware();
-
-cartListener.startListening({
-  actionCreator: adicionarAoCarrinho,
-  effect: async (action, { dispatch, fork, unsubscribe }) => {
+categoriasListener.startListening({
+  actionCreator: carregarCategorias,
+  effect: async (action, { dispatch }) => {
+    dispatch(mudarLoading(true));
     try {
-      const cartItem = action.payload;
-      const existingCart = await getCart(); 
-
-      if (existingCart.data.items.length === 0) {
-        await createCart({ items: [cartItem] });
-      } else {
-        await updateCart(existingCart.data.id, { items: [...existingCart.data.items, cartItem] });
-      }
+      const categorias = await getCategories();
+      dispatch(adicionarTodasCategorias(categorias));
     } catch (error) {
-      console.error("Erro ao adicionar ao carrinho:", error);
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(mudarLoading(false));
     }
   },
 });
 
-export default cartListener;
+categoriasListener.startListening({
+  actionCreator: carregarCategoria,
+  effect: async (action, { dispatch }) => {
+    dispatch(mudarLoading(true));
+    try {
+      const categoria = await getCategoryById(action.payload);
+      dispatch(adicionarCategoria(categoria));
+    } catch (error) {
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(mudarLoading(false));
+    }
+  },
+});
+
+categoriasListener.startListening({
+  actionCreator: inserirCategoria,
+  effect: async (action, { dispatch }) => {
+    try {
+      const novaCategoria = await createCategory(action.payload);
+      dispatch(categoriaInserida(novaCategoria));
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  },
+});
+
+categoriasListener.startListening({
+  actionCreator: atualizarCategoria,
+  effect: async (action, { dispatch }) => {
+    try {
+      console.log('Atualizando categoria 007:', action.payload.get('id'));
+      const _categoriaAtualizada = await updateCategory(action.payload.get('id'), action.payload);
+      dispatch(categoriaAtualizada(_categoriaAtualizada));
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  },
+});
+
+categoriasListener.startListening({
+  actionCreator: apagarCategoria,
+  effect: async (action, { dispatch }) => {
+    try {
+      await deleteCategory(action.payload);
+      dispatch(categoriaApagada(action.payload));
+    } catch (error) {
+      dispatch(setError(error.message));
+    }
+  },
+});
+
+export default categoriasListener;
