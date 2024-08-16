@@ -1,10 +1,16 @@
 import axiosInstance from '@/utils/axios';
 
-const getAdditional = () => axiosInstance.get('/additional/');
-const getAdditionalById = (id) => axiosInstance.get(`/additional/${id}`);
+const getAdditional = () => { 
+    const response = axiosInstance.get('/additional/')
+    return response
+};
+const getAdditionalById = (id) => {
+    const response = axiosInstance.get(`/additional/${id}`)
+    return response.data
+};
 const createAdditional = (data) => axiosInstance.post('/additional/', data);
-const updateAdditional = (id, data) => axiosInstance.put(`/additional/${id}`, data);
-const updateAdditional2 = (id, data) => axiosInstance.putch(`/additional/${id}`, data);
+const updateAdditional = (id, data) => axiosInstance.put(`/additional/${id}/`, data);
+const updateAdditional2 = (id, data) => axiosInstance.patch(`/additional/${id}/`, data);
 const deleteAdditional = (id) => axiosInstance.delete(`/additional/${id}`);
 
 

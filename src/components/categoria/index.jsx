@@ -2,10 +2,10 @@
 import { Container, Grid, Button, Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import CardCategory from "../cardCategory";
 import { getCategories } from '@/api/category'; 
 import ImageMassa from '@/assets/Vector.png';
 import Imagelanches from '@/assets/lanches.png';
+import CardCategory from "../cardCategory";
 
 export default function Categorias() {
     const [categories, setCategories] = useState([]);

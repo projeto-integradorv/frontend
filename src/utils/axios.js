@@ -15,10 +15,6 @@ const axiosInstance = axios.create(
     }
 );
 
-if (localStorage.getItem('token')) {
-    axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-}
-
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
