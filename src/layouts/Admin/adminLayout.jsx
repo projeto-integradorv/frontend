@@ -7,6 +7,7 @@ import Search from "@/components/search";
 import Categoria from "@/components/categoria"; // Componente para a categoria
 import Produtos from "@/components/cardapioContainer";
 import PedidosView from '@/sections/pedidosView'
+import Adicionais from "./components/Adicionais"
 
 const drawerWidth = 240;
 
@@ -28,7 +29,9 @@ export default function AdminLayout() {
             case "produtos":
                 return <Produtos />;
             case "pedidos":
-                return <PedidosView />;
+                return <PedidosView/>
+            case "adicionais":
+                return <Adicionais/>
             default:
                 return <Categoria />;
         }
