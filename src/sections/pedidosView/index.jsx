@@ -103,12 +103,10 @@ export default function PedidosView() {
       {pathname === '/admin' ? (
         <Container maxWidth="" disableGutters={true} >
           <Container maxWidth="lg" sx={{
-            minHeight: '100vh', marginBottom: '20vh'
+            minHeight: '100vh'
           }}>
             {orderGrid}
-            {orderButton}
           </Container>
-          <BoxConfirnation valorFinal={totalValue} />
           {selectedOrder && (
             <EditOrderModal
               open={modalOpen}

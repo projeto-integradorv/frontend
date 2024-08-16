@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from "react";
-import { Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText, CircularProgress } from "@mui/material";
-import { CategoryOutlined, PeopleAltOutlined, PostAddOutlined, ReceiptLongOutlined, RestaurantMenuOutlined } from "@mui/icons-material";
+import { Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText, CircularProgress, useMediaQuery, useTheme, IconButton, Slide } from "@mui/material";
+import { CategoryOutlined, PeopleAltOutlined, PostAddOutlined, ReceiptLongOutlined, RestaurantMenuOutlined, Menu as MenuIcon, ChevronLeft as ChevronLeftIcon } from "@mui/icons-material";
 import Navbar from "@/components/navbar";
 import Search from "@/components/search";
 import Categoria from "@/components/categoria"; // Componente para a categoria
@@ -14,6 +14,13 @@ const drawerWidth = 240;
 export default function AdminLayout() {
     const [selectedComponent, setSelectedComponent] = useState("categoria");
     const [loading, setLoading] = useState(true);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Adapte o breakpoint conforme necessário
+    const [open, setOpen] = useState(!isMobile);
+
+    const handleDrawerToggle = () => {
+        setOpen(!open);
+    };
 
     const renderSelectedComponent = () => {
         switch (selectedComponent) {
@@ -41,9 +48,11 @@ export default function AdminLayout() {
     }, [selectedComponent]);
 
     return (
-        <Box margin={0} padding={0} sx={{ display: "flex", minHeight: "100vh" }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
             <Drawer
-                variant="permanent"
+                variant={isMobile ? "temporary" : "permanent"}
+                open={open}
+                onClose={() => setOpen(false)}
                 PaperProps={{
                     sx: {
                         backgroundColor: '#FF9800',
@@ -53,8 +62,16 @@ export default function AdminLayout() {
                         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                     }
                 }}
+                ModalProps={{ keepMounted: true }} // Melhora a performance em dispositivos móveis
             >
-                <Box sx={{ overflow: 'auto' }}>
+                <Box sx={{ overflow: 'auto', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '8px' }}>
+                        {isMobile && (
+                            <IconButton onClick={handleDrawerToggle} sx={{ color: 'white' }}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        )}
+                    </Box>
                     <List>
                         {[
                             { text: 'Categoria', icon: <CategoryOutlined />, component: 'categoria' },
@@ -63,7 +80,12 @@ export default function AdminLayout() {
                             { text: 'Pedidos', icon: <ReceiptLongOutlined />, component: 'pedidos' },
                             { text: 'Funcionários', icon: <PeopleAltOutlined />, component: 'funcionarios' }
                         ].map(({ text, icon, component }) => (
-                            <ListItemButton key={text} onClick={() => setSelectedComponent(component)}>
+                            <ListItemButton key={text} onClick={() => {
+                                setSelectedComponent(component);
+                                if (isMobile) {
+                                    setOpen(false);
+                                }
+                            }}>
                                 <ListItemIcon sx={{ color: 'white' }}>
                                     {icon}
                                 </ListItemIcon>
@@ -74,13 +96,32 @@ export default function AdminLayout() {
                 </Box>
             </Drawer>
 
-            <Box sx={{ flexGrow: 1, paddingLeft: `${drawerWidth}px`, position: "relative" }}>
+            <Box sx={{ flexGrow: 1, paddingLeft: isMobile ? 0 : `${drawerWidth}px`, position: "relative" }}>
+                {isMobile && (
+                    <IconButton
+                        onClick={handleDrawerToggle}
+                        sx={{
+                            position: 'absolute',
+                            top: '400px',
+                            left: '5%',
+                            transform: 'translate(-50%, -50%)',
+                            zIndex: 1200,
+                            color: '#FF9800',
+                            backgroundColor: 'white',
+                            boxShadow: 3,
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                )}
                 <Navbar />
                 <Box sx={{ padding: "16px", backgroundColor: '#E5E5E5' }}>
                     <Search />
                     {loading ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                            <CircularProgress />
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                            <CircularProgress sx={{
+                                color: '#FF9800',
+                            }} />
                         </Box>
                     ) : (
                         renderSelectedComponent()
