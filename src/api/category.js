@@ -12,8 +12,12 @@ const getCategoryById = async (id) => {
 };
 
 const createCategory = async (data) => {
-    axiosInstance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-    const response = await axiosInstance.post('/category/', data);
+    const response = await axiosInstance.post('/category/', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    }
+    );
     return response.data;
 };
 

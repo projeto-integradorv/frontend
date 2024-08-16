@@ -1,40 +1,56 @@
 import React from "react";
-import { Button } from "@mui/material";
-import Image from 'next/image';
-import PropTypes from 'prop-types';
+import { Card, CardContent, Typography, IconButton } from "@mui/material";
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'; // Importa o ícone RemoveCircleOutline
+import Image from "next/image";
 
-export default function CardCategory({ icon, nameCategory, onClick }) {
+const CardCategory = ({ icon, nameCategory, onClick, onDelete, showDeleteIcon }) => {
     return (
-        <Button 
-            onClick={onClick} 
+        <Card 
             sx={{ 
                 width: '100%', 
-                height: '100%', 
-                backgroundColor: 'white', 
+                position: 'relative', 
                 display: 'flex', 
-                flexDirection: 'column', 
-                marginRight: '1%', 
-                padding: '10px', 
-                gap: '10px', 
-                flexGrow: 1, 
-                margin: '10px', 
-                borderRadius: '5px',
-                textAlign: 'center'
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                borderRadius: '8px', 
+                boxShadow: 3 
             }}
+            onClick={onClick}
         >
-            <Image
-                src={icon}
-                width={60}
-                height={60}
-                alt="icon"
-            />
-            <p style={{ color: '#665858', margin: 0 }}>{nameCategory}</p>
-        </Button>
+            <CardContent sx={{ textAlign: 'center' }}>
+                <Image
+                    src={icon}
+                    alt={nameCategory}
+                    width={70}
+                    height={70}
+                    style={{ borderRadius: '8px' }}
+                />
+                <Typography variant="h6" sx={{ marginTop: '8px', fontWeight: 'bold' }}>
+                    {nameCategory}
+                </Typography>
+            </CardContent>
+            {showDeleteIcon && onDelete && (
+                <IconButton
+                    sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: '#E5E5E5', 
+                        zIndex: 1,
+                        '&:hover': {
+                            color: '#bebebe', 
+                        },
+                    }}
+                    onClick={(event) => {
+                        event.stopPropagation(); 
+                        onDelete();
+                    }}
+                >
+                    <RemoveCircleOutlineIcon />
+                </IconButton>
+            )}
+        </Card>
     );
-}
-
-CardCategory.propTypes = {
-    icon: PropTypes.string.isRequired,
-    nameCategory: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired, 
 };
+
+export default CardCategory;

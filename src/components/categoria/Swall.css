@@ -1,0 +1,30 @@
+/* styles/swal2-custom.css */
+.swal2-popup {
+    background-color: #f5f5f5 !important; /* Cor de fundo do popup */
+    color: #333 !important; /* Cor do texto */
+  }
+  
+  .swal2-title {
+    color: #ff9800 !important; /* Cor do título */
+  }
+  
+  .swal2-confirm {
+    background-color: #ff9800 !important; /* Cor do botão de confirmação */
+    border: none !important;
+    color: #fff !important; /* Cor do texto no botão de confirmação */
+  }
+  
+  .swal2-cancel {
+    background-color: #d33 !important; /* Cor do botão de cancelamento */
+    border: none !important;
+    color: #fff !important; /* Cor do texto no botão de cancelamento */
+  }
+  
+  .swal2-styled.swal2-confirm:hover {
+    background-color: #fda116 !important; /* Cor do botão de confirmação ao passar o mouse */
+  }
+  
+  .swal2-styled.swal2-cancel:hover {
+    background-color: #c82333 !important; /* Cor do botão de cancelamento ao passar o mouse */
+  }
+  

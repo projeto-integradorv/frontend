@@ -3,7 +3,7 @@ import { Button, Modal, Box, Typography, TextField, FormControl } from '@mui/mat
 import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
 import { useDispatch } from "react-redux";
-import { adicionarCategoria, atualizarCategoria } from '@/lib/features/categoria/categoriaSlice';
+import { inserirCategoria, atualizarCategoria } from '@/lib/features/categoria/categoriaSlice';
 
 export default function ModalCategoria({ isOpen, onClose, categoria }) {
   const [nome, setNome] = useState(categoria?.name || '');
@@ -28,7 +28,7 @@ export default function ModalCategoria({ isOpen, onClose, categoria }) {
 
   const handleSubmit = () => {
     const formData = new FormData();
-    formData.append("id", categoria?.id);
+    formData.append("id", categoria?.id || ''); 
     formData.append("name", nome);
     formData.append("description", descricao);
 
@@ -36,16 +36,14 @@ export default function ModalCategoria({ isOpen, onClose, categoria }) {
       formData.append("image", imagem);
     }
 
-    // Verificação do conteúdo do FormData
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
 
     if (categoria) {
-      console.log('Atualizando categoria ---:', formData);
       dispatch(atualizarCategoria(formData));
     } else {
-      dispatch(adicionarCategoria(formData));
+      dispatch(inserirCategoria(formData));
     }
 
     onClose();

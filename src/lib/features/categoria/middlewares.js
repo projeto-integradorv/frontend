@@ -58,8 +58,10 @@ categoriasListener.startListening({
   actionCreator: inserirCategoria,
   effect: async (action, { dispatch }) => {
     try {
-      const novaCategoria = await createCategory(action.payload);
+      console.log('Inserindo categoria:', action.payload);
+      const novaCategoria = await createCategory(action.payload );
       dispatch(categoriaInserida(novaCategoria));
+      dispatch(carregarCategorias());
     } catch (error) {
       dispatch(setError(error.message));
     }
@@ -70,7 +72,6 @@ categoriasListener.startListening({
   actionCreator: atualizarCategoria,
   effect: async (action, { dispatch }) => {
     try {
-      console.log('Atualizando categoria 007:', action.payload.get('id'));
       const _categoriaAtualizada = await updateCategory(action.payload.get('id'), action.payload);
       dispatch(categoriaAtualizada(_categoriaAtualizada));
     } catch (error) {
