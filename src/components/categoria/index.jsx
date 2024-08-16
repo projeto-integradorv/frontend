@@ -6,6 +6,7 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import CardCategory from '../cardCategory';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'; 
 import ModalCategoria from '../modalCategory';

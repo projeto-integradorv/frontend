@@ -32,7 +32,7 @@ export default function ModalProduto({
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagem(file);
+        // setImagem(file);
         setImagemPreview(reader.result);
       };
       reader.readAsDataURL(file);
