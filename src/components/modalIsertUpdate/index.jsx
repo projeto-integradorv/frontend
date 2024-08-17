@@ -89,40 +89,28 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
     setAdicionais((prev) => prev.filter(id => id !== adicionalId));
   };
 
-  console.log('Adicionais:', adicionais);
+  // console.log('Adicionais:', adicionais);
 
   const handleSubmit = () => {
     const formData = new FormData();
   
-    // Adiciona os dados do produto ao FormData
+    // Adiciona os campos do produto
     formData.append("name", nome);
     formData.append("description", descricao);
-    formData.append("price", preco);
-    formData.append("category", categoria || ''); 
-    formData.append("additionals",adicionais || []);
-    
+    formData.append("price", preco.toString()); // Convertendo para string
+    formData.append("category", categoria || ''); // Usando string vazia se categoria for null
+  
+    // Adiciona os adicionais, um por vez
+    adicionais.forEach((adicional) => {
+      formData.append("additionals", adicional);
+    });
+  
+    // Adiciona a imagem se disponível
     if (imagem) {
       formData.append("image", imagem);
     }
-    
-    const formDataToObject = (formData) => {
-      const obj = {};
-      formData.forEach((value, key) => {
-        if (obj[key]) {
-          if (Array.isArray(obj[key])) {
-            obj[key].push(value);
-          } else {
-            obj[key] = [obj[key], value];
-          }
-        } else {
-          obj[key] = value;
-        }
-      });
-      return obj;
-    };
   
-    console.log('FormData content:', formDataToObject(formData));
-  
+    // Adiciona o id do produto se estiver editando um produto existente
     if (produto) {
       formData.append("id", produto.id);
       dispatch(editarProduto(formData));
@@ -130,9 +118,9 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
       dispatch(inserirProduto(formData));
     }
   
-    // Fecha o modal após a submissão
     onClose();
   };
+  
   
   
 

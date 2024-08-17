@@ -10,25 +10,26 @@ const initialState = {
 
 export const carregarProdutos = createAction('produtos/carregarProdutos');
 export const carregarProduto = createAction('produtos/carregarProduto');
-export const inserirProduto = createAction('produtos/inserirProduto',
-
+export const inserirProduto = createAction('produtos/inserirProduto', 
     (formData) => ({
         payload: formData,
     })
 );
 
-export const editarProduto = createAction('produtos/editarProduto',
+export const editarProduto = createAction('produtos/editarProduto', 
     (formData) => {
-        console.log('Atualizando categoria:', formData);
+        console.log('Atualizando produto:', formData);
         return {
             payload: formData,
         };
     }
 );
 
-export const apagarProduto = createAction('produtos/apagarProduto', (id) => ({
-    payload: id,
-}));
+export const apagarProduto = createAction('produtos/apagarProduto', 
+    (id) => ({
+        payload: id,
+    })
+);
 
 export const setError = createAction('produtos/setError');
 
@@ -50,12 +51,16 @@ const produtosSlice = createAppSlice({
             state.produtos.push(payload);
         },
         produtoAtualizado: (state, { payload }) => {
+            // Supondo que o payload seja um objeto com as atualizações
             const index = state.produtos.findIndex(prod => prod.id === payload.id);
+
             if (index !== -1) {
-                state.produtos[index] = payload;
+                // Atualiza o produto com os campos do payload
+                state.produtos[index] = { ...state.produtos[index], ...payload };
             }
         },
         produtoApagado: (state, { payload }) => {
+            // Remove o produto com o id fornecido
             state.produtos = state.produtos.filter(prod => prod.id !== payload);
         },
         setError: (state, { payload }) => {
