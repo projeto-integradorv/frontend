@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CardCategory from '../cardCategory';
 import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css'; 
+import 'sweetalert2/dist/sweetalert2.min.css';
 import ModalCategoria from '../modalCategory';
 import './Swall.css';
 
@@ -47,7 +47,7 @@ export default function Categorias() {
             const { top, left } = event.currentTarget.getBoundingClientRect();
             setModalPosition({ top, left });
             setSelectedCategory(category);
-            setNewCategory({ name: category.name, image: category.image }); 
+            setNewCategory({ name: category.name, image: category.image });
             setShowCategoryForm(true);
             setIsModalOpen(true);
         } else {

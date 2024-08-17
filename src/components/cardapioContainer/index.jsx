@@ -1,13 +1,12 @@
-'use client';
-
 import Img from '@/assets/x-salada.jpg';
 import CardFood from "@/components/cardFodd";
-import ModalProduto from "@/components/modalIsertUpdate"; // Certifique-se de que este caminho esteja correto
-import { carregarProdutos } from "@/lib/features/produtos/produtoSlice";
+import ModalProduto from "@/components/modalIsertUpdate"; 
+import { carregarProdutos, apagarProduto } from "@/lib/features/produtos/produtoSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
+import Swal from 'sweetalert2';
 
 export default function CardapioContainer() {
     const pathname = usePathname();
@@ -31,6 +30,28 @@ export default function CardapioContainer() {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedProduct(null);
+    };
+
+    const handleDeleteProduct = async (productId) => {
+        const result = await Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você não poderá reverter isso!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ff9800',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            dispatch(apagarProduto(productId));
+            Swal.fire(
+                'Excluído!',
+                'O produto foi excluído.',
+                'success'
+            );
+        }
     };
 
     return (
@@ -63,7 +84,7 @@ export default function CardapioContainer() {
                             </Typography>
                             <Button
                                 sx={{ marginBottom: '1rem', color: 'gray' }}
-                                onClick={() => handleOpenModal(null)} // Abre o modal para adicionar um novo produto
+                                onClick={() => handleOpenModal(null)} 
                             >
                                 Adicionar +
                             </Button>
@@ -96,6 +117,7 @@ export default function CardapioContainer() {
                                     imagem={food.image || Img}
                                     preco={food.price || 0}
                                     id={food.id}
+                                    onDelete={() => handleDeleteProduct(food.id)} 
                                 />
                             </Grid>
                         ))}
@@ -104,7 +126,7 @@ export default function CardapioContainer() {
                         <ModalProduto
                             isOpen={isModalOpen}
                             onClose={handleCloseModal}
-                            produto={selectedProduct} // Passa o produto selecionado para o modal
+                            produto={selectedProduct} 
                         />
                     )}
                 </>

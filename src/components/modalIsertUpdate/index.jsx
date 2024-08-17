@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Box, Typography, TextField, FormControl, Chip } from '@mui/material';
 import Image from "next/image";
@@ -10,6 +8,7 @@ import { carregarCategorias } from '@/lib/features/categoria/categoriaSlice';
 import { carregarAdicionais } from '@/lib/features/adicionais/adicionaisSlice';
 import Autocomplete from '@mui/material/Autocomplete';
 import RemoveIcon from '@mui/icons-material/Remove';
+import Swal from 'sweetalert2'; 
 
 export default function ModalProduto({ isOpen, onClose, produto }) {
   const dispatch = useDispatch();
@@ -23,6 +22,7 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
   const [imagem, setImagem] = useState(null);
   const [categoria, setCategoria] = useState(null);
   const [adicionais, setAdicionais] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (isOpen && produto) {
@@ -30,7 +30,7 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
       setDescricao(produto.description || '');
       setPreco(produto.price || 0);
       setImagemPreview(produto.image || '');
-      setImagem(null); // Não manter a imagem em estado para evitar conflito com a nova imagem
+      setImagem(null); 
       setCategoria(produto.category?.id || null);
       setAdicionais(produto.additionals.map(add => add.id) || []);
     } else {
@@ -92,30 +92,67 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
     setAdicionais((prev) => prev.filter(id => id !== adicionalId));
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
+  const validateFields = () => {
+    if (!nome.trim()) {
+      return "O nome é obrigatório.";
+    }
+    if (!descricao.trim()) {
+      return "A descrição é obrigatória.";
+    }
+    if (isNaN(preco) || preco <= 0) {
+      return "O preço deve ser um número positivo.";
+    }
+    if (categoria === null) {
+      return "A categoria é obrigatória.";
+    }
+    if (adicionais.length === 0) {
+      return "Pelo menos um adicional deve ser selecionado.";
+    }
+    if (!imagem && !produto) {
+      return "A imagem é obrigatória.";
+    }
+    return "";
+  };
 
-    // Adiciona os campos do produto
+  const handleSubmit = () => {
+    const validationError = validateFields();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    const formData = new FormData();
     formData.append("name", nome);
     formData.append("description", descricao);
-    formData.append("price", preco.toString()); // Convertendo para string
-    formData.append("category", categoria || ''); // Usando string vazia se categoria for null
-
-    // Adiciona os adicionais, um por vez
+    formData.append("price", preco.toString()); 
+    formData.append("category", categoria || ''); 
     adicionais.forEach((adicional) => {
       formData.append("additionals", adicional.toString());
     });
 
-    // Adiciona a imagem se disponível
     if (imagem) {
       formData.append("image", imagem);
     }
 
     if (produto) {
       formData.append("id", produto.id);
-      dispatch(editarProduto(formData));
+      dispatch(editarProduto(formData)) 
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Produto atualizado com sucesso!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } else {
-      dispatch(inserirProduto(formData));
+      dispatch(inserirProduto(formData))
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Produto criado com sucesso!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
 
     onClose();
@@ -124,12 +161,7 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
   return (
     <Modal
       open={isOpen}
-      onClose={onClose}
-      slotProps={{
-        backdrop: {
-          onClick: onClose
-        }
-      }}
+      onClose={onClose} 
     >
       <Box
         sx={{
@@ -150,8 +182,7 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
             height: '100%',
           }
         }}
-        onClick={(e) => e.stopPropagation()}
-      >
+        onClick={(e) => e.stopPropagation()}       >
         <Button
           onClick={onClose}
           sx={{
@@ -186,6 +217,11 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
           <Typography variant="h4" align='center' gutterBottom sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
             {produto ? 'Atualizar Produto' : 'Novo Produto'}
           </Typography>
+          {error && (
+            <Typography color="error" sx={{ marginBottom: '16px', textAlign: 'center' }}>
+              {error}
+            </Typography>
+          )}
           <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
             <Box
               sx={{

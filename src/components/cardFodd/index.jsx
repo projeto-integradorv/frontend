@@ -1,5 +1,4 @@
-'use client'; // Esta linha deve estar no topo do arquivo
-
+// components/CardFood.js
 import React, { useState } from 'react';
 import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import Image from "next/image";
@@ -10,7 +9,7 @@ import iconDel from '@/assets/Group 33.png';
 import Img from '@/assets/x-bacon.jpeg';
 import ModalPagamento from '../modalpagament';
 
-export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs, index }) {
+export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs, index, onDelete }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
@@ -41,22 +40,6 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                         justifyContent: 'center',
                         padding: 0,
                         position: 'relative',
-                        '@media (max-width: 1024px)': {
-                            width: '100%',
-                        },
-                        '@media (max-width: 768px)': {
-                            gap: 1,
-                            width: '100%',
-                        },
-                        '@media (max-width: 480px)': {
-                            width: '90%',
-                            padding: 0,
-                            margin: '0 auto',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        },
                         cursor: 'pointer',
                     }}
                     onClick={handleCardClick}
@@ -79,28 +62,32 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                             />
                         </Box>
 
-                        <Button
-                            aria-label="delete"
-                            sx={{
-                                position: 'absolute',
-                                top: '8px',
-                                right: '8px',
-                                zIndex: 1,
-                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                padding: '4px',
-                                minWidth: 0,
-                            }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                            }}
-                        >
-                            <Image
-                                src={iconDel}
-                                alt={'delete'}
-                                width={34}
-                                height={34}
-                            />
-                        </Button>
+                        {pathname === '/admin' && (
+                            <Button
+                                aria-label="delete"
+                                sx={{
+                                    position: 'absolute',
+                                    top: '8px',
+                                    right: '8px',
+                                    zIndex: 1,
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    padding: '4px',
+                                    minWidth: 0,
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (onDelete) onDelete(id); 
+                                }}
+                            >
+                                <Image
+                                    src={iconDel}
+                                    alt={'delete'}
+                                    width={34}
+                                    height={34}
+                                />
+                            </Button>
+                        )}
+
                         <CardContent sx={{ padding: 2 }}>
                             <Box
                                 sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}
@@ -175,7 +162,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                     objectFit='cover'
                                     objectPosition='center'
                                 />
-                            </Box>  
+                            </Box>
                             <CardContent sx={{ padding: 2 }}>
                                 <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
                                     {nomeLimitado}
@@ -193,8 +180,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                         </Card>
                     </Box>
                 </Link>
-            )
-            }
+            )}
         </>
     );
 }
