@@ -37,28 +37,35 @@ export default function CardImageProduct({ produto }) {
         overflow: 'hidden',
       }}
     >
-      <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Grid item xs={12} md={5} sx={{ padding:2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Box
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems={{ xs: 'center', md: 'flex-start' }}
           sx={{
+            width:'100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
             borderRadius: '10px',
             overflow: 'hidden',
+            position: 'relative',
+            marginBottom: { xs: 2, md: 1},
           }}
         >
           <Image
             src={produto.image || ImageProduct}
             alt="Imagem do produto"
+            objectFit='cover'
+            
+            width={400}
             height={300}
-            width={350}
-            style={{ borderRadius: '10px' }}
+            sizes="100%"
+            borderRadius="20px"
+            style={{ borderRadius: '20px' }}
           />
         </Box>
       </Grid>
 
-      <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
+      <Grid item xs={12} md={7} sx={{ width:"100%", display: 'flex', flexDirection: 'column', padding: 2 }}>
         <Typography variant="h4" component="h1" sx={{ fontWeight: 500, color: '#fff', mb: 1 }}>
           {produto.name || 'Nome do produto'}
         </Typography>
