@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Box, Typography, TextField, FormControl, Chip } from '@mui/material';
 import Image from "next/image";
@@ -11,8 +13,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 export default function ModalProduto({ isOpen, onClose, produto }) {
   const dispatch = useDispatch();
-  const categorias = useSelector((state) => state.categorias.categorias || []); // Verificação de array vazio
-  const adicionaisDisponiveis = useSelector((state) => state.adicionais.adicionais || []); // Verificação de array vazio
+  const categorias = useSelector((state) => state.categorias.categorias);
+  const adicionaisDisponiveis = useSelector((state) => state.adicionais.adicionais);
 
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
@@ -23,13 +25,14 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
   const [adicionais, setAdicionais] = useState([]);
 
   useEffect(() => {
-    if (produto) {
+    if (isOpen && produto) {
       setNome(produto.name || '');
       setDescricao(produto.description || '');
       setPreco(produto.price || 0);
       setImagemPreview(produto.image || '');
-      setCategoria(produto.category || null);
-      setAdicionais(produto.additionals || []);
+      setImagem(null); // Não manter a imagem em estado para evitar conflito com a nova imagem
+      setCategoria(produto.category?.id || null);
+      setAdicionais(produto.additionals.map(add => add.id) || []);
     } else {
       setNome('');
       setDescricao('');
@@ -39,7 +42,7 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
       setCategoria(null);
       setAdicionais([]);
     }
-  }, [produto]);
+  }, [isOpen, produto]);
 
   useEffect(() => {
     if (categorias.length === 0) {
@@ -78,8 +81,8 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
   };
 
   const handleAdicionalChange = (event, newValue) => {
-    const adicionaisSelecionados = newValue.map(adicional => {
-      const adicionalEncontrado = adicionaisDisponiveis.find(adc => adc.name === adicional);
+    const adicionaisSelecionados = newValue.map(adicionalName => {
+      const adicionalEncontrado = adicionaisDisponiveis.find(adc => adc.name === adicionalName);
       return adicionalEncontrado ? adicionalEncontrado.id : null;
     }).filter(id => id !== null);
     setAdicionais(adicionaisSelecionados);
@@ -92,15 +95,18 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
   const handleSubmit = () => {
     const formData = new FormData();
 
+    // Adiciona os campos do produto
     formData.append("name", nome);
     formData.append("description", descricao);
-    formData.append("price", preco.toString());
-    formData.append("category", categoria || '');
+    formData.append("price", preco.toString()); // Convertendo para string
+    formData.append("category", categoria || ''); // Usando string vazia se categoria for null
 
+    // Adiciona os adicionais, um por vez
     adicionais.forEach((adicional) => {
-      formData.append("additionals", adicional);
+      formData.append("additionals", adicional.toString());
     });
 
+    // Adiciona a imagem se disponível
     if (imagem) {
       formData.append("image", imagem);
     }
@@ -181,7 +187,7 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
             {produto ? 'Atualizar Produto' : 'Novo Produto'}
           </Typography>
           <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
-            <Box 
+            <Box
               sx={{
                 width: '100%',
                 height: '250px',
@@ -254,39 +260,102 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
             <Autocomplete
               value={categorias.find(cat => cat.id === categoria)?.name || ''}
               onChange={handleCategoriaChange}
-              options={categorias.map((cat) => cat.name)}
-              renderInput={(params) => <TextField {...params} label="Categoria" variant="outlined" />}
+              options={categorias.map(cat => cat.name || '')}
+              getOptionLabel={(option) => option || ''}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Categoria"
+                  variant="outlined"
+                />
+              )}
             />
           </FormControl>
+
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
             <Autocomplete
               multiple
-              value={adicionais.map(id => adicionaisDisponiveis.find(adc => adc.id === id)?.name || '')}
+              value={adicionaisDisponiveis
+                .filter(adicional => adicionais.includes(adicional.id))
+                .map(adicional => adicional.name)}
               onChange={handleAdicionalChange}
-              options={adicionaisDisponiveis.map((adc) => adc.name)}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
+              options={adicionaisDisponiveis.map(adc => adc.name || '')}
+              getOptionLabel={(option) => option || ''}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => (
                   <Chip
-                    key={index}
+                    key={option}
                     label={option}
                     {...getTagProps({ index })}
-                    onDelete={() => removerAdicional(adicionaisDisponiveis.find(adc => adc.name === option)?.id)}
+                    onDelete={() => {
+                      const adicionalId = adicionaisDisponiveis.find(adc => adc.name === option)?.id;
+                      if (adicionalId) {
+                        removerAdicional(adicionalId);
+                      }
+                    }}
+                    deleteIcon={<RemoveIcon />}
+                    sx={{ margin: '4px' }}
                   />
                 ))
               }
-              renderInput={(params) => <TextField {...params} label="Adicionais" variant="outlined" />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Adicionais"
+                  variant="outlined"
+                />
+              )}
             />
           </FormControl>
+
+          {adicionais.length > 0 && (
+            <Box sx={{ marginBottom: '16px' }}>
+              <Typography variant="h6">Adicionais Selecionados:</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {adicionais.map((adicionalId) => (
+                  <Chip
+                    key={adicionalId}
+                    label={adicionaisDisponiveis.find(adc => adc.id === adicionalId)?.name || ''}
+                    onDelete={() => removerAdicional(adicionalId)}
+                    deleteIcon={<RemoveIcon />}
+                    sx={{ margin: '4px' }}
+                  />
+                ))}
+              </Box>
+            </Box>
+          )}
+
         </Box>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ marginTop: 'auto', padding: '12px' }}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '16px'
+          }}
         >
-          {produto ? 'Atualizar Produto' : 'Inserir Produto'}
-        </Button>
+          <Button
+            onClick={onClose}
+            variant="contained"
+            sx={{
+              backgroundColor: '#ff9800',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#fda116'
+              }
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+          >
+            {produto ? 'Atualizar' : 'Criar'}
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );
