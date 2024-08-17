@@ -59,7 +59,7 @@ produtosListener.startListening({
         try {
             console.log('Inserindo produto:', action.payload);
             const novoProduto = await postProduct(action.payload);
-            dispatch(produtoInserido(novoProduto.data));
+            dispatch(produtoInserido(novoProduto));
             dispatch(carregarProdutos());
         } catch (error) {
             dispatch(setError(error.message));
@@ -71,10 +71,10 @@ produtosListener.startListening({
     actionCreator: editarProduto,
     effect: async (action, { dispatch }) => {
         try {
-            console.log('Editando produto 0007:', action.payload);
             const produtoAtualizadoData = await putProduct(action.payload.get('id'), action.payload);
             console.log('Editando produto 0008:', produtoAtualizadoData);
             dispatch(produtoAtualizado(produtoAtualizadoData));
+            dispatch(carregarProdutos());
         } catch (error) {
             dispatch(setError(error.message));
         }

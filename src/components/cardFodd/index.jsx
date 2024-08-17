@@ -5,12 +5,12 @@ import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material"
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ModalProduto from '../modalIsertUpdate'; 
+import ModalProduto from '../modalIsertUpdate';
 import iconDel from '@/assets/Group 33.png';
 import Img from '@/assets/x-bacon.jpeg';
-import ModalPagamento from '../modalpagament'; 
+import ModalPagamento from '../modalpagament';
 
-export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs , index}) {
+export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs, index }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
@@ -62,120 +62,130 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                     onClick={handleCardClick}
                 >
                     <Card sx={{ width: '100%', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px' }}>
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                width: '100%',
+                                height: '200px',
+                                borderRadius: '20px 20px 0 0',
+                                overflow: 'hidden',
+                            }}>
                         <Image
                             src={imagem}
                             alt={nome}
-                            layout="responsive"
-                            width={100}
-                            height={100}
-                            style={{ borderRadius: '20px' }}
+                            layout='fill'
+                            objectFit='cover'
+                            objectPosition='center'
                         />
-                        <Button
-                            aria-label="delete"
+                    </Box>
+
+                    <Button
+                        aria-label="delete"
+                        sx={{
+                            position: 'absolute',
+                            top: '8px',
+                            right: '8px',
+                            zIndex: 1,
+                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                            padding: '4px',
+                            minWidth: 0,
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        <Image
+                            src={iconDel}
+                            alt={'delete'}
+                            width={34}
+                            height={34}
+                        />
+                    </Button>
+                    <CardContent sx={{ padding: 2 }}>
+                        <Box
+                            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}
+                        >
+                            <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
+                                {nomeLimitado}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                {descricaoLimitada}
+                            </Typography>
+                        </Box>
+                        <Box
                             sx={{
-                                position: 'absolute',
-                                top: '8px',
-                                right: '8px',
-                                zIndex: 1,
-                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                padding: '4px',
-                                minWidth: 0,
-                            }}
-                            onClick={(e) => {
-                                e.stopPropagation(); 
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                             }}
                         >
-                            <Image
-                                src={iconDel}
-                                alt={'delete'}
-                                width={34}
-                                height={34}
-                            />
-                        </Button>
-                        <CardContent sx={{ padding: 2 }}>
-                            <Box
-                                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', mb: 2 }}
-                            >
-                                <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
-                                    {nomeLimitado}
+                            <Typography variant="body2" color="textSecondary">
+                                qt: {quant}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                a partir de&nbsp;
+                                <Typography variant="body2" component="span" sx={{ color: '#52c5a6' }}>
+                                    {preco} R$
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary">
-                                    {descricaoLimitada}
-                                </Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Typography variant="body2" color="textSecondary">
-                                    qt: {quant}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    a partir de&nbsp;
-                                    <Typography variant="body2" component="span" sx={{ color: '#52c5a6' }}>
-                                        {preco} R$
-                                    </Typography>
-                                </Typography>
-                            </Box>
-                        </CardContent>
-                    </Card>
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
 
                     {pathname === '/admin' && (
-                        <ModalProduto
-                            Obs={obs}
-                            Image={Img}
-                            produto={produto}
-                            isOpen={isModalOpen}
-                            onClose={handleCloseModal}
-                        />
-                    )}
-
-                    {pathname === '/cart' && (
-                        <ModalPagamento
-                            index = {index}
-                            initialObs={obs}
-                            isOpen={isModalOpen}
-                            onClose={handleCloseModal}
-                            nomeProduto={nome}
-                            imagemProduto={imagem}
-                            descricaoProduto={descricao}
-                            quanty={quant}
-                            productPrice={preco}
-                        />
-                    )}
-                </Grid>
-            ) : (
-                <Link href={rota} passHref style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center' }}>
-                    <Box component="div" sx={{ textDecoration: 'none', width: { xs: '100%', md: '90%' }, display: 'block', margin: '1%' }}>
-                        <Card sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px', minHeight: '300px' }}>
-                            <Image
-                                src={imagem}
-                                alt={nome}
-                                layout="responsive"
-                                width={100}
-                                height={100}
-                            />
-                            <CardContent sx={{ padding: 2 }}>
-                                <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
-                                    {nomeLimitado}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-                                    {descricaoLimitada}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary">
-                                    a partir de&nbsp;
-                                    <Typography variant="h6" component="span" sx={{ color: '#52c5a6', fontWeight: 'bold' }}>
-                                        {preco} R$
-                                    </Typography>
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Box>
-                </Link>
+                <ModalProduto
+                    Obs={obs}
+                    Image={Img}
+                    produto={produto}
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                />
             )}
+
+            {pathname === '/cart' && (
+                <ModalPagamento
+                    index={index}
+                    initialObs={obs}
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    nomeProduto={nome}
+                    imagemProduto={imagem}
+                    descricaoProduto={descricao}
+                    quanty={quant}
+                    productPrice={preco}
+                />
+            )}
+        </Grid >
+            ) : (
+        <Link href={rota} passHref style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center' }}>
+            <Box component="div" sx={{ textDecoration: 'none', width: { xs: '100%', md: '90%' }, display: 'block', margin: '1%' }}>
+                <Card sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: '20px', minHeight: '300px' }}>
+                    <Image
+                        src={imagem}
+                        alt={nome}
+                        layout="responsive"
+                        width={100}
+                        height={100}
+                    />
+                    <CardContent sx={{ padding: 2 }}>
+                        <Typography gutterBottom variant="h6" sx={{ fontWeight: 'bold' }}>
+                            {nomeLimitado}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                            {descricaoLimitada}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            a partir de&nbsp;
+                            <Typography variant="h6" component="span" sx={{ color: '#52c5a6', fontWeight: 'bold' }}>
+                                {preco} R$
+                            </Typography>
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>
+        </Link>
+    )
+}
         </>
     );
 }

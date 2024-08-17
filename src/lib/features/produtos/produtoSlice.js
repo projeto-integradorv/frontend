@@ -51,16 +51,13 @@ const produtosSlice = createAppSlice({
             state.produtos.push(payload);
         },
         produtoAtualizado: (state, { payload }) => {
-            // Supondo que o payload seja um objeto com as atualizações
             const index = state.produtos.findIndex(prod => prod.id === payload.id);
-
             if (index !== -1) {
-                // Atualiza o produto com os campos do payload
-                state.produtos[index] = { ...state.produtos[index], ...payload };
+              state.produtos[index] = { ...state.produtos[index], ...payload };
             }
-        },
+          }
+          ,
         produtoApagado: (state, { payload }) => {
-            // Remove o produto com o id fornecido
             state.produtos = state.produtos.filter(prod => prod.id !== payload);
         },
         setError: (state, { payload }) => {

@@ -11,24 +11,24 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 export default function ModalProduto({ isOpen, onClose, produto }) {
   const dispatch = useDispatch();
-  const categorias = useSelector((state) => state.categorias.categorias);
-  const adicionaisDisponiveis = useSelector((state) => state.adicionais.adicionais);
+  const categorias = useSelector((state) => state.categorias.categorias || []); // Verificação de array vazio
+  const adicionaisDisponiveis = useSelector((state) => state.adicionais.adicionais || []); // Verificação de array vazio
 
-  const [nome, setNome] = useState(produto?.name || '');
-  const [descricao, setDescricao] = useState(produto?.description || '');
-  const [preco, setPreco] = useState(produto?.price || 0);
-  const [imagemPreview, setImagemPreview] = useState(produto?.image || '');
+  const [nome, setNome] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [preco, setPreco] = useState(0);
+  const [imagemPreview, setImagemPreview] = useState('');
   const [imagem, setImagem] = useState(null);
-  const [categoria, setCategoria] = useState(produto?.category || 0);
+  const [categoria, setCategoria] = useState(null);
   const [adicionais, setAdicionais] = useState([]);
 
   useEffect(() => {
     if (produto) {
-      setNome(produto.name);
-      setDescricao(produto.description);
-      setPreco(produto.price);
-      setImagemPreview(produto.image);
-      setCategoria(produto.category);
+      setNome(produto.name || '');
+      setDescricao(produto.description || '');
+      setPreco(produto.price || 0);
+      setImagemPreview(produto.image || '');
+      setCategoria(produto.category || null);
       setAdicionais(produto.additionals || []);
     } else {
       setNome('');
@@ -89,40 +89,31 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
     setAdicionais((prev) => prev.filter(id => id !== adicionalId));
   };
 
-  // console.log('Adicionais:', adicionais);
-
   const handleSubmit = () => {
     const formData = new FormData();
-  
-    // Adiciona os campos do produto
+
     formData.append("name", nome);
     formData.append("description", descricao);
-    formData.append("price", preco.toString()); // Convertendo para string
-    formData.append("category", categoria || ''); // Usando string vazia se categoria for null
-  
-    // Adiciona os adicionais, um por vez
+    formData.append("price", preco.toString());
+    formData.append("category", categoria || '');
+
     adicionais.forEach((adicional) => {
       formData.append("additionals", adicional);
     });
-  
-    // Adiciona a imagem se disponível
+
     if (imagem) {
       formData.append("image", imagem);
     }
-  
-    // Adiciona o id do produto se estiver editando um produto existente
+
     if (produto) {
       formData.append("id", produto.id);
       dispatch(editarProduto(formData));
     } else {
       dispatch(inserirProduto(formData));
     }
-  
+
     onClose();
   };
-  
-  
-  
 
   return (
     <Modal
@@ -263,92 +254,39 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
             <Autocomplete
               value={categorias.find(cat => cat.id === categoria)?.name || ''}
               onChange={handleCategoriaChange}
-              options={categorias.map((cat) => cat.name || "")}
-              getOptionLabel={(option) => option || ""}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Categoria"
-                  variant="outlined"
-                />
-              )}
+              options={categorias.map((cat) => cat.name)}
+              renderInput={(params) => <TextField {...params} label="Categoria" variant="outlined" />}
             />
           </FormControl>
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
             <Autocomplete
               multiple
-              value={adicionaisDisponiveis.filter(adicional => adicionais.includes(adicional.id)).map(adicional => adicional.name)}
+              value={adicionais.map(id => adicionaisDisponiveis.find(adc => adc.id === id)?.name || '')}
               onChange={handleAdicionalChange}
-              options={adicionaisDisponiveis.map((adc) => adc.name || "")}
-              getOptionLabel={(option) => option || ""}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => (
+              options={adicionaisDisponiveis.map((adc) => adc.name)}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
                   <Chip
-                    key={option}
+                    key={index}
                     label={option}
                     {...getTagProps({ index })}
                     onDelete={() => removerAdicional(adicionaisDisponiveis.find(adc => adc.name === option)?.id)}
-                    deleteIcon={<RemoveIcon />}
-                    sx={{ margin: '4px' }}
                   />
                 ))
               }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Adicionais"
-                  variant="outlined"
-                />
-              )}
+              renderInput={(params) => <TextField {...params} label="Adicionais" variant="outlined" />}
             />
           </FormControl>
-          {adicionais.length > 0 && (
-            <Box sx={{ marginBottom: '16px' }}>
-              <Typography variant="h6">Adicionais Selecionados:</Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {adicionais.map((adicionalId) => (
-                  <Chip
-                    key={adicionalId}
-                    label={adicionaisDisponiveis.find(adc => adc.id === adicionalId)?.name || ''}
-                    onDelete={() => removerAdicional(adicionalId)}
-                    deleteIcon={<RemoveIcon />}
-                    sx={{ margin: '4px' }}
-                  />
-                ))}
-              </Box>
-            </Box>
-          )}
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '16px'
-          }}
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ marginTop: 'auto', padding: '12px' }}
         >
-          <Button
-            onClick={onClose}
-            variant="contained"
-            sx={{
-              backgroundColor: '#ff9800',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: '#fda116'
-              }
-            }}
-          >
-            Cancelar
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            color="primary"
-          >
-            {produto ? 'Atualizar' : 'Criar'}
-          </Button>
-        </Box>
+          {produto ? 'Atualizar Produto' : 'Inserir Produto'}
+        </Button>
       </Box>
     </Modal>
   );
