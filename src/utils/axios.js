@@ -10,7 +10,7 @@ const axiosInstance = axios.create(
         baseURL: HOST_API,
         headers: {
             'Content-Type': 'application/json',   
-            'Authorization': `Token 98c01c08bf0cc42f514007a8294a9306c1cdff2e`
+            'Authorization': `Token 3836735c2f9d8993f29c2c0eaa5ce2f585283d3d`
         }
     }
 );

@@ -16,11 +16,12 @@ const getProductById = async (id) => {
         const response = await axiosInstance.get(`/product/${id}`);
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || `Erro ao buscar o produto com id ${id}.`);
+        throw new Error(error.response?.data?.message || `Erro ao buscar o produto com id ${id}`);
     }
 };
 
 const postProduct = async (data) => {
+    console.log('data ------', data);
     try {
         const response = await axiosInstance.post('/product/', data,{
             headers: {
@@ -34,7 +35,6 @@ const postProduct = async (data) => {
 };
 
 const putProduct = async (id, data) => {
-        console.log('data', data);
         const response = await axiosInstance.put(`/product/${id}/`, data , {
             headers: {
                 'Content-Type': 'multipart/form-data',

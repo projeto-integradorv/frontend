@@ -5,21 +5,26 @@ const initialState = {
     loading: false,
     produtos: [],
     produto: {},
-    error: null, 
+    error: null,
 };
 
 export const carregarProdutos = createAction('produtos/carregarProdutos');
 export const carregarProduto = createAction('produtos/carregarProduto');
-export const inserirProduto = createAction('produtos/inserirProduto', 
-    
+export const inserirProduto = createAction('produtos/inserirProduto',
+
     (formData) => ({
         payload: formData,
     })
 );
 
-export const editarProduto = createAction('produtos/editarProduto', (formData) => ({
-    payload: formData,
-}));
+export const editarProduto = createAction('produtos/editarProduto',
+    (formData) => {
+        console.log('Atualizando categoria:', formData);
+        return {
+            payload: formData,
+        };
+    }
+);
 
 export const apagarProduto = createAction('produtos/apagarProduto', (id) => ({
     payload: id,
@@ -59,13 +64,13 @@ const produtosSlice = createAppSlice({
     },
 });
 
-export const { 
-    adicionarTodasProdutos, 
-    adicionarProduto, 
-    mudarLoading, 
-    produtoInserido, 
-    produtoAtualizado, 
-    produtoApagado 
+export const {
+    adicionarTodasProdutos,
+    adicionarProduto,
+    mudarLoading,
+    produtoInserido,
+    produtoAtualizado,
+    produtoApagado
 } = produtosSlice.actions;
 
 export default produtosSlice.reducer;

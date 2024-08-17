@@ -12,6 +12,8 @@ export default function ProductView({ Id }) {
   const dispatch = useAppDispatch(carregarProduto(Id));
   const { produto, loading } = useAppSelector((state) => state.produtos);
 
+  console.log(produto, 'produto - productView')
+
   useEffect(() => {
     dispatch(carregarProduto(Id))
   }, [dispatch, Id]);

@@ -19,7 +19,7 @@ export const inserirCategoria = createAction('categorias/inserirCategoria',
 );
 export const atualizarCategoria = createAction('categorias/atualizarCategoria',
     (formData) => {
-        console.log('Atualizando categoria:', formData);
+        console.log('Atualizando categoria ????', formData);
         return {
             payload: formData,
         };

@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Box, Typography, TextField, FormControl, Select, MenuItem, InputLabel, Chip } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, FormControl, Chip } from '@mui/material';
 import Image from "next/image";
 import Voltar from '@/assets/voltar.png';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editarProduto, inserirProduto } from '@/lib/features/produtos/produtoSlice';
+import { carregarCategorias } from '@/lib/features/categoria/categoriaSlice';
+import { carregarAdicionais } from '@/lib/features/adicionais/adicionaisSlice';
+import Autocomplete from '@mui/material/Autocomplete';
 import RemoveIcon from '@mui/icons-material/Remove';
-const categoriasMock = ['Eletrônicos', 'Roupas', 'Alimentos', 'Casa e Jardim', 'Beleza'];
 
 export default function ModalProduto({ isOpen, onClose, produto }) {
+  const dispatch = useDispatch();
+  const categorias = useSelector((state) => state.categorias.categorias);
+  const adicionaisDisponiveis = useSelector((state) => state.adicionais.adicionais);
+
   const [nome, setNome] = useState(produto?.name || '');
   const [descricao, setDescricao] = useState(produto?.description || '');
   const [preco, setPreco] = useState(produto?.price || 0);
   const [imagemPreview, setImagemPreview] = useState(produto?.image || '');
   const [imagem, setImagem] = useState(null);
-  const [categoria, setCategoria] = useState(produto?.category || categoriasMock[0]);
-  const [adicionais, setAdicionais] = useState(produto?.adicionais || []);
-  const [novoAdicional, setNovoAdicional] = useState('');
-
-  const dispatch = useDispatch();
+  const [categoria, setCategoria] = useState(produto?.category || 0);
+  const [adicionais, setAdicionais] = useState([]);
 
   useEffect(() => {
     if (produto) {
@@ -26,14 +29,38 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
       setPreco(produto.price);
       setImagemPreview(produto.image);
       setCategoria(produto.category);
-      setAdicionais(produto.adicionais || []);
+      setAdicionais(produto.additionals || []);
+    } else {
+      setNome('');
+      setDescricao('');
+      setPreco(0);
+      setImagemPreview('');
+      setImagem(null);
+      setCategoria(null);
+      setAdicionais([]);
     }
   }, [produto]);
+
+  useEffect(() => {
+    if (categorias.length === 0) {
+      dispatch(carregarCategorias());
+    }
+    if (adicionaisDisponiveis.length === 0) {
+      dispatch(carregarAdicionais());
+    }
+  }, [categorias, adicionaisDisponiveis, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      if (imagemPreview) {
+        URL.revokeObjectURL(imagemPreview);
+      }
+    };
+  }, [imagemPreview]);
 
   const handleNomeChange = (e) => setNome(e.target.value);
   const handleDescricaoChange = (e) => setDescricao(e.target.value);
   const handlePrecoChange = (e) => setPreco(parseFloat(e.target.value) || 0);
-  const handleCategoriaChange = (e) => setCategoria(e.target.value);
 
   const handleImagemChange = (e) => {
     const file = e.target.files[0];
@@ -45,45 +72,69 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
     }
   };
 
-  const handleNovoAdicionalChange = (e) => setNovoAdicional(e.target.value);
-
-  const adicionarAdicional = () => {
-    if (novoAdicional) {
-      setAdicionais((prev) => [...prev, novoAdicional]);
-      setNovoAdicional('');
-    }
+  const handleCategoriaChange = (event, newValue) => {
+    const categoriaSelecionada = categorias.find(cat => cat.name === newValue);
+    setCategoria(categoriaSelecionada ? categoriaSelecionada.id : null);
   };
 
-  const removerAdicional = (adicionalParaRemover) => {
-    setAdicionais((prev) => prev.filter(adicional => adicional !== adicionalParaRemover));
+  const handleAdicionalChange = (event, newValue) => {
+    const adicionaisSelecionados = newValue.map(adicional => {
+      const adicionalEncontrado = adicionaisDisponiveis.find(adc => adc.name === adicional);
+      return adicionalEncontrado ? adicionalEncontrado.id : null;
+    }).filter(id => id !== null);
+    setAdicionais(adicionaisSelecionados);
   };
+
+  const removerAdicional = (adicionalId) => {
+    setAdicionais((prev) => prev.filter(id => id !== adicionalId));
+  };
+
+  console.log('Adicionais:', adicionais);
 
   const handleSubmit = () => {
     const formData = new FormData();
+  
+    // Adiciona os dados do produto ao FormData
     formData.append("name", nome);
     formData.append("description", descricao);
-    formData.append("price", preco.toString()); // Certifique-se de enviar como string
-    formData.append("category", categoria);
-    formData.append("adicionais", JSON.stringify(adicionais)); // Serializa os adicionais
+    formData.append("price", preco);
+    formData.append("category", categoria || ''); 
+    formData.append("additionals",adicionais || []);
     
     if (imagem) {
       formData.append("image", imagem);
     }
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
+    
+    const formDataToObject = (formData) => {
+      const obj = {};
+      formData.forEach((value, key) => {
+        if (obj[key]) {
+          if (Array.isArray(obj[key])) {
+            obj[key].push(value);
+          } else {
+            obj[key] = [obj[key], value];
+          }
+        } else {
+          obj[key] = value;
+        }
+      });
+      return obj;
+    };
+  
+    console.log('FormData content:', formDataToObject(formData));
+  
     if (produto) {
-      console.log('Editando produto:', produto.id);
-      formData.append("id", produto.id); // Adiciona o ID para a edição
+      formData.append("id", produto.id);
       dispatch(editarProduto(formData));
     } else {
       dispatch(inserirProduto(formData));
     }
-
+  
+    // Fecha o modal após a submissão
     onClose();
   };
+  
+  
 
   return (
     <Modal
@@ -193,88 +244,121 @@ export default function ModalProduto({ isOpen, onClose, produto }) {
               />
             </Button>
           </Box>
+          <TextField
+            label="Nome"
+            variant="outlined"
+            fullWidth
+            value={nome}
+            onChange={handleNomeChange}
+            sx={{ marginBottom: '16px' }}
+          />
+          <TextField
+            label="Descrição"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            value={descricao}
+            onChange={handleDescricaoChange}
+            sx={{ marginBottom: '16px' }}
+          />
+          <TextField
+            label="Preço"
+            variant="outlined"
+            fullWidth
+            type="number"
+            value={preco}
+            onChange={handlePrecoChange}
+            sx={{ marginBottom: '16px' }}
+          />
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <InputLabel>Categoria</InputLabel>
-            <Select
-              value={categoria}
+            <Autocomplete
+              value={categorias.find(cat => cat.id === categoria)?.name || ''}
               onChange={handleCategoriaChange}
-              label="Categoria"
-            >
-              {categoriasMock.map((cat) => (
-                <MenuItem key={cat} value={cat}>
-                  {cat}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <TextField
-              label="Nome do Produto"
-              value={nome}
-              onChange={handleNomeChange}
-              variant="outlined"
-              fullWidth
+              options={categorias.map((cat) => cat.name || "")}
+              getOptionLabel={(option) => option || ""}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Categoria"
+                  variant="outlined"
+                />
+              )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <TextField
-              label="Descrição"
-              value={descricao}
-              onChange={handleDescricaoChange}
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={3}
+            <Autocomplete
+              multiple
+              value={adicionaisDisponiveis.filter(adicional => adicionais.includes(adicional.id)).map(adicional => adicional.name)}
+              onChange={handleAdicionalChange}
+              options={adicionaisDisponiveis.map((adc) => adc.name || "")}
+              getOptionLabel={(option) => option || ""}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => (
+                  <Chip
+                    key={option}
+                    label={option}
+                    {...getTagProps({ index })}
+                    onDelete={() => removerAdicional(adicionaisDisponiveis.find(adc => adc.name === option)?.id)}
+                    deleteIcon={<RemoveIcon />}
+                    sx={{ margin: '4px' }}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Adicionais"
+                  variant="outlined"
+                />
+              )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <TextField
-              label="Preço (R$)"
-              value={preco}
-              onChange={handlePrecoChange}
-              variant="outlined"
-              fullWidth
-              type="number"
-              inputProps={{ min: 0, step: 0.01 }}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ marginBottom: '16px' }}>
-            <TextField
-              label="Novo Adicional"
-              value={novoAdicional}
-              onChange={handleNovoAdicionalChange}
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                endAdornment: (
-                  <Button
-                    variant="contained"
-                    onClick={adicionarAdicional}
-                    sx={{ marginLeft: '8px' }}
-                  >
-                    Adicionar
-                  </Button>
-                ),
-              }}
-            />
-          </FormControl>
-          <Box>
-            {adicionais.map((adicional, index) => (
-              <Chip
-                key={index}
-                label={adicional}
-                onDelete={() => removerAdicional(adicional)}
-                deleteIcon={<RemoveIcon />}
-                sx={{ marginRight: '8px', marginBottom: '8px' }}
-              />
-            ))}
-          </Box>
+          {adicionais.length > 0 && (
+            <Box sx={{ marginBottom: '16px' }}>
+              <Typography variant="h6">Adicionais Selecionados:</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {adicionais.map((adicionalId) => (
+                  <Chip
+                    key={adicionalId}
+                    label={adicionaisDisponiveis.find(adc => adc.id === adicionalId)?.name || ''}
+                    onDelete={() => removerAdicional(adicionalId)}
+                    deleteIcon={<RemoveIcon />}
+                    sx={{ margin: '4px' }}
+                  />
+                ))}
+              </Box>
+            </Box>
+          )}
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '16px'
+          }}
+        >
           <Button
+            onClick={onClose}
             variant="contained"
-            onClick={handleSubmit}
-            sx={{ marginTop: '16px' }}
+            sx={{
+              backgroundColor: '#ff9800',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#fda116'
+              }
+            }}
           >
-            {produto ? 'Atualizar Produto' : 'Adicionar Produto'}
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+          >
+            {produto ? 'Atualizar' : 'Criar'}
           </Button>
         </Box>
       </Box>
