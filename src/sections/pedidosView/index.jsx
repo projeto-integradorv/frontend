@@ -1,24 +1,23 @@
 'use client';
-
 import React, { useState } from "react";
 import { Button, Container, Grid } from '@mui/material';
 import BasicLayout from "@/layouts/basic/basiclayout";
 import OrderCard from "@/components/OrderCard";
 import BoxConfirnation from "@/components/boxConfirmation";
 import EditOrderModal from "@/components/EditOrderModal";
+import TimelineModal from "@/components/OrderTimelineModal";
 import { useRouter, usePathname } from "next/navigation";
 
 const initialOrders = [
-  { id: 1, quantidade: 3, total: 250.00, status: 'Em Processamento' },
+  { id: 1, quantidade: 3, total: 250.00, status: 'Recebido' },
   { id: 2, quantidade: 3, total: 180.00, status: 'Concluído' },
-  { id: 3, quantidade: 3, total: 250.00, status: 'Em Processamento' },
-  { id: 4, quantidade: 3, total: 180.00, status: 'Concluído' },
-  // Adicione mais pedidos conforme necessário
+  // Outros pedidos...
 ];
 
 export default function PedidosView() {
   const [orders, setOrders] = useState(initialOrders);
   const [modalOpen, setModalOpen] = useState(false);
+  const [timelineOpen, setTimelineOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const pathname = usePathname();
@@ -32,11 +31,19 @@ export default function PedidosView() {
     if (pathname === '/admin') {
       setSelectedOrder(order);
       setModalOpen(true);
+    } else {
+      setSelectedOrder(order);
+      setTimelineOpen(true);
     }
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
+    setSelectedOrder(null);
+  };
+
+  const handleCloseTimeline = () => {
+    setTimelineOpen(false);
     setSelectedOrder(null);
   };
 
@@ -102,9 +109,7 @@ export default function PedidosView() {
     <>
       {pathname === '/admin' ? (
         <Container maxWidth="" disableGutters={true} >
-          <Container maxWidth="lg" sx={{
-            minHeight: '100vh'
-          }}>
+          <Container maxWidth="lg" sx={{ minHeight: '100vh' }}>
             {orderGrid}
           </Container>
           {selectedOrder && (
@@ -126,6 +131,13 @@ export default function PedidosView() {
             <BoxConfirnation valorFinal={totalValue} />
           </Container>
         </BasicLayout>
+      )}
+      {selectedOrder && (
+        <TimelineModal
+          open={timelineOpen}
+          onClose={handleCloseTimeline}
+          order={selectedOrder}
+        />
       )}
     </>
   );

@@ -12,10 +12,10 @@ import Adicionais from "./components/Adicionais"
 const drawerWidth = 240;
 
 export default function AdminLayout() {
-    const [selectedComponent, setSelectedComponent] = useState("categoria");
+    const [selectedComponent, setSelectedComponent] = useState("pedidos");
     const [loading, setLoading] = useState(true);
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Adapte o breakpoint conforme necessário
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); 
     const [open, setOpen] = useState(!isMobile);
 
     const handleDrawerToggle = () => {
@@ -24,27 +24,27 @@ export default function AdminLayout() {
 
     const renderSelectedComponent = () => {
         switch (selectedComponent) {
+            case "pedidos":
+                return <PedidosView />
             case "categoria":
                 return <Categoria />;
             case "produtos":
                 return <Produtos />;
-            case "pedidos":
-                return <PedidosView/>
             case "adicionais":
-                return <Adicionais/>
+                return <Adicionais />
             default:
                 return <Categoria />;
         }
     };
 
     useEffect(() => {
-        setLoading(true); 
+        setLoading(true);
 
         const timer = setTimeout(() => {
-            setLoading(false); 
+            setLoading(false);
         }, 500);
 
-        return () => clearTimeout(timer); 
+        return () => clearTimeout(timer);
     }, [selectedComponent]);
 
     return (
@@ -62,7 +62,7 @@ export default function AdminLayout() {
                         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                     }
                 }}
-                ModalProps={{ keepMounted: true }} // Melhora a performance em dispositivos móveis
+                ModalProps={{ keepMounted: true }}
             >
                 <Box sx={{ overflow: 'auto', display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '8px' }}>
@@ -74,10 +74,10 @@ export default function AdminLayout() {
                     </Box>
                     <List>
                         {[
-                            { text: 'Categoria', icon: <CategoryOutlined />, component: 'categoria' },
-                            { text: 'Produtos', icon: <RestaurantMenuOutlined />, component: 'produtos' },
-                            { text: 'Adicionais', icon: <PostAddOutlined />, component: 'adicionais' },
                             { text: 'Pedidos', icon: <ReceiptLongOutlined />, component: 'pedidos' },
+                            { text: 'Produtos', icon: <RestaurantMenuOutlined />, component: 'produtos' },
+                            { text: 'Categoria', icon: <CategoryOutlined />, component: 'categoria' },
+                            { text: 'Adicionais', icon: <PostAddOutlined />, component: 'adicionais' },
                             { text: 'Funcionários', icon: <PeopleAltOutlined />, component: 'funcionarios' }
                         ].map(({ text, icon, component }) => (
                             <ListItemButton key={text} onClick={() => {

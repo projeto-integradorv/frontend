@@ -1,3 +1,4 @@
+'use client';
 import Img from '@/assets/x-salada.jpg';
 import CardFood from "@/components/cardFodd";
 import ModalProduto from "@/components/modalIsertUpdate"; 
