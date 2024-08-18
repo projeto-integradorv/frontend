@@ -29,24 +29,18 @@ export default function ModalCategoria({ isOpen, onClose, categoria }) {
   const handleSubmit = () => {
     const formData = new FormData();
   
-    // Adiciona os campos do produto
     formData.append("description", descricao);
     formData.append("name", nome);
-    formData.append("price", preco.toString()); // Convertendo para string
-    formData.append("category", categoria || ''); // Usando string vazia se categoria for null
-    formData.append("additionals", JSON.stringify(adicionais)); // Convertendo para string
-  
-    // Adiciona a imagem se disponível
+    formData.append("category", categoria || ''); 
     if (imagem) {
       formData.append("image", imagem);
     }
   
-    // Adiciona o id do produto se estiver editando um produto existente
-    if (produto) {
-      formData.append("id", produto.id);
-      dispatch(editarProduto(formData));
+    if (categoria) {
+      formData.append("id", categoria.id);
+      dispatch(atualizarCategoria(formData));
     } else {
-      dispatch(inserirProduto(formData));
+      dispatch(inserirCategoria(formData));
     }
   
     onClose();
