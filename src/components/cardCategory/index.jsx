@@ -3,7 +3,9 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'; // Importa o ícone RemoveCircleOutline
 import Image from "next/image";
 
-const CardCategory = ({ icon, nameCategory, onClick, onDelete, showDeleteIcon }) => {
+const CardCategory = ({id, icon, nameCategory, onClick, onDelete, showDeleteIcon }) => {
+    const rota = `categorias/categoria/${id}`;
+
     return (
         <Card 
             sx={{ 

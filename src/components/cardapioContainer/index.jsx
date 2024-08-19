@@ -9,10 +9,11 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 
-export default function CardapioContainer() {
+export default function CardapioContainer({Id}) {
     const pathname = usePathname();
     const isHomePage = pathname === '/';
     const isAdmPage = pathname === '/admin';
+    const isCardapioPage = pathname.startsWith('/cardapio/');
     const dispatch = useAppDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -61,6 +62,7 @@ export default function CardapioContainer() {
             sx={{
                 backgroundColor: 'transparent',
                 height: '100%',
+                minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
@@ -68,7 +70,7 @@ export default function CardapioContainer() {
             }}
             disableGutters={true}
         >
-            {isHomePage || isAdmPage ? (
+            {(isHomePage || isAdmPage) ? (
                 <>
                     {isAdmPage ? (
                         <Box
