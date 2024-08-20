@@ -11,7 +11,8 @@ import {
     produtoInserido,
     produtoAtualizado,
     produtoApagado,
-    setError
+    setError,
+    carregarProdutosByCategory
 } from './produtoSlice';
 import {
     getProducts,
@@ -28,7 +29,8 @@ produtosListener.startListening({
     effect: async (action, { dispatch }) => {
         dispatch(mudarLoading(true));
         try {
-            const produtos = await getProducts();
+            
+            const produtos = await getProducts(action.payload);
             dispatch(adicionarTodasProdutos(produtos));
         } catch (error) {
             dispatch(setError(error.message));
@@ -43,7 +45,24 @@ produtosListener.startListening({
     effect: async (action, { dispatch }) => {
         dispatch(mudarLoading(true));
         try {
+            
             const produto = await getProductById(action.payload);
+            dispatch(adicionarProduto(produto));
+        } catch (error) {
+            dispatch(setError(error.message));
+        } finally {
+            dispatch(mudarLoading(false));
+        }
+    },
+});
+
+produtosListener.startListening({
+    actionCreator: carregarProdutosByCategory,
+    effect: async (action, { dispatch }) => {
+        dispatch(mudarLoading(true));
+        try {
+            
+            const produto = await getProductById(action.payload, action.payload.get('category'));
             dispatch(adicionarProduto(produto));
         } catch (error) {
             dispatch(setError(error.message));

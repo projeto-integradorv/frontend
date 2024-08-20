@@ -5,10 +5,22 @@ const initialState = {
     loading: false,
     produtos: [],
     produto: {},
+    // filterCategory: '',
     error: null,
 };
 
-export const carregarProdutos = createAction('produtos/carregarProdutos');
+export const carregarProdutos = createAction('produtos/carregarProdutos',(category)=>
+    {
+        return{
+            payload:category
+        }
+    })
+export const carregarProdutosByCategory = createAction('produtos/carregarProdutos',(category)=>
+{
+    return{
+        payload:category
+    }
+});
 export const carregarProduto = createAction('produtos/carregarProduto');
 export const inserirProduto = createAction('produtos/inserirProduto', 
     (formData) => ({
@@ -63,6 +75,7 @@ const produtosSlice = createAppSlice({
         setError: (state, { payload }) => {
             state.error = payload;
         },
+        
     },
 });
 

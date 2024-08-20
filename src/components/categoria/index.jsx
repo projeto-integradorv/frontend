@@ -261,6 +261,7 @@ export default function Categorias() {
                         }}
                     >
                         <CardCategory
+                            id={category.id}
                             category={category}
                             icon={category.image === null || categorias.image === '' ? ImageMassa : category.image}
                             onClick={(event) => handleCategoryClick(event, category)}

@@ -1,5 +1,5 @@
 import BasicLayout from '../../layouts/basic/basiclayout';  
-import CadarpioContainer from '@/components/cadarpioContainer';
+import CadarpioContainer from '../../components/cardapioContainer';
 
 export default function CategoryIdView({Id}) {
 

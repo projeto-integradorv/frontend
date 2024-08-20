@@ -2,9 +2,9 @@
 
 import axiosInstance from '@/utils/axios';
 
-const getProducts = async () => {
+const getProducts = async (category='') => {
     try {
-        const response = await axiosInstance.get('/product');
+        const response = await axiosInstance.get(`/product?category=`, );
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || 'Erro ao buscar os produtos.');

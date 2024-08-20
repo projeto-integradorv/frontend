@@ -24,6 +24,12 @@ export default function CardapioContainer({Id}) {
 
     const foods = useAppSelector((state) => state.produtos.produtos);
 
+    const filteredFoods = foods.filter((food) => {
+        return Number(food.category?.id) === Number(Id);
+    });
+     
+    console.log('foodsFilll', filteredFoods);
+
     const handleOpenModal = (product) => {
         setSelectedProduct(product);
         setIsModalOpen(true);
@@ -135,7 +141,7 @@ export default function CardapioContainer({Id}) {
                 </>
             ) : (
                 <Grid container spacing={2}>
-                    {foods.map((food) => (
+                    {filteredFoods.map((food) => (
                         <Grid item key={food.id} xs={12} sm={6} md={3}>
                             <CardFood
                                 produto={food}
