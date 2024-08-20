@@ -93,7 +93,9 @@ export default function CategoriaCarrossel() {
                 <Slider {...settings} style={{ width: '100%', height: 'auto', gap: 1 }}>
                     {categorias.map((categoria, index) => (
                         <div key={index} style={{ padding: '0 10px' }}>
-                            <CardCategory icon={categoria.image || ImageMassa} />
+                            <CardCategory icon={categoria.image || ImageMassa}
+                              id={categoria.id}
+                            />
                         </div>
                     ))}
                 </Slider>

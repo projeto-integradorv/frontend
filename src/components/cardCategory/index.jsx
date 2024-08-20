@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 
 const CardCategory = ({ id, icon, nameCategory, onClick, onDelete, showDeleteIcon }) => {
-    const rota = `categorias/categoria/${id}`;
+    const rota = `/categorias/${id}`;
     const router = useRouter()
     const pathname = usePathname()
 
@@ -73,7 +73,7 @@ const CardCategory = ({ id, icon, nameCategory, onClick, onDelete, showDeleteIco
                     borderRadius: '8px',
                     boxShadow: 3
                 }}
-                onClick={onclick}
+                onClick={onClick}
 
             >
                 <CardContent sx={{ textAlign: 'center' }}>

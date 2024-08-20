@@ -1,7 +1,7 @@
 'use client';
 import Img from '@/assets/x-salada.jpg';
 import CardFood from "@/components/cardFodd";
-import ModalProduto from "@/components/modalIsertUpdate"; 
+import ModalProduto from "@/components/modalCategory"; // Certifique-se de que este componente existe e está correto
 import { carregarProdutos, apagarProduto } from "@/lib/features/produtos/produtoSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
@@ -9,11 +9,11 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 
-export default function CardapioContainer({Id}) {
+export default function CardapioContainer({ Id }) {
     const pathname = usePathname();
     const isHomePage = pathname === '/';
     const isAdmPage = pathname === '/admin';
-    const isCardapioPage = pathname.startsWith('/cardapio/');
+    const isCategoryPage = pathname.startsWith('/categorias/');
     const dispatch = useAppDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -24,11 +24,11 @@ export default function CardapioContainer({Id}) {
 
     const foods = useAppSelector((state) => state.produtos.produtos);
 
-    const filteredFoods = foods.filter((food) => {
-        return Number(food.category?.id) === Number(Id);
-    });
-     
-    console.log('foodsFilll', filteredFoods);
+    const filteredFoods = isCategoryPage
+        ? foods.filter((food) => Number(food.category?.id) === Number(Id))
+        : foods;
+
+    console.log('filteredFoods', filteredFoods);
 
     const handleOpenModal = (product) => {
         setSelectedProduct(product);
@@ -117,19 +117,27 @@ export default function CardapioContainer({Id}) {
                         </Box>
                     )}
                     <Grid container spacing={2}>
-                        {foods.map((food) => (
-                            <Grid item key={food.id} xs={12} sm={6} md={3}>
-                                <CardFood
-                                    produto={food}
-                                    nome={food.name || 'Nome não disponível'}
-                                    descricao={food.description || 'Descrição não disponível'}
-                                    imagem={food.image || Img}
-                                    preco={food.price || 0}
-                                    id={food.id}
-                                    onDelete={() => handleDeleteProduct(food.id)} 
-                                />
+                        {foods.length > 0 ? (
+                            foods.map((food) => (
+                                <Grid item key={food.id} xs={12} sm={6} md={3}>
+                                    <CardFood
+                                        produto={food}
+                                        nome={food.name || 'Nome não disponível'}
+                                        descricao={food.description || 'Descrição não disponível'}
+                                        imagem={food.image || Img}
+                                        preco={food.price || 0}
+                                        id={food.id}
+                                        onDelete={() => handleDeleteProduct(food.id)} 
+                                    />
+                                </Grid>
+                            ))
+                        ) : (
+                            <Grid item xs={12} sx={{ height: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Typography variant="h6" sx={{ textAlign: 'center', color: 'gray' }}>
+                                    Nenhum produto disponível
+                                </Typography>
                             </Grid>
-                        ))}
+                        )}
                     </Grid>
                     {isAdmPage && (
                         <ModalProduto
@@ -140,20 +148,30 @@ export default function CardapioContainer({Id}) {
                     )}
                 </>
             ) : (
-                <Grid container spacing={2}>
-                    {filteredFoods.map((food) => (
-                        <Grid item key={food.id} xs={12} sm={6} md={3}>
-                            <CardFood
-                                produto={food}
-                                nome={food.name || 'Nome não disponível'}
-                                descricao={food.description || 'Descrição não disponível'}
-                                imagem={food.image || Img}
-                                preco={food.price || 0}
-                                id={food.id}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                isCategoryPage ? (
+                    <Grid container spacing={2}>
+                        {filteredFoods.length > 0 ? (
+                            filteredFoods.map((food) => (
+                                <Grid item key={food.id} xs={12} sm={6} md={3}>
+                                    <CardFood
+                                        produto={food}
+                                        nome={food.name || 'Nome não disponível'}
+                                        descricao={food.description || 'Descrição não disponível'}
+                                        imagem={food.image || Img}
+                                        preco={food.price || 0}
+                                        id={food.id}
+                                    />
+                                </Grid>
+                            ))
+                        ) : (
+                            <Grid item xs={12} sx={{ height: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Typography variant="h6" sx={{ textAlign: 'center', color: 'gray' }}>
+                                    Nenhum produto encontrado nesta categoria
+                                </Typography>
+                            </Grid>
+                        )}
+                    </Grid>
+                ) : null
             )}
         </Container>
     );

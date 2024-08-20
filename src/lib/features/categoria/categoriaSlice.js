@@ -9,7 +9,12 @@ const initialState = {
 };
 
 export const carregarCategorias = createAction('categorias/carregarCategorias');
-export const carregarCategoria = createAction('categorias/carregarCategoria');
+export const carregarCategoria = createAction('categorias/carregarCategoria', (id) => {
+    return {
+        payload: id,
+    };
+}
+);
 export const inserirCategoria = createAction('categorias/inserirCategoria',
     (formData) => {
         return {
@@ -28,8 +33,8 @@ export const atualizarCategoria = createAction('categorias/atualizarCategoria',
 export const apagarCategoria = createAction('categorias/apagarCategoria', (id) => {
     return {
         payload: id,
-        };
-    }
+    };
+}
 );
 
 export const setError = createAction('categorias/setError');

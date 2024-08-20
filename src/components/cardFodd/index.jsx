@@ -13,7 +13,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
     const [isModalOpen, setIsModalOpen] = useState(false);
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
-    const rota = `cardapio/product/${id}`;
+    const rota = `/cardapio/product/${id}`;
     const pathname = usePathname();
 
     const handleCardClick = () => {

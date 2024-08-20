@@ -1,11 +1,22 @@
 import BasicLayout from '../../layouts/basic/basiclayout';  
-import CadarpioContainer from '../../components/cardapioContainer';
+import CardapioContainer from '../../components/cardapioContainer';
+import { carregarCategoria } from '@/lib/features/categoria/categoriaSlice';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/lib/hooks';
 
-export default function CategoryIdView({Id}) {
+export default function CategoryIdView({ Id }) {
+    const dispatch = useDispatch();
+    
+    useEffect(() => {
+        dispatch(carregarCategoria(Id));
+    }, [dispatch, Id]);
 
-    return(
-        <BasicLayout titulo = 'Categoria'>
-            < CadarpioContainer Id={Id} />
+    const categoria = useAppSelector((state) => state.categorias.categoria);
+
+    return (
+        <BasicLayout titulo={categoria.name || 'Categoria'}>
+            <CardapioContainer Id={Id} />
         </BasicLayout>
-    )
+    );
 }

@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from "next/navigation";
-import CategoryIdView from "../../../../sections/categoriaIdView";
+import CategoryIdView from "../../../sections/categoriaIdView";
 
 export default function Category() {
 
