@@ -11,11 +11,21 @@ import Voltar from '../../assets/voltar.png';
 import ImgLogin from '../../assets/login.png';
 import ImgCadastro from '../../assets/cadastro.png';
 import { usePathname, useRouter } from 'next/navigation';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export default function Navbar() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+
+    const typeUser = 'admin';
+
+    if(typeUser === 'admin'){
+        // mostrar botão de admin?
+
+    }else{
+        // não mostrar botão de admin
+    }
 
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
@@ -45,8 +55,13 @@ export default function Navbar() {
         setDrawerOpen(false);
     };
 
+    const handleAdminClick = () => {
+        router.push('/admin');
+        setDrawerOpen(false);
+    };
+
     return (
-        <Container disableGutters={true}  maxWidth='' sx={{ backgroundColor: '#FF9800', width: '100%' }}>
+        <Container disableGutters={true} maxWidth='' sx={{ backgroundColor: '#FF9800', width: '100%' }}>
             <Container maxWidth='lg' sx={{ display: 'flex', flexWrap: "wrap", width: '100%' }} disableGutters={true} >
                 <Box
                     width={'20%'}
@@ -96,17 +111,22 @@ export default function Navbar() {
                             <Image src={ImgCadastro} width={13} alt='pedido' />
                             Cadastro
                         </Button>
+
+                        <Button onClick={handleAdminClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                            <AdminPanelSettingsIcon sx={{width:20}} />
+                            Admin
+                        </Button>
                     </Box>
 
                     <Drawer PaperProps={{
                         sx: {
-                            backgroundColor: '#FF9800', 
-                            color: 'white', 
-                            width: 200, 
+                            backgroundColor: '#FF9800',
+                            color: 'white',
+                            width: 200,
                         }
-                    }} anchor = 'right' open={drawerOpen} onClose={handleDrawerToggle}>
+                    }} anchor='right' open={drawerOpen} onClose={handleDrawerToggle}>
                         <List sx={{ backgroundColor: '#FF9800', color: 'white' }}>
-                            <ListItem sx={{ gap: '5px'}} ListItemButton onClick={handlecardapioClick}>
+                            <ListItem sx={{ gap: '5px' }} ListItemButton onClick={handlecardapioClick}>
                                 <Image src={Rectangle} width={15} alt='cardapio' />
                                 <ListItemText primary='Cardápio' />
                             </ListItem>
