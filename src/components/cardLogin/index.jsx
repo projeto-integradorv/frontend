@@ -1,11 +1,11 @@
-'use client'; 
-import React, { useState } from "react";
+'use client';
+
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Card,
   CardContent,
   TextField,
-  Typography,
   Box,
   Link as MuiLink,
   Alert
@@ -13,7 +13,9 @@ import {
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
-import { carregarLogin ,adicionarUsuario, selectUsuario  } from '@/lib/features/login/loginSlice';
+import { carregarLogin } from '@/lib/features/login/loginSlice';
+import { useRouter } from 'next/navigation';
+import { Password } from "@mui/icons-material";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
@@ -21,13 +23,13 @@ const StyledCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
-  boxShadow: 'none', 
+  boxShadow: 'none',
   textAlign: 'center',
 }));
 
 const StyledCardContent = styled(CardContent)(({ theme }) => ({
   padding: theme.spacing(3),
-  boxShadow: 'none', 
+  boxShadow: 'none',
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -83,15 +85,27 @@ const LoginCard = () => {
   const { loading, success, error } = useSelector((state) => state.login);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const router = useRouter();
 
   const handleLogin = () => {
     if (email && senha) {
-      dispatch(adicionarUsuario({ email, senha }));
-
-      console.log('-----', state.login.sucess);
-      // Aqui você passa as credenciais de login
+      dispatch(carregarLogin({ username: email, password: senha }));
     }
   };
+
+ const user = localStorage.getItem('userData.userType');
+ console.log(user);
+
+  useEffect(() => {
+    if (success) {
+      router.push('/');
+    }
+  }
+  , [success]);
+
+
+
+ 
 
   return (
     <StyledCard>

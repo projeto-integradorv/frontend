@@ -1,37 +1,63 @@
-// loginSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 
-const loginSlice = createSlice({
-  name: 'login',
-  initialState: {
-    email: '',
-    senha: '',
+// Estado inicial
+const initialState = {
+    username: '',
+    password: '',
     loading: false,
     error: null,
-    success: false, 
-  },
-  reducers: {
-    carregarLogin: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
+    success: false,
+};
+
+// Ações
+export const carregarLogin = createAction('login/carregarLogin', (credentials) => ({
+    payload: credentials,
+}));
+
+export const adicionarUsuario = createAction('login/adicionarUsuario', (user) => ({
+    payload: user,
+}));
+
+export const setLoginError = createAction('login/setLoginError', (error) => ({
+    payload: error,
+}));
+
+export const logoutUsuario = createAction('login/logoutUsuario');
+
+// Slice
+const loginSlice = createSlice({
+    name: 'login',
+    initialState,
+    reducers: {
+        adicionarUser: (state, { payload }) => {
+            state.username = payload.username;
+            state.password = payload.password;
+            state.loading = false;
+            state.success = true;
+        },
+        setError: (state, { payload }) => {
+            state.error = payload;
+            state.loading = false;
+            state.success = false;
+        },
+        logoutUser: (state) => {
+            state.username = '';
+            state.password = '';
+            state.loading = false;
+            state.error = null;
+            state.success = false;
+        },
+        mudarLoading: (state, { payload }) => {
+            state.loading = payload;
+        },
     },
-    adicionarUsuario: (state, action) => {
-      state.email = action.payload;
-      state.senha = action.payload;
-      state.loading = false;
-      state.success = true; 
-    },
-    setLoginError: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-      state.success = false; 
-    },
-  },
 });
 
-export const selectUsuario = (state) => state.login.email;
-
-export const { carregarLogin, adicionarUsuario, setLoginError } = loginSlice.actions;
+export const {
+    adicionarUser,
+    setError,
+    logoutUser,
+    mudarLoading,
+} = loginSlice.actions;
 
 export default loginSlice.reducer;

@@ -59,7 +59,7 @@ export default function Adicionais() {
     const handleSaveAdd = () => {
         dispatch(createAdicional(newItem));
         setOpenAdd(false);
-        setNewItem({ name: '', price: '' }); // Reseta o formulário após adicionar
+        setNewItem({ name: '', price: '' }); 
     };
 
     const handleChangeAdd = (e) => {
