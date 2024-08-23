@@ -14,6 +14,7 @@ const initialState = {
 
 export const carregarAdicionais = createAction('adicionais/carregarAdicionais');
 export const atualizarAdicional = createAction('adicionais/atualizarAdicional');
+export const createAdicional = createAction('adicionais/createAdicional');
 
 
 const adicionaisSlice = createAppSlice({
