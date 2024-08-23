@@ -10,38 +10,61 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { carregarAdicionais, atualizarAdicional } from '@/lib/features/adicionais/adicionaisSlice';
+import { carregarAdicionais, atualizarAdicional, createAdicional } from '@/lib/features/adicionais/adicionaisSlice';
 
 export default function Adicionais() {
     const pathname = usePathname();
     const dispatch = useAppDispatch();
     const rows = useAppSelector(state => state.adicionais.adicionais);
 
-    const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
     const [selectedItem, setSelectedItem] = useState({ id: '', name: '', price: '' });
+    const [newItem, setNewItem] = useState({ name: '', price: '' });
 
     useEffect(() => {
         dispatch(carregarAdicionais());
     }, [dispatch]);
 
-    const handleClickOpen = (row) => {
+    const handleClickOpenEdit = (row) => {
         setSelectedItem(row);
-        setOpen(true);
+        setOpenEdit(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
     };
 
-    const handleSave = () => {
+    const handleSaveEdit = () => {
         const id = selectedItem.id;
         dispatch(atualizarAdicional({ id, data: selectedItem }));
-        setOpen(false);
+        setOpenEdit(false);
     };
 
-    const handleChange = (e) => {
+    const handleChangeEdit = (e) => {
         setSelectedItem({
             ...selectedItem,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
+
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
+
+    const handleSaveAdd = () => {
+        dispatch(createAdicional(newItem));
+        setOpenAdd(false);
+        setNewItem({ name: '', price: '' }); // Reseta o formulário após adicionar
+    };
+
+    const handleChangeAdd = (e) => {
+        setNewItem({
+            ...newItem,
             [e.target.name]: e.target.value
         });
     };
@@ -70,6 +93,7 @@ export default function Adicionais() {
                 }}>
                     <Typography variant="h5" sx={{ color: '#8A8080' }}>Adicionais</Typography>
                     <Button
+                        onClick={handleClickOpenAdd}
                         sx={{
                             color: '#8A8080',
                             borderWidth: '2px',
@@ -111,7 +135,7 @@ export default function Adicionais() {
                                         <TableCell sx={{ padding: '16px', textAlign: 'center' }}>{row.price}</TableCell>
                                         <TableCell sx={{ padding: '16px', textAlign: 'center' }}>
                                             <Button
-                                                onClick={() => handleClickOpen(row)}
+                                                onClick={() => handleClickOpenEdit(row)}
                                                 sx={{
                                                     color: '#8A8080',
                                                     borderWidth: '2px',
@@ -132,7 +156,7 @@ export default function Adicionais() {
                 </TableContainer>
             </Grid>
 
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={openEdit} onClose={handleCloseEdit}>
                 <DialogTitle>Editar Adicional</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -148,7 +172,7 @@ export default function Adicionais() {
                         fullWidth
                         variant="outlined"
                         value={selectedItem.name}
-                        onChange={handleChange}
+                        onChange={handleChangeEdit}
                         sx={{ marginBottom: '16px' }}
                     />
                     <TextField
@@ -160,12 +184,49 @@ export default function Adicionais() {
                         fullWidth
                         variant="outlined"
                         value={selectedItem.price}
-                        onChange={handleChange}
+                        onChange={handleChangeEdit}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{ color: '#8A8080' }}>Cancelar</Button>
-                    <Button onClick={handleSave} sx={{ color: '#8A8080' }}>Salvar</Button>
+                    <Button onClick={handleCloseEdit} sx={{ color: '#8A8080' }}>Cancelar</Button>
+                    <Button onClick={handleSaveEdit} sx={{ color: '#8A8080' }}>Salvar</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={openAdd} onClose={handleCloseAdd}>
+                <DialogTitle>Adicionar Novo Adicional</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Insira o nome e o preço do novo adicional.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        name="name"
+                        label="Nome"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={newItem.name}
+                        onChange={handleChangeAdd}
+                        sx={{ marginBottom: '16px' }}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="price"
+                        name="price"
+                        label="Preço"
+                        type="number"
+                        fullWidth
+                        variant="outlined"
+                        value={newItem.price}
+                        onChange={handleChangeAdd}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseAdd} sx={{ color: '#8A8080' }}>Cancelar</Button>
+                    <Button onClick={handleSaveAdd} sx={{ color: '#8A8080' }}>Salvar</Button>
                 </DialogActions>
             </Dialog>
         </Container>
