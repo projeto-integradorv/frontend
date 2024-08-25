@@ -1,7 +1,11 @@
 'use client';
-import React from "react";
+
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardContent, TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { carregarCadastro } from '../../lib/features/cadastroUser/registerSlice'; // Somente a ação de cadastro
+import { useRouter } from 'next/navigation';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
@@ -9,9 +13,9 @@ const StyledCard = styled(Card)(({ theme }) => ({
   marginTop: theme.spacing(4),
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius, 
+  borderRadius: theme.shape.borderRadius,
   textAlign: 'center',
-  boxShadow: 'none', 
+  boxShadow: 'none',
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -52,6 +56,27 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const RegisterCard = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const loading = useSelector((state) => state.register.loading);
+  const error = useSelector((state) => state.register.error);
+  const usuario = useSelector((state) => state.register.usuario);
+
+  const handleRegister = () => {
+    const userData = { name, email, password };
+    dispatch(carregarCadastro(userData));
+  };
+
+  useEffect(() => {
+    if (usuario) {
+      router.push('/login');
+    }
+  }, [usuario, router]);
+
   return (
     <StyledCard>
       <CardContent>
@@ -60,12 +85,17 @@ const RegisterCard = () => {
           label="Nome"
           variant="outlined"
           margin="normal"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <StyledTextField
           fullWidth
           label="Email"
+          type="email"
           variant="outlined"
           margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <StyledTextField
           fullWidth
@@ -73,10 +103,17 @@ const RegisterCard = () => {
           type="password"
           variant="outlined"
           margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <StyledButton variant="contained">
+        <StyledButton
+          variant="contained"
+          onClick={handleRegister}
+          disabled={loading}
+        >
           Registrar
         </StyledButton>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </CardContent>
     </StyledCard>
   );

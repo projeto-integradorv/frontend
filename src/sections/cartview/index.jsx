@@ -1,17 +1,32 @@
 'use client';
-import React from "react";
+import React, { useEffect } from "react";
 import BasicLayout from "@/layouts/basic/basiclayout";
 import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { buscarCarrinhoById } from "@/lib/features/carrinho/carrinhoSlice";
 
 function CartView() {
-    const quantidade = useAppSelector(state => state.carrinho ||'')
+    const dispatch = useAppDispatch();
+    const router = useRouter();
     const carrinho = useAppSelector(state => state.carrinho.items || []);
-    
+    const status = useAppSelector(state => state.carrinho.status);
+    const error = useAppSelector(state => state.carrinho.error);
 
+    useEffect(() => {
+        const storedCartData = localStorage.getItem('userData');
+
+        if (storedCartData) {
+            const parsedCartData = JSON.parse(storedCartData);
+            const cartId = parsedCartData.cart_id; 
+
+            if (cartId) {
+                dispatch(buscarCarrinhoById(cartId));
+            }
+        }
+    }, [dispatch]);
 
     const totalValue = carrinho
         .map(item => {
@@ -22,13 +37,14 @@ function CartView() {
         .reduce((acc, value) => acc + value, 0)
         .toFixed(2);
 
-    const router = useRouter();
-
-    const observacao = useAppSelector(state => state.carrinho.items || '').map(item => item.observation);
+    const observacao = carrinho.map(item => item.observation);
 
     const handleRedirect = () => {
         router.push('/');
     };
+
+    if (status === 'loading') return <p>Carregando...</p>;
+    if (status === 'failed') return <p>Erro: {error.message}</p>;
 
     return (
         <BasicLayout titulo="Carrinho/Comanda">
@@ -76,7 +92,7 @@ function CartView() {
                     <Button
                         onClick={handleRedirect}
                         sx={{
-                            gridColumn: '1/ -1', // O botão ocupa toda a largura disponível
+                            gridColumn: '1/ -1', 
                             color: 'white',
                             Width: '20%',
                             border: '2px solid #ff9800',

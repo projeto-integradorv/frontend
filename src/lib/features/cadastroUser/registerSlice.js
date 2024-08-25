@@ -1,41 +1,61 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAction } from '@reduxjs/toolkit';
 
+// Estado inicial
+const initialState = {
+  loading: false,
+  usuario: null,
+  gerente: null,
+  error: null,
+};
 
+export const carregarCadastro = createAction('register/carregarCadastro', (userData) => {
+  return {
+    payload: userData,
+  };
+});
+export const carregarCadastroManeger = createAction('register/carregarCadastroManeger', (userData) => {
+  return {
+    payload: userData,
+  };
+}
+);
 
-
+// Criação do slice
 const registerSlice = createSlice({
   name: 'register',
-  initialState: {
-    loading: false,
-    success: false,
-    error: null,
-  },
+  initialState,
   reducers: {
-    resetState: (state) => {
-      state.loading = false;
-      state.success = false;
-      state.error = null;
-    }
+    mudarLoading: (state, { payload }) => {
+      state.loading = payload;
+    },
+    usuarioRegistrado: (state, { payload }) => {
+      state.usuario = payload;
+    },
+    gerenteRegistrado: (state, { payload }) => {
+      state.gerente = payload;
+    },
+    setError: (state, { payload }) => {
+      state.error = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(carregarCadastro.pending, (state) => {
+      .addCase(carregarCadastro, (state) => {
         state.loading = true;
-        state.success = false;
         state.error = null;
       })
-      .addCase(carregarCadastro.fulfilled, (state) => {
-        state.loading = false;
-        state.success = true;
+      .addCase(carregarCadastroManeger, (state) => {
+        state.loading = true;
         state.error = null;
-      })
-      .addCase(carregarCadastro.rejected, (state, action) => {
-        state.loading = false;
-        state.success = false;
-        state.error = action.error.message;
       });
-  }
+  },
 });
 
-export const { resetState } = registerSlice.actions;
+export const {
+  mudarLoading,
+  usuarioRegistrado,
+  gerenteRegistrado,
+  setError,
+} = registerSlice.actions;
+
 export default registerSlice.reducer;

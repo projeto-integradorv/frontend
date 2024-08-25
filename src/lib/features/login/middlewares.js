@@ -12,12 +12,12 @@ loginListener.startListening({
       const response = await login(action.payload);
 
       if (response ) {
-        const { token, user_id, user_type } = response;
+        const { token, user_id, user_type,card_id } = response;
 
         if (token && user_id && user_type) {
           
           
-          localStorage.setItem('userData', JSON.stringify({ token, user_id, user_type }));
+          localStorage.setItem('userData', JSON.stringify({ token, user_id, user_type ,card_id}));
           console.log(user_type);
           dispatch(adicionarUser({
             username: action.payload.username,

@@ -8,14 +8,14 @@ import {
   TextField,
   Box,
   Link as MuiLink,
-  Alert
+  Alert,
+  Snackbar
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { carregarLogin } from '@/lib/features/login/loginSlice';
 import { useRouter } from 'next/navigation';
-import { Password } from "@mui/icons-material";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
@@ -85,6 +85,7 @@ const LoginCard = () => {
   const { loading, success, error } = useSelector((state) => state.login);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const handleLogin = () => {
@@ -93,71 +94,80 @@ const LoginCard = () => {
     }
   };
 
- const user = localStorage.getItem('userData.userType');
- console.log(user);
-
   useEffect(() => {
     if (success) {
-      router.push('/');
+      setOpen(true);
+      setTimeout(() => {
+        router.push('/');
+      }, 3000); // Redireciona após 3 segundos
+    } else if (error) {
+      setOpen(true);
     }
-  }
-  , [success]);
+  }, [success, error, router]);
 
-
-
- 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <StyledCard>
-      <StyledCardContent>
-        <StyledTextField
-          fullWidth
-          label="Email"
-          variant="outlined"
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="email"
-        />
-        <StyledTextField
-          fullWidth
-          label="Senha"
-          type="password"
-          variant="outlined"
-          margin="normal"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          autoComplete="current-password"
-        />
-        <StyledButton
-          variant="contained"
-          onClick={handleLogin}
-          disabled={loading}
-        >
-          {loading ? 'Entrando...' : 'Entrar'}
-        </StyledButton>
+    <>
+      <StyledCard>
+        <StyledCardContent>
+          <StyledTextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+          <StyledTextField
+            fullWidth
+            label="Senha"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            autoComplete="current-password"
+          />
+          <StyledButton
+            variant="contained"
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? 'Entrando...' : 'Entrar'}
+          </StyledButton>
 
-        {success && (
-          <Alert severity="success" sx={{ mt: 2 }}>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <StyledLink component={Link} href="/cadastro">
+              Criar uma conta
+            </StyledLink>
+            <StyledLink component={Link} href="/recuperarsenha">
+              Esqueceu a senha?
+            </StyledLink>
+          </Box>
+        </StyledCardContent>
+      </StyledCard>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        {success ? (
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
             Login realizado com sucesso!
           </Alert>
-        )}
-        {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
+        ) : (
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
             Erro no login: {error}
           </Alert>
         )}
-
-        <Box sx={{ mt: 2, textAlign: 'center' }}>
-          <StyledLink component={Link} href="/cadastro">
-            Criar uma conta
-          </StyledLink>
-          <StyledLink component={Link} href="/recuperarsenha">
-            Esqueceu a senha?
-          </StyledLink>
-        </Box>
-      </StyledCardContent>
-    </StyledCard>
+      </Snackbar>
+    </>
   );
 };
 

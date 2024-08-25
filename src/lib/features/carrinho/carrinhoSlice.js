@@ -1,8 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: []
 };
+
+
+export const buscarCarrinhoById = createAction('carrinho/carrinhoById', (id) => {
+  return {
+    payload: id,
+  };
+});
 
 const carrinhoSlice = createSlice({
   name: 'carrinho',
@@ -19,9 +26,7 @@ const carrinhoSlice = createSlice({
     },
     atualizarQuantidade: (state, { payload }) => {
       const item = state.items[payload.product.id];
-      console.log('------ carrinho',item);
       if (item) {
-
         item.quantity = payload.quantity;
       }
     },

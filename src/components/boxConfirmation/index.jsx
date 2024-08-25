@@ -44,7 +44,7 @@ export default function BoxConfirmation({
           price: productPrice
         },
         quantity: count,
-        observation: observation, // Inclui a observação
+        observation: observation,
         additionals: [] 
       };
       

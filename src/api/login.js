@@ -9,3 +9,23 @@ export const login = async (data) => {
         throw error;
     }
 }
+
+
+export const registerAPI = async (data) => {
+    try {
+        const response = await axiosInstance.post('/customers/', data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export const registerManegerAPI = async (data) => {
+    try {
+        const response = await axiosInstance.post('/managers/', data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
