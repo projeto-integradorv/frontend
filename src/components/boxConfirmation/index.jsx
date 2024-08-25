@@ -33,6 +33,8 @@ export default function BoxConfirmation({
     router.push('/cart');
   };
 
+
+
   const handleAddToCart = () => {
     if (productId) {
       const item = {

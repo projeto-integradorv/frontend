@@ -21,6 +21,7 @@ registerListener.startListening({
     try {
       const userData = action.payload;
       const response = await registerAPI(userData);
+      console.log(response);
       dispatch(usuarioRegistrado(response));
     } catch (error) {
       dispatch(setError(error.message));

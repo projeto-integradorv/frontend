@@ -67,7 +67,7 @@ const RegisterCard = () => {
   const usuario = useSelector((state) => state.register.usuario);
 
   const handleRegister = () => {
-    const userData = { name, email, password };
+    const userData = { name:name, email:email, password:password };
     dispatch(carregarCadastro(userData));
   };
 

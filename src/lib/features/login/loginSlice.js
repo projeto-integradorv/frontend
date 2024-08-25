@@ -24,7 +24,6 @@ export const setLoginError = createAction('login/setLoginError', (error) => ({
 
 export const logoutUsuario = createAction('login/logoutUsuario');
 
-// Slice
 const loginSlice = createSlice({
     name: 'login',
     initialState,

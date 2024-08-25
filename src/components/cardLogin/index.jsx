@@ -14,7 +14,7 @@ import {
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
-import { carregarLogin } from '@/lib/features/login/loginSlice';
+import { carregarLogin } from '../../lib/features/login/loginSlice';
 import { useRouter } from 'next/navigation';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -99,7 +99,7 @@ const LoginCard = () => {
       setOpen(true);
       setTimeout(() => {
         router.push('/');
-      }, 3000); // Redireciona após 3 segundos
+      }, 3000); 
     } else if (error) {
       setOpen(true);
     }
