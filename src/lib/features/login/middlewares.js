@@ -14,7 +14,7 @@ loginListener.startListening({
       if (response ) {
         const { token, user_id, user_type,card_id } = response;
 
-        if (token && user_id && user_type) {
+        if (token && user_id && user_type && card_id) {
           
           
           localStorage.setItem('userData', JSON.stringify({ token, user_id, user_type ,card_id}));
