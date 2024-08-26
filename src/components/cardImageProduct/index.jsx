@@ -6,7 +6,6 @@ import ImageProduct from "@/assets/x-bacon.jpeg";
 export default function CardImageProduct({ produto }) {
   const [loading, setLoading] = useState(false);
 
-  console.log(produto, 'produto - cardImageProduct')
 
   if (loading) {
     return (
@@ -59,7 +58,6 @@ export default function CardImageProduct({ produto }) {
             width={400}
             height={300}
             sizes="100%"
-            borderRadius="20px"
             style={{ borderRadius: '20px' }}
           />
         </Box>

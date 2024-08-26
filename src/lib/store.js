@@ -1,3 +1,4 @@
+
 import { configureStore } from "@reduxjs/toolkit";
 import carrinhoSlice from "./features/carrinho/carrinhoSlice";
 import produtosSlice from "./features/produtos/produtoSlice";
@@ -10,6 +11,7 @@ import adicionalSlice  from "./features/adicionais/adicionaisSlice";
 import loginListener from "./features/login/middlewares";
 import registerListener from "./features/cadastroUser/middlewares";
 import registerSlice from "./features/cadastroUser/registerSlice";
+import  carrinhoListener  from "./features/carrinho/middlewares";
 
 export const makeStore = () => {
   return configureStore({
@@ -21,6 +23,7 @@ export const makeStore = () => {
       adicionais: adicionalSlice,
       register: registerSlice,
 
+
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
@@ -28,7 +31,8 @@ export const makeStore = () => {
         produtosListener.middleware,
         adicionalListener.middleware,
         loginListener.middleware,
-        registerListener.middleware
+        registerListener.middleware, 
+        carrinhoListener.middleware
       ),
   });
 };

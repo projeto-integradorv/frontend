@@ -1,12 +1,12 @@
 import Voltar from '@/assets/voltar.png';
+import { atualizarObservacao, atualizarQuantidade } from '@/lib/features/carrinho/carrinhoSlice';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { atualizarQuantidade, atualizarObservacao } from '@/lib/features/carrinho/carrinhoSlice';
-import { useRouter } from 'next/navigation';
 
 export default function ModalPagamento({
   isOpen,
@@ -186,6 +186,7 @@ export default function ModalPagamento({
                   flexDirection: 'row',
                   width: '100%',
                   padding: '10px',
+                  gap: '8px',
                   textAlign: 'center',
                   backgroundColor: '#ff9800',
                   color: 'white',
@@ -195,7 +196,7 @@ export default function ModalPagamento({
                   }
                 }}
                 variant="contained"
-                onClick={handleUpdate} // Usando handleUpdate para atualizar quantidade e observação
+                onClick={handleUpdate} 
               >
                 <span>Atualizar</span>
                 <span>R$ {(productPrice * count).toFixed(2)}</span>

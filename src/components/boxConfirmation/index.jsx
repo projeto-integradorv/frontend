@@ -4,7 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useRouter } from "next/navigation";
 import { useDispatch } from 'react-redux';
-import { adicionarAoCarrinho } from '@/lib/features/carrinho/carrinhoSlice';
+import { addCart, adicionarAoCarrinho } from '@/lib/features/carrinho/carrinhoSlice';
+import { buscarCarrinhoById } from "../../lib/features/carrinho/carrinhoSlice";
 
 export default function BoxConfirmation({
   title,
@@ -34,30 +35,56 @@ export default function BoxConfirmation({
   };
 
 
-
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (productId) {
+      const storedUserData = localStorage.getItem('userData');
+      const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
+
+      const cartId = parsedUserData?.cart_id?.id;
+
+      console.log('cartId', cartId);
+
       const item = {
-        product: {
-          id: productId,
-          name: productName,
-          description: productDescription,
-          image: productImage,
-          price: productPrice
-        },
+        cart: cartId,
+        product: productId.id,
         quantity: count,
         observation: observation,
-        additionals: [] 
+        additionals: []
       };
-      
-      dispatch(adicionarAoCarrinho(item));
-      handleRedirect(); 
+
+
+
+      if (cartId) {
+        dispatch(buscarCarrinhoById(cartId));
+
+        const cart = parsedUserData.cart_id || { items: [] };
+        const itemIndex = cart.items.findIndex(i => i.product.id === item.product.id);
+
+        if (itemIndex !== -1) {
+          cart.items[itemIndex].quantity = item.quantity;
+          cart.items[itemIndex].observation = item.observation || cart.items[itemIndex].observation;
+        } else {
+          cart.items.push(item);
+        }
+
+        localStorage.setItem('userData', JSON.stringify({
+          ...parsedUserData,
+          cart_id: cart
+        }));
+       
+      }
+
+      dispatch(addCart(item));
+      handleRedirect();
     }
   };
 
+
+
+
+
   return (
     <Box
-      disableGutters={true} 
       sx={{
         position: 'fixed',
         bottom: 0,
