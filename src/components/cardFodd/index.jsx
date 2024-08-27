@@ -1,4 +1,3 @@
-// components/CardFood.js
 import React, { useState } from 'react';
 import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import Image from "next/image";
@@ -8,6 +7,8 @@ import ModalProduto from '../modalIsertUpdate';
 import iconDel from '@/assets/Group 33.png';
 import Img from '@/assets/x-bacon.jpeg';
 import ModalPagamento from '../modalpagament';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'; // Importa o ícone RemoveCircleOutline
+
 
 export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs, index, onDelete }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,7 +77,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    if (onDelete) onDelete(id); 
+                                    if (onDelete) onDelete(id);
                                 }}
                             >
                                 <Image
@@ -117,6 +118,29 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 </Typography>
                             </Box>
                         </CardContent>
+
+                        {pathname === '/cart' && (
+                            <Button
+                                aria-label="delete"
+                                sx={{
+                                    position: 'absolute',
+                                    top: '8px',
+                                    right: '8px',
+                                    zIndex: 1,
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    padding: '4px',
+                                    minWidth: 0,
+                                    borderRadius: '50%',
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (onDelete) onDelete(index);
+                                }}
+                            >
+                                <RemoveCircleOutlineIcon sx={{color:'red'}} />
+
+                            </Button>
+                        )}
                     </Card>
 
                     {pathname === '/admin' && (

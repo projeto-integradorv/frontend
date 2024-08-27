@@ -7,7 +7,7 @@ import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd"; // Corrigido o nome do componente
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { atualizarCarrinhoInteiro, buscarCarrinhoById, resetarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
+import { atualizarCarrinhoInteiro, buscarCarrinhoById, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
 
 function CartView() {
     const dispatch = useAppDispatch();
@@ -49,7 +49,6 @@ function CartView() {
     };
 
     const handleReset = () => {
-        dispatch(resetarCarrinho());
         const storedCartData = localStorage.getItem('userData');
 
         if (storedCartData) {
@@ -57,8 +56,9 @@ function CartView() {
             const cartId = parsedCartData.cart_id?.id;
 
             if (cartId) {
+                console.log('cartId:', cartId);
+                dispatch(zerarCarrinho(cartId));
                 dispatch(resetarCarrinho());
-                dispatch(buscarCarrinhoById(cartId));
             }
         }
 
@@ -101,14 +101,15 @@ function CartView() {
                     {items.length > 0 ? (
                         items.map((item, idx) => (
                             <CardFood
-                                key={`${item.product?.id}-${idx}`} 
+                                key={`${item.product?.id}-${idx}`}
                                 nome={item.product?.name || "Nome desconhecido"}
                                 descricao={item.product?.description || "Descrição não disponível"}
                                 preco={item.product?.price || "0.00"}
                                 imagem={item.product?.image || "/default-image.png"}
                                 id={item.product?.id || `item-${idx}`}
                                 quant={item.quantity || 0}
-                                obs={item.observation || 'sem Observação'} 
+                                obs={item.observation || 'sem Observação'}
+                                index={idx}
                             />
                         ))
                     ) : (

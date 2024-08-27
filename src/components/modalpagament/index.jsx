@@ -4,7 +4,6 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
 
@@ -17,13 +16,11 @@ export default function ModalPagamento({
   quanty,
   productPrice,
   initialObs,
-  productId,
-  index
+  index 
 }) {
   const [count, setCount] = useState(quanty || 1);
   const [obs, setObs] = useState(initialObs || ""); 
   const dispatch = useDispatch();
-  const router = useRouter(); 
 
   const handleQuantidadeChange = (quantidade) => {
     setCount((prevCount) => Math.max(0, prevCount + quantidade));
@@ -33,15 +30,13 @@ export default function ModalPagamento({
     setObs(event.target.value);
   };
 
+
   const handleUpdate = () => {
-    console.log('Atualizando quantidade e observação');
-    dispatch(atualizarQuantidade({ product: { id: index }, quantity: count }));
-    dispatch(atualizarObservacao({ product: { id: index }, observation: obs }));
+    console.log('Atualizando quantidade e observação' , count, obs);
+    dispatch(atualizarQuantidade({ index, quantity: count }));
+    dispatch(atualizarObservacao({ index, observation: obs }));
     onClose(); 
   };
-  
-
-
 
   return (
     <Modal

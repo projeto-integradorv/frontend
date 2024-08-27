@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Container, FormControl, FormGroup, Grid, Typography } from '@mui/material';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import BoxConfirmation from '../boxConfirmation';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -7,7 +7,7 @@ import Hamburguer from '@/assets/x-bacon.jpeg';
 import PropTypes from 'prop-types';
 
 export default function FormAdd({ produto }) {
-    const [selectedAdicionais, setSelectedAdicionais] = useState({});
+    const [selectedAdicionais, setSelectedAdicionais] = useState([]);
     const [selectedCarne, setSelectedCarne] = useState('');
     const [adicionais, setAdicionais] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -22,25 +22,31 @@ export default function FormAdd({ produto }) {
         }
     }, [produto]);
 
+    const handleQuantidadeChange = (id, name, quantity) => {
+        setSelectedAdicionais((prevState) => {
+            const updatedAdicionais = [...prevState];
+            const index = updatedAdicionais.findIndex(adicional => adicional.additional === id);
 
-    const handleQuantidadeChange = (name, quantity) => {
-        setSelectedAdicionais(prevState => ({
-            ...prevState,
-            [name]: (prevState[name] || 0) + quantity
-        }));
+            if (index !== -1) {
+                updatedAdicionais[index].quantity += quantity;
+                if (updatedAdicionais[index].quantity <= 0) {
+                    updatedAdicionais.splice(index, 1);
+                }
+            } else if (quantity > 0) {
+                updatedAdicionais.push({ additional: id, name, quantity });
+            }
 
-        setQuantidade(quantity);
+            return updatedAdicionais;
+        });
     };
 
     const calculateTotalPrice = () => {
         let total = parseFloat(foods.price) || 0;
 
-        Object.keys(selectedAdicionais).forEach(name => {
-            if (selectedAdicionais[name] > 0) {
-                const adicional = adicionais.find(a => a.name === name);
-                const price = adicional ? parseFloat(adicional.price) : 0;
-                total += price * selectedAdicionais[name];
-            }
+        selectedAdicionais.forEach(adicional => {
+            const adicionalData = adicionais.find(a => a.id === adicional.additional);
+            const price = adicionalData ? parseFloat(adicionalData.price) : 0;
+            total += price * adicional.quantity;
         });
 
         if (selectedCarne) {
@@ -88,7 +94,7 @@ export default function FormAdd({ produto }) {
                             marginRight: 0,
                         },
                     }}
-                    disableGutters={true} 
+                    disableGutters={true}
                 >
                     <Box
                         display={'flex'}
@@ -151,8 +157,11 @@ export default function FormAdd({ produto }) {
                                         <Grid item padding={1}>
                                             <FormControl>
                                                 <Button
-                                                    onClick={() => handleQuantidadeChange(adicional.name, -1)}
-                                                    disabled={!selectedAdicionais[adicional.name] || selectedAdicionais[adicional.name] <= 0}
+                                                    onClick={() => handleQuantidadeChange(adicional.id, adicional.name, -1)}
+                                                    disabled={
+                                                        !selectedAdicionais.find(a => a.additional === adicional.id) ||
+                                                        selectedAdicionais.find(a => a.additional === adicional.id)?.quantity <= 0
+                                                    }
                                                     sx={{ border: 'none' }}
                                                 >
                                                     <RemoveIcon sx={{ color: 'red', fontSize: '20px' }} />
@@ -163,7 +172,9 @@ export default function FormAdd({ produto }) {
                                             <FormControl>
                                                 <input
                                                     type="number"
-                                                    value={selectedAdicionais[adicional.name] || 0}
+                                                    value={
+                                                        selectedAdicionais.find(a => a.additional === adicional.id)?.quantity || 0
+                                                    }
                                                     readOnly
                                                     style={{
                                                         fontSize: '20px',
@@ -179,7 +190,7 @@ export default function FormAdd({ produto }) {
                                         <Grid item>
                                             <FormControl>
                                                 <Button
-                                                    onClick={() => handleQuantidadeChange(adicional.name, 1)}
+                                                    onClick={() => handleQuantidadeChange(adicional.id, adicional.name, 1)}
                                                     sx={{ border: 'none', fontSize: '20px' }}
                                                 >
                                                     <AddIcon sx={{ color: 'red', fontSize: '20px' }} />
@@ -208,5 +219,16 @@ export default function FormAdd({ produto }) {
 }
 
 FormAdd.propTypes = {
-    productId: PropTypes.string,
+    produto: PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string,
+        price: PropTypes.number,
+        description: PropTypes.string,
+        image: PropTypes.string,
+        additionals: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string,
+            price: PropTypes.number,
+        })),
+    }),
 };

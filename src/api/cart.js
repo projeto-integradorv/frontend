@@ -41,10 +41,20 @@ const updateCart = (id, data) => {
         console.error('Erro ao atualizar o carrinho:', error);
         throw error;
     }
-}
+};
+
+const zerarItensDoCarrinho = async (id) => {
+    try {
+        const response = await axiosInstance.put(`/cart/${id}/`, { items: [] });
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao zerar itens do carrinho:', error);
+        throw error;
+    }
+};
 
 
 const updateCart2 = (id, data) => axiosInstance.patch(`/cart/${id}`, data);
 const deleteCart = (id) => axiosInstance.delete(`/cart/${id}`);
 
-export { getCart, getCartById, createCart, updateCart, updateCart2, deleteCart, updateItem };
+export { getCart, getCartById, createCart, updateCart, updateCart2, deleteCart, updateItem, zerarItensDoCarrinho };

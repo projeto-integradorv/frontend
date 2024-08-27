@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { createCart, getCartById, updateCart, updateItem } from '../../../api/cart';
-import { addCart, adicionarAoCarrinho, atualizarCarrinhoInteiro, buscarCarrinhoById } from './carrinhoSlice';
+import { createCart, getCartById, updateCart, updateItem, zerarItensDoCarrinho } from '../../../api/cart';
+import { addCart, adicionarAoCarrinho, atualizarCarrinhoInteiro, buscarCarrinhoById, zerarCarrinho } from './carrinhoSlice';
 
 export const cartListener = createListenerMiddleware();
 
@@ -38,7 +38,25 @@ export const cartListener = createListenerMiddleware();
 //   },
 // });
 
+cartListener.startListening({
+  actionCreator: zerarCarrinho,
+  effect: async (action, { dispatch }) => {
+    try {
+      const cartId = action.payload;
 
+      await zerarItensDoCarrinho(cartId);
+
+      const cart = await getCartById(cartId);
+      console.log("Carrinho encontrado:", cart);
+
+      if (cart && cart.items) {
+        dispatch(atualizarCarrinhoInteiro(cart.items));
+      }
+    } catch (error) {
+      console.error("Erro ao zerar o carrinho:", error);
+    }
+  },
+});
 
 
 cartListener.startListening({

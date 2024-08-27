@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from 'react-redux';
 import { addCart, adicionarAoCarrinho } from '@/lib/features/carrinho/carrinhoSlice';
 import { buscarCarrinhoById } from "../../lib/features/carrinho/carrinhoSlice";
+import { Add } from "@mui/icons-material";
 
 export default function BoxConfirmation({
   title,
@@ -34,6 +35,8 @@ export default function BoxConfirmation({
     router.push('/cart');
   };
 
+  console.log('add', Additional);
+
 
   const handleAddToCart = async () => {
     if (productId) {
@@ -49,8 +52,10 @@ export default function BoxConfirmation({
         product: productId.id,
         quantity: count,
         observation: observation,
-        additionals: []
+        additionals: Additional || [],
       };
+
+      console.log('item', item.additionals);
 
 
 
