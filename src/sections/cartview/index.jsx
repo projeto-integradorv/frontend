@@ -7,7 +7,7 @@ import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd"; // Corrigido o nome do componente
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
+import { apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, removerDoCarrinho, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
 
 function CartView() {
     const dispatch = useAppDispatch();
@@ -16,9 +16,7 @@ function CartView() {
     const status = useAppSelector(state => state.carrinho.status);
     const error = useAppSelector(state => state.carrinho.error);
 
-    useEffect(() => {
-            console.log('Carrinho:', carrinho);
-    }, [carrinho])
+   
 
     useEffect(() => {
         const storedCartData = localStorage.getItem('userData');
@@ -77,7 +75,8 @@ function CartView() {
 
             if (cartId) {
                 dispatch(apagarItemCart(id));
-                dispatch(atualizarCarrinhoInteiro(cartId.items));
+                dispatch(removerDoCarrinho(cartId));
+                dispatch(buscarCarrinhoById(cartId?.id));
             }
         }
         
@@ -128,6 +127,8 @@ function CartView() {
                                 obs={item.observation || 'sem Observação'}
                                 index={idx}
                                 itemId={item?.id || '0'}
+                                produto={item.product?.id || '0'}
+                                addicionais={item.product?.additionals || []}
                                 onDelete={handleDelete}
                             />
                         ))

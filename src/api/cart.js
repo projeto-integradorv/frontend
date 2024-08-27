@@ -2,6 +2,7 @@ import axiosInstance from '@/utils/axios';
 
 
 const getCart = () => axiosInstance.get('/cart/');
+
 const getCartById = async (id) => {
     try {
         const response = await axiosInstance.get(`/cart/${id}/`);
@@ -53,6 +54,17 @@ const zerarItensDoCarrinho = async (id) => {
     }
 };
 
+const atualizarItems = (data) => {
+    try {
+        const response = axiosInstance.put(`/item-cart/${data.id}/`, data);
+        return response;
+    }
+    catch (error) {
+        console.error('Erro ao atualizar o item:', error);
+        throw error;
+    }
+};
+
 const apagarItem = (id) => {
     try {
         const response = axiosInstance.delete(`/item-cart/${id}/`);
@@ -69,4 +81,4 @@ const apagarItem = (id) => {
 const updateCart2 = (id, data) => axiosInstance.patch(`/cart/${id}`, data);
 const deleteCart = (id) => axiosInstance.delete(`/cart/${id}`);
 
-export { getCart, getCartById, createCart, updateCart, updateCart2, deleteCart, updateItem, zerarItensDoCarrinho, apagarItem };
+export { getCart, getCartById, createCart, updateCart, updateCart2, deleteCart, updateItem, zerarItensDoCarrinho, apagarItem , atualizarItems};

@@ -1,5 +1,5 @@
 import Voltar from '@/assets/voltar.png';
-import { atualizarObservacao, atualizarQuantidade } from '@/lib/features/carrinho/carrinhoSlice';
+import { atualizarCarrinhoInteiro, atualizarItem, buscarCarrinhoById } from '@/lib/features/carrinho/carrinhoSlice'; // Corrija o caminho se necessário
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
@@ -16,10 +16,13 @@ export default function ModalPagamento({
   quanty,
   productPrice,
   initialObs,
-  index 
+  index,
+  Id,
+  Add,
+  produto
 }) {
   const [count, setCount] = useState(quanty || 1);
-  const [obs, setObs] = useState(initialObs || ""); 
+  const [obs, setObs] = useState(initialObs || "");
   const dispatch = useDispatch();
 
   const handleQuantidadeChange = (quantidade) => {
@@ -30,21 +33,30 @@ export default function ModalPagamento({
     setObs(event.target.value);
   };
 
-
   const handleUpdate = () => {
     const storedCartData = localStorage.getItem('userData');
 
     if (storedCartData) {
-        const parsedCartData = JSON.parse(storedCartData);
-        const cartId = parsedCartData.cart_id?.zIndex;
+      const parsedCartData = JSON.parse(storedCartData);
+      const cartId = parsedCartData.cart_id?.id;
+      const cart = parsedCartData.cart_id.items;
 
-      if(cartId){
-        dispatch(atualizarQuantidade({ index, quantity: count }));
-        dispatch(atualizarObservacao({ index, observation: obs }));
-        onClose(); 
+      if (cartId) {
+        dispatch(atualizarItem({
+          id: Id,
+          quantity: count,
+          observation: obs,
+          cart: cartId,
+          product: produto,
+          additionals: Add
+        }));
+        dispatch(atualizarCarrinhoInteiro(cart));
+        dispatch(buscarCarrinhoById(cartId));
+        onClose();
+      } else {
+        console.error('ID do carrinho não encontrado');
       }
-
-   
+    }
   };
 
   return (
@@ -72,7 +84,7 @@ export default function ModalPagamento({
           flexDirection: 'column',
           padding: '16px'
         }}
-        onClick={(e) => e.stopPropagation()} 
+        onClick={(e) => e.stopPropagation()}
       >
         <Button
           onClick={onClose}
@@ -185,7 +197,7 @@ export default function ModalPagamento({
               </FormControl>
             </Grid>
             <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Button 
+              <Button
                 sx={{
                   flexDirection: 'row',
                   width: '100%',
@@ -200,7 +212,7 @@ export default function ModalPagamento({
                   }
                 }}
                 variant="contained"
-                onClick={handleUpdate} 
+                onClick={handleUpdate}
               >
                 <span>Atualizar</span>
                 <span>R$ {(productPrice * count).toFixed(2)}</span>
@@ -211,4 +223,4 @@ export default function ModalPagamento({
       </Box>
     </Modal>
   );
-}}
+}

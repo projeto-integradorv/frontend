@@ -22,8 +22,9 @@ export const apagarItemCart = createAction('carrinho/apagarItem', (id) => ({
   payload: id,
 }));
 
-export const atualizarItem = createAction('carrinho/atualizarItem');
-
+export const atualizarItem = createAction('carrinho/atualizarItem', (item) => ({
+  payload: item,
+}));
 const carrinhoSlice = createSlice({
   name: 'carrinho',
   initialState,
@@ -57,18 +58,19 @@ const carrinhoSlice = createSlice({
     },
 
     atualizarCarrinhoInteiro: (state, { payload }) => {
-
       if (Array.isArray(payload)) {
-        payload.forEach((item, index) => {
-        });
-        state.items = payload;
+          const updatedItems = payload.map((item, index) => ({
+              ...item,
+              index,
+          }));
+          state.items = updatedItems;
       } else {
-        console.error('Payload inválido para atualizar o carrinho:', payload);
+          console.error('Payload inválido para atualizar o carrinho:', payload);
       }
-    },
+  },
 
     removerDoCarrinho: (state, { payload }) => {
-      state.items = state.items.filter(item => item.id !== payload);
+      state.items = state.items.filter(item => item?.id !== payload);
     },
 
     resetarCarrinho: (state) => {

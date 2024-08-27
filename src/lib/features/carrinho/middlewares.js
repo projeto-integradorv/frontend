@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { createCart, getCartById, updateCart, updateItem, zerarItensDoCarrinho, apagarItem } from '../../../api/cart';
+import { createCart, getCartById, updateCart, updateItem, zerarItensDoCarrinho, apagarItem, atualizarItems } from '../../../api/cart';
 import { addCart, adicionarAoCarrinho, apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, zerarCarrinho, removerDoCarrinho, addItemToCart, atualizarItem } from './carrinhoSlice';
 
 export const cartListener = createListenerMiddleware();
@@ -43,6 +43,7 @@ cartListener.startListening({
     try {
       const itemId = action.payload;
       await apagarItem(itemId);
+      dispatch(removerDoCarrinho(itemId));
     } catch (error) {
       console.error("Erro ao apagar o item:", error);
     }
@@ -68,10 +69,24 @@ cartListener.startListening({
   },
 });
 
-
 cartListener.startListening({
-  actionCreator:atualizarItem,
-})
+  actionCreator: atualizarItem,
+  effect: async (action, { dispatch }) => {
+    try {
+      const item = action.payload;
+      console.log('item:', item);
+      const response = await atualizarItems(item);
+
+      if (response.status === 200) {
+        console.log('Item atualizado com sucesso:', response.data);
+      } else {
+        console.error('Erro ao atualizar o item:', response);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar o item:', error);
+    }
+  }
+});
 
 cartListener.startListening({
   actionCreator: buscarCarrinhoById,

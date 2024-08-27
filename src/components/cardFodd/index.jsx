@@ -10,7 +10,7 @@ import ModalPagamento from '../modalpagament';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'; // Importa o ícone RemoveCircleOutline
 
 
-export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs, index, onDelete, itemId }) {
+export default function CardFood({ nome, descricao, preco, imagem, id, quant, onUpdateQuantity, produto, obs, index, onDelete, itemId , addicionais }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const nomeLimitado = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
     const descricaoLimitada = descricao.length > 25 ? descricao.substring(0, 25) + '...' : descricao;
@@ -77,7 +77,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    if (onDelete) onDelete(id);
+                                    if (onDelete) onDelete(itemId);
                                 }}
                             >
                                 <Image
@@ -137,7 +137,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                     if (onDelete) onDelete(itemId);
                                 }}
                             >
-                                <RemoveCircleOutlineIcon sx={{color:'red'}} />
+                                <RemoveCircleOutlineIcon sx={{ color: 'red' }} />
 
                             </Button>
                         )}
@@ -155,6 +155,8 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
 
                     {pathname === '/cart' && (
                         <ModalPagamento
+                            Id={itemId}
+                            produto={id}
                             index={index}
                             initialObs={obs}
                             isOpen={isModalOpen}
@@ -164,6 +166,7 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                             descricaoProduto={descricao}
                             quanty={quant}
                             productPrice={preco}
+                            Add = {addicionais}
                         />
                     )}
                 </Grid >
