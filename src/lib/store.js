@@ -12,6 +12,8 @@ import loginListener from "./features/login/middlewares";
 import registerListener from "./features/cadastroUser/middlewares";
 import registerSlice from "./features/cadastroUser/registerSlice";
 import  carrinhoListener  from "./features/carrinho/middlewares";
+import pedidosSlice from "./features/pedidos/pedidoSlice";
+import  orderListener  from "./features/pedidos/middlewares";
 
 export const makeStore = () => {
   return configureStore({
@@ -22,8 +24,7 @@ export const makeStore = () => {
       categorias: categoriasSlice,
       adicionais: adicionalSlice,
       register: registerSlice,
-
-
+      pedidos: pedidosSlice
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
@@ -32,7 +33,8 @@ export const makeStore = () => {
         adicionalListener.middleware,
         loginListener.middleware,
         registerListener.middleware, 
-        carrinhoListener.middleware
+        carrinhoListener.middleware, 
+        orderListener.middleware
       ),
   });
 };

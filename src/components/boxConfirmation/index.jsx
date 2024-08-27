@@ -78,9 +78,6 @@ export default function BoxConfirmation({
   };
 
 
-
-
-
   return (
     <Box
       sx={{
