@@ -7,7 +7,7 @@ import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd"; // Corrigido o nome do componente
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { atualizarCarrinhoInteiro, buscarCarrinhoById, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
+import { apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
 
 function CartView() {
     const dispatch = useAppDispatch();
@@ -15,6 +15,10 @@ function CartView() {
     const carrinho = useAppSelector(state => state.carrinho.items || []);
     const status = useAppSelector(state => state.carrinho.status);
     const error = useAppSelector(state => state.carrinho.error);
+
+    useEffect(() => {
+            console.log('Carrinho:', carrinho);
+    }, [carrinho])
 
     useEffect(() => {
         const storedCartData = localStorage.getItem('userData');
@@ -62,8 +66,21 @@ function CartView() {
             }
         }
 
+    };
 
+    const handleDelete = (id) => {
+        const storedCartData = localStorage.getItem('userData');
 
+        if (storedCartData) {
+            const parsedCartData = JSON.parse(storedCartData);
+            const cartId = parsedCartData.cart_id;
+
+            if (cartId) {
+                dispatch(apagarItemCart(id));
+                dispatch(atualizarCarrinhoInteiro(cartId.items));
+            }
+        }
+        
     };
 
     if (status === 'loading') return <p>Carregando...</p>;
@@ -105,11 +122,13 @@ function CartView() {
                                 nome={item.product?.name || "Nome desconhecido"}
                                 descricao={item.product?.description || "Descrição não disponível"}
                                 preco={item.product?.price || "0.00"}
-                                imagem={item.product?.image || "/default-image.png"}
+                                imagem={item.product?.image || null}
                                 id={item.product?.id || `item-${idx}`}
                                 quant={item.quantity || 0}
                                 obs={item.observation || 'sem Observação'}
                                 index={idx}
+                                itemId={item?.id || '0'}
+                                onDelete={handleDelete}
                             />
                         ))
                     ) : (

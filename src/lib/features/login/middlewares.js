@@ -17,7 +17,6 @@ loginListener.startListening({
 
       if (token && user_id && user_type && cart_id) {
         localStorage.setItem('userData', JSON.stringify({ token, user_id, user_type, cart_id }));
-        console.log(user_type);
         dispatch(adicionarUser({
           username: action.payload.username,
           password: action.payload.password,

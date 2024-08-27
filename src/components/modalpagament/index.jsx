@@ -32,10 +32,19 @@ export default function ModalPagamento({
 
 
   const handleUpdate = () => {
-    console.log('Atualizando quantidade e observação' , count, obs);
-    dispatch(atualizarQuantidade({ index, quantity: count }));
-    dispatch(atualizarObservacao({ index, observation: obs }));
-    onClose(); 
+    const storedCartData = localStorage.getItem('userData');
+
+    if (storedCartData) {
+        const parsedCartData = JSON.parse(storedCartData);
+        const cartId = parsedCartData.cart_id?.zIndex;
+
+      if(cartId){
+        dispatch(atualizarQuantidade({ index, quantity: count }));
+        dispatch(atualizarObservacao({ index, observation: obs }));
+        onClose(); 
+      }
+
+   
   };
 
   return (
@@ -202,4 +211,4 @@ export default function ModalPagamento({
       </Box>
     </Modal>
   );
-}
+}}

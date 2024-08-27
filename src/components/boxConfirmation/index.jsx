@@ -35,7 +35,6 @@ export default function BoxConfirmation({
     router.push('/cart');
   };
 
-  console.log('add', Additional);
 
 
   const handleAddToCart = async () => {
@@ -45,7 +44,6 @@ export default function BoxConfirmation({
 
       const cartId = parsedUserData?.cart_id?.id;
 
-      console.log('cartId', cartId);
 
       const item = {
         cart: cartId,
@@ -54,10 +52,6 @@ export default function BoxConfirmation({
         observation: observation,
         additionals: Additional || [],
       };
-
-      console.log('item', item.additionals);
-
-
 
       if (cartId) {
         dispatch(buscarCarrinhoById(cartId));
@@ -78,7 +72,6 @@ export default function BoxConfirmation({
         }));
        
       }
-
       dispatch(addCart(item));
       handleRedirect();
     }

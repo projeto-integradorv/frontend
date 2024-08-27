@@ -4,14 +4,14 @@ import axiosInstance from '@/utils/axios';
 const getCart = () => axiosInstance.get('/cart/');
 const getCartById = async (id) => {
     try {
-      const response = await axiosInstance.get(`/cart/${id}/`);
-      return response.data; 
+        const response = await axiosInstance.get(`/cart/${id}/`);
+        return response.data;
     } catch (error) {
-      console.error('Erro ao buscar o carrinho:', error);
-      throw error;
+        console.error('Erro ao buscar o carrinho:', error);
+        throw error;
     }
-  };
-const createCart = (data) =>{
+};
+const createCart = (data) => {
     try {
         const response = axiosInstance.post('/cart/', data);
         return response;
@@ -53,8 +53,20 @@ const zerarItensDoCarrinho = async (id) => {
     }
 };
 
+const apagarItem = (id) => {
+    try {
+        const response = axiosInstance.delete(`/item-cart/${id}/`);
+        return response;
+    }
+    catch (error) {
+        console.error('Erro ao apagar o item:', error);
+        throw error;
+    }
+};
+
+
 
 const updateCart2 = (id, data) => axiosInstance.patch(`/cart/${id}`, data);
 const deleteCart = (id) => axiosInstance.delete(`/cart/${id}`);
 
-export { getCart, getCartById, createCart, updateCart, updateCart2, deleteCart, updateItem, zerarItensDoCarrinho };
+export { getCart, getCartById, createCart, updateCart, updateCart2, deleteCart, updateItem, zerarItensDoCarrinho, apagarItem };

@@ -28,7 +28,6 @@ export default function CardapioContainer({ Id }) {
         ? foods.filter((food) => Number(food.category?.id) === Number(Id))
         : foods;
 
-    console.log('filteredFoods', filteredFoods);
 
     const handleOpenModal = (product) => {
         setSelectedProduct(product);

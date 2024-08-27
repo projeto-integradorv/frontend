@@ -21,7 +21,6 @@ const getProductById = async (id) => {
 };
 
 const postProduct = async (data) => {
-    console.log('data ------', data);
     try {
         const response = await axiosInstance.post('/product/', data,{
             headers: {
@@ -42,7 +41,6 @@ const putProduct = async (id, data) => {
         }
         );
 
-        console.log('res', response.data);
         
         return response.data;
    

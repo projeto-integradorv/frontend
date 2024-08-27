@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { createCart, getCartById, updateCart, updateItem, zerarItensDoCarrinho } from '../../../api/cart';
-import { addCart, adicionarAoCarrinho, atualizarCarrinhoInteiro, buscarCarrinhoById, zerarCarrinho } from './carrinhoSlice';
+import { createCart, getCartById, updateCart, updateItem, zerarItensDoCarrinho, apagarItem } from '../../../api/cart';
+import { addCart, adicionarAoCarrinho, apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, zerarCarrinho, removerDoCarrinho, addItemToCart, atualizarItem } from './carrinhoSlice';
 
 export const cartListener = createListenerMiddleware();
 
@@ -37,6 +37,17 @@ export const cartListener = createListenerMiddleware();
 //     }
 //   },
 // });
+cartListener.startListening({
+  actionCreator: apagarItemCart,
+  effect: async (action, { dispatch }) => {
+    try {
+      const itemId = action.payload;
+      await apagarItem(itemId);
+    } catch (error) {
+      console.error("Erro ao apagar o item:", error);
+    }
+  },
+});
 
 cartListener.startListening({
   actionCreator: zerarCarrinho,
@@ -47,7 +58,6 @@ cartListener.startListening({
       await zerarItensDoCarrinho(cartId);
 
       const cart = await getCartById(cartId);
-      console.log("Carrinho encontrado:", cart);
 
       if (cart && cart.items) {
         dispatch(atualizarCarrinhoInteiro(cart.items));
@@ -60,16 +70,22 @@ cartListener.startListening({
 
 
 cartListener.startListening({
+  actionCreator:atualizarItem,
+})
+
+cartListener.startListening({
   actionCreator: buscarCarrinhoById,
   effect: async (action, { dispatch }) => {
     try {
       const cartId = action.payload;
       const cart = await getCartById(cartId);
-      console.log("Carrinho encontrado:", cart);
 
       if (cart && cart.items) {
+        // Atualiza o carrinho inteiro com os itens recebidos
         dispatch(atualizarCarrinhoInteiro(cart.items));
-        dispatch(adicionarAoCarrinho(cart));
+        
+        
+        dispatch(adicionarAoCarrinho({ items: cart.items }));
       }
     } catch (error) {
       console.error("Erro ao buscar o carrinho pelo ID:", error);
@@ -77,14 +93,14 @@ cartListener.startListening({
   },
 });
 
+
 cartListener.startListening({
   actionCreator: addCart,
   effect: async (action, { dispatch }) => {
     try {
       const cartItem = action.payload;
       const updatedCart = await updateItem(cartItem);
-      console.log("Carrinho atualizado:", updatedCart);
-      
+
       if (updatedCart && updatedCart.items) {
         dispatch(adicionarAoCarrinho(updatedCart));
       } else {

@@ -18,22 +18,27 @@ export const zerarCarrinho = createAction('carrinho/zerarCarrinho', (id) => ({
   payload: id,
 }));
 
-export const apagarItem = createAction('carrinho/apagarItem', (id) => ({
+export const apagarItemCart = createAction('carrinho/apagarItem', (id) => ({
   payload: id,
 }));
+
+export const atualizarItem = createAction('carrinho/atualizarItem');
 
 const carrinhoSlice = createSlice({
   name: 'carrinho',
   initialState,
   reducers: {
     adicionarAoCarrinho: (state, { payload }) => {
-      const index = state.items.findIndex(item => item.product?.id === payload.product?.id);
+      const index = state.items.findIndex(item => Number(item.product?.id) === Number(payload.product?.id));
 
       if (index !== -1) {
         state.items[index].quantity = payload.quantity;
         state.items[index].observation = payload.observation || state.items[index].observation;
       } else {
-        state.items.push(payload);
+        state.items.push({
+          ...payload,
+          index: state.items.length,
+        });
       }
     },
 
@@ -55,7 +60,6 @@ const carrinhoSlice = createSlice({
 
       if (Array.isArray(payload)) {
         payload.forEach((item, index) => {
-          console.log(`Item ${index}:`, item);
         });
         state.items = payload;
       } else {
@@ -64,7 +68,7 @@ const carrinhoSlice = createSlice({
     },
 
     removerDoCarrinho: (state, { payload }) => {
-      state.items = state.items.filter(item => item.product?.id !== payload.product?.id);
+      state.items = state.items.filter(item => item.id !== payload);
     },
 
     resetarCarrinho: (state) => {
@@ -78,7 +82,8 @@ export const {
   atualizarQuantidade,
   atualizarObservacao,
   atualizarCarrinhoInteiro,
-  resetarCarrinho
+  resetarCarrinho,
+  removerDoCarrinho,
 } = carrinhoSlice.actions;
 
 // Exporta o redutor gerado pelo slice

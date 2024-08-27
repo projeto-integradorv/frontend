@@ -57,7 +57,6 @@ categoriasListener.startListening({
   actionCreator: inserirCategoria,
   effect: async (action, { dispatch }) => {
     try {
-      console.log('Inserindo categoria:', action.payload);
       const novaCategoria = await createCategory(action.payload );
       dispatch(categoriaInserida(novaCategoria));
       dispatch(carregarCategorias());
