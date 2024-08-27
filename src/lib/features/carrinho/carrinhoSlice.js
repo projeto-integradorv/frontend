@@ -31,7 +31,6 @@ const carrinhoSlice = createSlice({
   reducers: {
     adicionarAoCarrinho: (state, { payload }) => {
       const index = state.items.findIndex(item => Number(item.product?.id) === Number(payload.product?.id));
-
       if (index !== -1) {
         state.items[index].quantity = payload.quantity;
         state.items[index].observation = payload.observation || state.items[index].observation;
@@ -42,7 +41,6 @@ const carrinhoSlice = createSlice({
         });
       }
     },
-
     atualizarQuantidade: (state, { payload }) => {
       const { id, quantity } = payload;
       const item = state.items.find(item => Number(item?.id) === Number(id));
@@ -52,33 +50,27 @@ const carrinhoSlice = createSlice({
         console.warn('Item não encontrado para o ID:', id);
       }
     },
-    
-    
     atualizarObservacao: (state, { payload }) => {
       const { id, observation } = payload;
-      const item = state.items.find(item => Number(item?.id )=== Number(id));
+      const item = state.items.find(item => Number(item?.id) === Number(id));
       if (item) {
         item.observation = observation;
       }
     },
-    
-
     atualizarCarrinhoInteiro: (state, { payload }) => {
       if (Array.isArray(payload)) {
-          const updatedItems = payload.map((item, index) => ({
-              ...item,
-              index,
-          }));
-          state.items = updatedItems;
+        const updatedItems = payload.map((item, index) => ({
+          ...item,
+          index,
+        }));
+        state.items = updatedItems;
       } else {
-          console.error('Payload inválido para atualizar o carrinho:', payload);
+        console.error('Payload inválido para atualizar o carrinho:', payload);
       }
-  },
-
+    },
     removerDoCarrinho: (state, { payload }) => {
       state.items = state.items.filter(item => Number(item?.id) !== payload);
     },
-
     resetarCarrinho: (state) => {
       state.items = [];
     },
@@ -94,5 +86,4 @@ export const {
   removerDoCarrinho,
 } = carrinhoSlice.actions;
 
-// Exporta o redutor gerado pelo slice
 export default carrinhoSlice.reducer;
