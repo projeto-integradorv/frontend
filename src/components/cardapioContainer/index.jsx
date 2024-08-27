@@ -14,6 +14,7 @@ export default function CardapioContainer({ Id }) {
     const isHomePage = pathname === '/';
     const isAdmPage = pathname === '/admin';
     const isCategoryPage = pathname.startsWith('/categorias/');
+    const isCardapioPage = pathname === '/cardapio';
     const dispatch = useAppDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -24,9 +25,12 @@ export default function CardapioContainer({ Id }) {
 
     const foods = useAppSelector((state) => state.produtos.produtos);
 
+    const Items = useAppSelector((state) => state.produtos.produtos);
+
     const filteredFoods = isCategoryPage
         ? foods.filter((food) => Number(food.category?.id) === Number(Id))
         : foods;
+
 
 
     const handleOpenModal = (product) => {
@@ -75,7 +79,7 @@ export default function CardapioContainer({ Id }) {
             }}
             disableGutters={true}
         >
-            {(isHomePage || isAdmPage) ? (
+            {(isHomePage || isAdmPage || isCardapioPage) ? (
                 <>
                     {isAdmPage ? (
                         <Box
