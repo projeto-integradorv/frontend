@@ -75,8 +75,8 @@ function CartView() {
 
             if (cartId) {
                 dispatch(apagarItemCart(id));
-                dispatch(removerDoCarrinho(cartId));
                 dispatch(buscarCarrinhoById(cartId?.id));
+                dispatch(removerDoCarrinho(cartId));
             }
         }
         

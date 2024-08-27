@@ -44,18 +44,24 @@ const carrinhoSlice = createSlice({
     },
 
     atualizarQuantidade: (state, { payload }) => {
-      const { index, quantity } = payload;
-      if (state.items[index]) {
-        state.items[index].quantity = quantity;
+      const { id, quantity } = payload;
+      const item = state.items.find(item => Number(item?.id) === Number(id));
+      if (item) {
+        item.quantity = quantity;
+      } else {
+        console.warn('Item não encontrado para o ID:', id);
       }
     },
-
+    
+    
     atualizarObservacao: (state, { payload }) => {
-      const { index, observation } = payload;
-      if (state.items[index]) {
-        state.items[index].observation = observation;
+      const { id, observation } = payload;
+      const item = state.items.find(item => Number(item?.id )=== Number(id));
+      if (item) {
+        item.observation = observation;
       }
     },
+    
 
     atualizarCarrinhoInteiro: (state, { payload }) => {
       if (Array.isArray(payload)) {
@@ -70,7 +76,7 @@ const carrinhoSlice = createSlice({
   },
 
     removerDoCarrinho: (state, { payload }) => {
-      state.items = state.items.filter(item => item?.id !== payload);
+      state.items = state.items.filter(item => Number(item?.id) !== payload);
     },
 
     resetarCarrinho: (state) => {

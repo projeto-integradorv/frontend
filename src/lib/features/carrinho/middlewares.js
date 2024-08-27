@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { createCart, getCartById, updateCart, updateItem, zerarItensDoCarrinho, apagarItem, atualizarItems } from '../../../api/cart';
-import { addCart, adicionarAoCarrinho, apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, zerarCarrinho, removerDoCarrinho, addItemToCart, atualizarItem } from './carrinhoSlice';
+import { addCart, adicionarAoCarrinho, apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, zerarCarrinho, removerDoCarrinho, addItemToCart, atualizarItem, atualizarObservacao, atualizarQuantidade } from './carrinhoSlice';
 
 export const cartListener = createListenerMiddleware();
 
@@ -76,6 +76,10 @@ cartListener.startListening({
       const item = action.payload;
       console.log('item:', item);
       const response = await atualizarItems(item);
+
+      // Passando o `id` ao invés do `index`
+      dispatch(atualizarObservacao( item));
+      dispatch(atualizarQuantidade(item ));
 
       if (response.status === 200) {
         console.log('Item atualizado com sucesso:', response.data);

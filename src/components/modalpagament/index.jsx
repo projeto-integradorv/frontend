@@ -1,5 +1,5 @@
 import Voltar from '@/assets/voltar.png';
-import { atualizarCarrinhoInteiro, atualizarItem, buscarCarrinhoById } from '@/lib/features/carrinho/carrinhoSlice'; // Corrija o caminho se necessário
+import { atualizarItem, buscarCarrinhoById } from '@/lib/features/carrinho/carrinhoSlice'; // Corrija o caminho se necessário
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
@@ -39,7 +39,7 @@ export default function ModalPagamento({
     if (storedCartData) {
       const parsedCartData = JSON.parse(storedCartData);
       const cartId = parsedCartData.cart_id?.id;
-      const cart = parsedCartData.cart_id.items;
+      const cart = parsedCartData.cart_id;
 
       if (cartId) {
         dispatch(atualizarItem({
@@ -50,8 +50,9 @@ export default function ModalPagamento({
           product: produto,
           additionals: Add
         }));
-        dispatch(atualizarCarrinhoInteiro(cart));
+      
         dispatch(buscarCarrinhoById(cartId));
+        
         onClose();
       } else {
         console.error('ID do carrinho não encontrado');
