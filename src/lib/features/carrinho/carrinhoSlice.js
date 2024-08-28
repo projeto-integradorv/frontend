@@ -2,6 +2,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
+  loading: true,
 };
 
 export const carregarCarrinho = createAction('carrinho/carregarCarrinho');
@@ -37,8 +38,10 @@ const carrinhoSlice = createSlice({
       } else {
         state.items.push({
           ...payload,
-          index: state.items.length,
+          index: state.items.length
         });
+
+        state.loading = false;
       }
     },
     atualizarQuantidade: (state, { payload }) => {
@@ -46,7 +49,9 @@ const carrinhoSlice = createSlice({
       const item = state.items.find(item => Number(item?.id) === Number(id));
       if (item) {
         item.quantity = quantity;
+        state.loading = false;
       } else {
+  
         console.warn('Item não encontrado para o ID:', id);
       }
     },
@@ -55,6 +60,7 @@ const carrinhoSlice = createSlice({
       const item = state.items.find(item => Number(item?.id) === Number(id));
       if (item) {
         item.observation = observation;
+        state.loading = false;
       }
     },
     atualizarCarrinhoInteiro: (state, { payload }) => {
@@ -64,15 +70,18 @@ const carrinhoSlice = createSlice({
           index,
         }));
         state.items = updatedItems;
+        state.loading = false;
       } else {
         console.error('Payload inválido para atualizar o carrinho:', payload);
       }
     },
     removerDoCarrinho: (state, { payload }) => {
       state.items = state.items.filter(item => Number(item?.id) !== payload);
+      state.loading = false;
     },
     resetarCarrinho: (state) => {
       state.items = [];
+      state.loading = true;
     },
   },
 });

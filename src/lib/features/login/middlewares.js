@@ -10,20 +10,28 @@ loginListener.startListening({
   effect: async (action, { dispatch }) => {
     try {
       const response = await login(action.payload);
-
-      console.log(response);
-
       const { token, user_id, user_type, cart_id } = response;
+
+      
 
       if (token && user_id && user_type && cart_id) {
         localStorage.setItem('userData', JSON.stringify({ token, user_id, user_type, cart_id }));
         dispatch(adicionarUser({
           username: action.payload.username,
           password: action.payload.password,
-        }));
+        })); 
 
+        window.location.href = '/';
+      }else if(token && user_id && user_type){
+        localStorage.setItem('userData', JSON.stringify({ token, user_id, user_type }));
+        dispatch(adicionarUser({
+          username: action.payload.username,
+          password: action.payload.password,
+        })); 
 
-      } else {
+        window.location.href = '/admin';
+      }
+       else {
         throw new Error('Dados de login incompletos.');
       }
     } catch (error) {

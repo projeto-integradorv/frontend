@@ -1,41 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Box, Typography, Stepper, Step, StepLabel } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { buscarPedidoPorId } from '@/lib/features/pedidos/pedidoSlice';
 
-const TimelineModal = ({ open, onClose, order }) => {
-  if (!order) return null;
+const TimelineModal = ({ open, onClose, orderId }) => {
+  const dispatch = useDispatch();
+  const selectedOrder = useSelector(state => state.pedidos.selectedOrder);
+  const [orderStatus, setOrderStatus] = useState('');
+
+
+  useEffect(() => {
+    if (orderId) {
+      dispatch(buscarPedidoPorId(orderId?.id));
+    }
+  }, [orderId, dispatch]);
+
+  useEffect(() => {
+    if (selectedOrder) {
+      setOrderStatus(selectedOrder.order_status);
+    }
+  }, [selectedOrder]);
 
   const steps = [
-    'Pedido Recebido',
-    'Preparando',
-    'Pronto para Envio',
-    'Em Rota de Entrega',
-    'Entregue'
+    'Pendente',
+    'Aceito',
+    'Em preparo',
+    'Pronto para entrega',
+    'Em entrega',
+    'Entregue com sucesso',
+    'Não encontrado'
   ];
 
   const getActiveStep = (status) => {
-    switch (status) {
-      case 'Recebido':
-        return 0;
-      case 'Preparando':
-        return 1;
-      case 'Pronto para Envio':
-        return 2;
-      case 'Em Rota de Entrega':
-        return 3;
-      case 'Concluído':
-        return 4;
-      default:
-        return 0;
-    }
+    return steps.indexOf(status);
   };
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 2 }}>
         <Typography variant="h6" mb={2}>
-          Status do Pedido #{order.id}
+          Status do Pedido #{orderId.order_status }
         </Typography>
-        <Stepper activeStep={getActiveStep(order.status)} orientation="vertical">
+        <Stepper activeStep={getActiveStep(orderStatus)} orientation="vertical">
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Box, Button, FormControl, Grid, Typography, TextField } from '@mui/material';
+import { addCart } from '@/lib/features/carrinho/carrinhoSlice';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, Button, FormControl, Grid, TextField, Typography } from '@mui/material';
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { addCart, adicionarAoCarrinho } from '@/lib/features/carrinho/carrinhoSlice';
 import { buscarCarrinhoById } from "../../lib/features/carrinho/carrinhoSlice";
-import { Add } from "@mui/icons-material";
+import { adicionarPedido } from '@/lib/features/pedidos/pedidoSlice';
 
 export default function BoxConfirmation({
   title,
@@ -35,6 +35,37 @@ export default function BoxConfirmation({
     router.push('/cart');
   };
 
+  const handleRedirectToConfirm = () => {
+    router.push('/confirmacao');
+
+  };
+
+  const handleCreateOrder = () => {
+    const storedUserData = localStorage.getItem('userData');
+    const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
+
+    const cartId = parsedUserData.cart_id?.id;
+    const userId = parsedUserData.user_id;
+
+    console.log('cartId', cartId);
+    console.log('userId', userId);
+    console.log('valorFinal', valorFinal);
+
+    dispatch(adicionarPedido(
+      {
+        cart: cartId,
+        customer: userId,
+        total: valorFinal,
+        order_status: 'Pendente',
+        order_type:'Mesa',
+        payment_type: 'Dinheiro',
+      }
+    ))
+
+    handleRedirectToConfirm();
+
+  }
+
 
 
   const handleAddToCart = async () => {
@@ -42,7 +73,7 @@ export default function BoxConfirmation({
       const storedUserData = localStorage.getItem('userData');
       const parsedUserData = storedUserData ? JSON.parse(storedUserData) : null;
 
-      const cartId = parsedUserData?.cart_id?.id;
+      const cartId = parsedUserData.cart_id?.id;
 
 
       const item = {
@@ -70,7 +101,7 @@ export default function BoxConfirmation({
           ...parsedUserData,
           cart_id: cart
         }));
-       
+
       }
       dispatch(addCart(item));
       handleRedirect();
@@ -219,7 +250,7 @@ export default function BoxConfirmation({
                   }
                 }}
                 variant="contained"
-                onClick={handleRedirect}
+                onClick={handleCreateOrder}
               >
                 Confirmar
               </Button>

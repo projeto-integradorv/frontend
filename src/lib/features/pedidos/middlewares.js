@@ -1,21 +1,50 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import {
-    createOrder,
-    deleteOrder,
-    getOrderById,
-    updateOrder
+  createOrder,
+  deleteOrder,
+  getOrderById,
+  updateOrder,
+  getOrders
 } from '../../../api/order';
 import {
-    adicionarOrder,
-    adicionarPedido,
-    apagarPedido,
-    atualizarOrder,
-    atualizarPedido,
-    buscarPedidoPorId,
-    patchOrder
+  buscarPedidos,
+  adicionarOrder,
+  adicionarPedido,
+  apagarPedido,
+  atualizarOrder,
+  atualizarPedido,
+  buscarPedidoPorId,
+  patchOrder,
+  setOrdersSuccess,
+  setOrdersLoading,
+  setOrdersFailed,
+  setSelectedOrder
 } from './pedidoSlice';
 
 export const orderListener = createListenerMiddleware();
+
+orderListener.startListening({
+  actionCreator: buscarPedidos,
+  effect: async (action, { dispatch }) => { // Corrigido para passar `dispatch` corretamente
+    try {
+      dispatch(setOrdersLoading());
+
+      console.log('Buscando pedidos...');
+      const response = await getOrders();
+
+      console.log('response', response);
+
+      if (Array.isArray(response)) {
+        dispatch(setOrdersSuccess(response)); // Atualiza o estado com a lista de pedidos
+      } else {
+        dispatch(setOrdersFailed('Nenhum pedido encontrado.'));
+      }
+    } catch (error) {
+      dispatch(setOrdersFailed(error.toString()));
+      console.error('Erro ao buscar os pedidos:', error);
+    }
+  },
+});
 
 orderListener.startListening({
   actionCreator: adicionarPedido,
@@ -34,34 +63,40 @@ orderListener.startListening({
     }
   },
 });
-
 orderListener.startListening({
   actionCreator: atualizarPedido,
   effect: async (action, { dispatch }) => {
     try {
       const pedido = action.payload;
-      const response = await updateOrder(pedido.id, pedido);
 
-      if (response.status === 200) {
-        dispatch(atualizarOrder(response.data));
+      const response = await updateOrder(pedido?.id, pedido);
+
+
+      if (response && response.id) {
+        dispatch(atualizarOrder(response));
       } else {
-        console.error('Erro ao atualizar o pedido:', response);
+        throw new Error('Resposta inesperada da API.');
       }
     } catch (error) {
-      console.error('Erro ao atualizar o pedido:', error);
+      console.error('Erro ao atualizar o pedido:', error.message);
     }
   },
 });
+
 
 orderListener.startListening({
   actionCreator: patchOrder,
   effect: async (action, { dispatch }) => {
     try {
       const pedido = action.payload;
+
+      console.log('Atualizando pedido:', pedido);
       const response = await updateOrder(pedido.id, pedido);
 
+      console.log('response', response);
+
       if (response.status === 200) {
-        dispatch(atualizarOrder(response.data));
+        dispatch(atualizarOrder(response));
       } else {
         console.error('Erro ao atualizar o pedido:', response);
       }
@@ -88,16 +123,18 @@ orderListener.startListening({
   actionCreator: buscarPedidoPorId,
   effect: async (action, { dispatch }) => {
     try {
-      const id = action.payload;
+      const { payload: id } = action;
+      console.log(`Buscando pedido com ID: ${id}...`);
       const response = await getOrderById(id);
 
-      if (response && response.data) {
-        dispatch(adicionarOrder(response.data));
+      if (response) {
+        dispatch(setSelectedOrder(response));
       } else {
-        console.error('Erro ao buscar o pedido pelo ID:', response);
+        dispatch(setOrdersFailed('Pedido não encontrado.'));
       }
     } catch (error) {
-      console.error('Erro ao buscar o pedido pelo ID:', error);
+      dispatch(setOrdersFailed(error.toString()));
+      console.error('Erro ao buscar o pedido:', error);
     }
   },
 });

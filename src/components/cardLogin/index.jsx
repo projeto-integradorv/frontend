@@ -95,11 +95,11 @@ const LoginCard = () => {
   };
 
   useEffect(() => {
+    
     if (success) {
       setOpen(true);
       setTimeout(() => {
-        router.push('/');
-      }, 3000); 
+      }, 2000); 
     } else if (error) {
       setOpen(true);
     }

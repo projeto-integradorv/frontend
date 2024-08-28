@@ -1,27 +1,27 @@
 'use client';
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Container, Grid } from '@mui/material';
 import BasicLayout from "@/layouts/basic/basiclayout";
 import OrderCard from "@/components/OrderCard";
-import BoxConfirnation from "@/components/boxConfirmation";
+import BoxConfirmation from "@/components/boxConfirmation";
 import EditOrderModal from "@/components/EditOrderModal";
 import TimelineModal from "@/components/OrderTimelineModal";
 import { useRouter, usePathname } from "next/navigation";
-
-const initialOrders = [
-  { id: 1, quantidade: 3, total: 250.00, status: 'Recebido' },
-  { id: 2, quantidade: 3, total: 180.00, status: 'Concluído' },
-  // Outros pedidos...
-];
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { buscarPedidos, atualizarPedido } from "@/lib/features/pedidos/pedidoSlice";
 
 export default function PedidosView() {
-  const [orders, setOrders] = useState(initialOrders);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [timelineOpen, setTimelineOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-
+  const dispatch = useAppDispatch();
+  const orders = useAppSelector(state => state.pedidos.orders);
   const pathname = usePathname();
   const router = useRouter();
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [timelineOpen, setTimelineOpen] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] = React.useState(null);
+
+  useEffect(() => {
+    dispatch(buscarPedidos());
+  }, [dispatch]);
 
   const handleRedirect = () => {
     router.push('/');
@@ -29,9 +29,12 @@ export default function PedidosView() {
 
   const handleOpenModal = (order) => {
     if (pathname === '/admin') {
-      setSelectedOrder(order);
+      // Encontre o pedido completo pelo ID
+      const fullOrder = orders.find(o => o.id === order.id);
+      setSelectedOrder(fullOrder);
       setModalOpen(true);
     } else {
+      // Defina o pedido selecionado e abra o modal de linha do tempo
       setSelectedOrder(order);
       setTimelineOpen(true);
     }
@@ -49,25 +52,22 @@ export default function PedidosView() {
 
   const handleSaveStatus = (newStatus) => {
     if (selectedOrder) {
-      setOrders(prevOrders =>
-        prevOrders.map(order =>
-          order.id === selectedOrder.id ? { ...order, status: newStatus } : order
-        )
-      );
+      dispatch(atualizarPedido({ id: selectedOrder.id, status: newStatus }));
       handleCloseModal();
     }
   };
 
   const totalValue = orders
     .map(item => {
-      const preco = parseFloat(item.total);
-      const quanto = parseInt(item.quantidade, 10);
-      return isNaN(preco) || isNaN(quanto) ? 0 : preco * quanto;
+      const preco = parseFloat(item.total) || 0;
+      const quantidade = parseInt(item.quantidade, 10) || 0;
+      return preco * quantidade;
     })
     .reduce((acc, value) => acc + value, 0)
     .toFixed(2);
 
-  const orderGrid = (
+  // Grid de pedidos
+  const orderGridAdmin = (
     <Grid container spacing={2} wrap="wrap">
       {orders.map((order) => (
         <Grid sx={{ marginBottom: 2 }} item xs={12} sm={6} md={4} key={order.id}>
@@ -77,6 +77,7 @@ export default function PedidosView() {
     </Grid>
   );
 
+  // Botão para adicionar mais itens
   const orderButton = (
     <Button
       onClick={handleRedirect}
@@ -108,27 +109,27 @@ export default function PedidosView() {
   return (
     <>
       {pathname === '/admin' ? (
-        <Container maxWidth="" disableGutters={true} >
+        <Container maxWidth="" disableGutters={true}>
           <Container maxWidth="lg" sx={{ minHeight: '100vh' }}>
-            {orderGrid}
+            {orderGridAdmin}
           </Container>
           {selectedOrder && (
             <EditOrderModal
               open={modalOpen}
               onClose={handleCloseModal}
-              order={selectedOrder}
+              orderId={selectedOrder}
               onSave={handleSaveStatus}
             />
           )}
         </Container>
       ) : (
         <BasicLayout titulo="Pedidos">
-          <Container maxWidth="" disableGutters={true} >
+          <Container maxWidth="" disableGutters={true}>
             <Container maxWidth="lg" sx={{ marginTop: -10, marginBottom: '20vh' }}>
-              {orderGrid}
+              {orderGridAdmin}
               {orderButton}
             </Container>
-            <BoxConfirnation valorFinal={totalValue} />
+            <BoxConfirmation valorFinal={totalValue} />
           </Container>
         </BasicLayout>
       )}
@@ -136,7 +137,7 @@ export default function PedidosView() {
         <TimelineModal
           open={timelineOpen}
           onClose={handleCloseTimeline}
-          order={selectedOrder}
+          orderId={selectedOrder} // Passe o pedido selecionado ao modal de linha do tempo
         />
       )}
     </>

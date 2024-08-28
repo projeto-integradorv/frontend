@@ -11,10 +11,14 @@ import ImgLogin from '../../assets/login.png';
 import ImgCadastro from '../../assets/cadastro.png';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { usePathname, useRouter } from 'next/navigation';
+import { ExitToAppOutlined } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../lib/features/login/loginSlice';
 
 export default function Navbar() {
+    const dispatch = useDispatch();
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [userType, setUserType] = useState(null);
+    const [userType, setUserType] = useState('');
     const pathname = usePathname();
     const router = useRouter();
 
@@ -60,6 +64,13 @@ export default function Navbar() {
         setDrawerOpen(false);
     };
 
+    const handleLogoutClick = () => {
+        dispatch(logoutUser());
+        localStorage.removeItem('userData');
+        setUserType(null);
+        router.push('/login');
+    }
+
     return (
         <Container disableGutters={true} maxWidth='' sx={{ backgroundColor: '#FF9800', width: '100%' }}>
             <Container maxWidth='lg' sx={{ display: 'flex', flexWrap: "wrap", width: '100%' }} disableGutters={true}>
@@ -87,7 +98,7 @@ export default function Navbar() {
                             <Image src={shopping} width={13} alt='pedido' />
                             Pedidos
                         </Button>
-                        {userType && (
+                
                             <>
                                 <Button onClick={handleLoginClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
                                     <Image src={ImgLogin} width={13} alt='login' />
@@ -98,13 +109,17 @@ export default function Navbar() {
                                     Cadastro
                                 </Button>
                             </>
-                        )}
+                       
                         {!userType && (
                             <Button onClick={handleAdminClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
                                 <AdminPanelSettingsIcon sx={{ width: 20 }} />
                                 Admin
                             </Button>
                         )}
+                        <Button onClick={handleLogoutClick} sx={{ color: 'white', display: 'flex', gap: '5px', cursor:'pointer' }}>
+                            <ExitToAppOutlined sx={{ width: 20 }} />
+                            Logout
+                        </Button>
                     </Box>
 
                     <Drawer

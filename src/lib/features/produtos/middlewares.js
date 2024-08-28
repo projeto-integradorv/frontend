@@ -45,7 +45,6 @@ produtosListener.startListening({
     effect: async (action, { dispatch }) => {
         dispatch(mudarLoading(true));
         try {
-            
             const produto = await getProductById(action.payload);
             dispatch(adicionarProduto(produto));
         } catch (error) {

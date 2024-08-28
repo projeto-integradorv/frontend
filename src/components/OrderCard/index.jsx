@@ -36,7 +36,7 @@ export default function OrderCard({ order, onClick }) {
                         Pedido #{order.id}
                     </Typography>
                     <Typography variant='body2' sx={{ color: '#555' }}>
-                        Total
+                        Total 
                     </Typography>
                     <Typography variant='body2' sx={{ color: '#555' }}>
                         Status
@@ -53,10 +53,10 @@ export default function OrderCard({ order, onClick }) {
                         Qtd: {order.quantidade}
                     </Typography>
                     <Typography variant="body2" component="p" sx={{ color: '#52c5a6', fontSize: '1rem', fontWeight: 'bold' }}>
-                        R$ {order.total}
+                        R$ {order.total_price}
                     </Typography>
                     <Typography variant="body2" component="p" sx={{ color: '#333' }}>
-                        {order.status}
+                        {order.order_status}
                     </Typography>
                 </Box>
             </CardContent>

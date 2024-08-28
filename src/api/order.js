@@ -20,11 +20,7 @@ const createOrder = async (data) => {
 };
 
 const updateOrder = async (id, data) => {
-    const response = await axiosInstance.put(`/order/${id}/`, data, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    const response = await axiosInstance.put(`/order/${id}/`, data); 
     return response.data;
 };
 

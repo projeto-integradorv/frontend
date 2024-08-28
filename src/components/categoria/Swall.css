@@ -26,5 +26,13 @@
   
   .swal2-styled.swal2-cancel:hover {
     background-color: #c82333 !important; /* Cor do botão de cancelamento ao passar o mouse */
+
+  }
+
+  .order-modal {
+    z-index: 1300 !important; /* Ajuste o z-index do modal */
   }
   
+  .swal-container {
+    z-index: 1400 !important; /* Ajuste o z-index do SweetAlert2 */
+  }

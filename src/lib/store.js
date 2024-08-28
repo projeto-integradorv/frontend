@@ -12,7 +12,7 @@ import loginListener from "./features/login/middlewares";
 import registerListener from "./features/cadastroUser/middlewares";
 import registerSlice from "./features/cadastroUser/registerSlice";
 import  carrinhoListener  from "./features/carrinho/middlewares";
-import pedidosSlice from "./features/pedidos/pedidoSlice";
+import orderSlice from "./features/pedidos/pedidoSlice";
 import  orderListener  from "./features/pedidos/middlewares";
 
 export const makeStore = () => {
@@ -24,7 +24,7 @@ export const makeStore = () => {
       categorias: categoriasSlice,
       adicionais: adicionalSlice,
       register: registerSlice,
-      pedidos: pedidosSlice
+      pedidos: orderSlice
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
