@@ -42,14 +42,10 @@ cartListener.startListening({
     try {
       const item = action.payload;
       const response = await atualizarItems(item);
-      dispatch(atualizarObservacao( item));
-      dispatch(atualizarQuantidade(item ));
-     
-      if (response.status === 200) {
-        console.log('Item atualizado com sucesso:', response.data);
-      } else {
-        console.error('Erro ao atualizar o item:', response);
-      }
+      dispatch(atualizarObservacao( response.data ));
+      dispatch(atualizarQuantidade( response.data ));
+      dispatch(buscarCarrinhoById(response.data.cart));
+            
     } catch (error) {
       console.error('Erro ao atualizar o item:', error);
     }

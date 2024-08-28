@@ -51,7 +51,7 @@ export default function ModalPagamento({
           additionals: Add
         }));
       
-        dispatch(buscarCarrinhoById(cartId));
+      //  dispatch(buscarCarrinhoById(cartId));
         
         onClose();
       } else {
