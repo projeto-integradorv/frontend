@@ -11,7 +11,6 @@ export default function ListTables({ tables }) {
                         <div>
                             <h2>Mesa {table.number}</h2>
                             <p>Status: {table.status}</p>
-                            {/* Aqui você pode adicionar mais informações sobre a mesa, se necessário */}
                         </div>
                     </Grid>
                 ))}

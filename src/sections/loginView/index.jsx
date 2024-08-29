@@ -1,6 +1,5 @@
-'use client'; // Diretiva para garantir que este código seja executado apenas no cliente
-
-import LoginCard from "@/components/cardLogin"; // Certifique-se de que o caminho está correto
+'use client'; 
+import LoginCard from "@/components/cardLogin";
 import { Box, Container, Typography } from '@mui/material';
 
 export default function LoginView() {
@@ -9,7 +8,7 @@ export default function LoginView() {
             sx={{
                 width: '100%',
                 minHeight: '100vh',
-                backgroundColor: '#f0f2f5', // Fundo neutro e moderno
+                backgroundColor: '#f0f2f5', 
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -22,11 +21,11 @@ export default function LoginView() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    backgroundColor: '#ffffff', // Fundo branco para o card de login
-                    borderRadius: 3, // Bordas suavemente arredondadas
-                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)', // Sombra para profundidade
-                    padding: 4, // Espaçamento interno
-                    textAlign: 'center', // Centralizar o texto
+                    backgroundColor: '#ffffff',
+                    borderRadius: 3,
+                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+                    padding: 4,
+                    textAlign: 'center',
                 }}
             >
                 <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
@@ -35,7 +34,7 @@ export default function LoginView() {
                 <Typography variant="body1" color="textSecondary" sx={{ marginBottom: 4 }}>
                     Entre com suas credenciais para acessar sua conta.
                 </Typography>
-                <Box sx={{ width: '100%', marginY: 4 }}>
+                <Box sx={{ width: '100%' }}>
                     <LoginCard />
                 </Box>
             </Container>

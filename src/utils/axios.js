@@ -6,7 +6,7 @@ import { HOST_API } from '@/config-global';
 
 let authToken = '';
 
-if (typeof window !== 'undefined') { // Verifica se está no ambiente do cliente
+if (typeof window !== 'undefined') { 
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
         const parsedUserData = JSON.parse(storedUserData);
@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
     baseURL: HOST_API,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Token ${authToken}`, // Insere o token no cabeçalho de autorização
+        'Authorization': `Token ${authToken}`,
     }
 });
 

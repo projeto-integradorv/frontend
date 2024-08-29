@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, CardContent, TextField, Button } from '@mui/material';
+import { Card, CardContent, TextField, Button, Snackbar, Alert } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { carregarCadastro } from '../../lib/features/cadastroUser/registerSlice'; // Somente a ação de cadastro
 import { useRouter } from 'next/navigation';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 400,
+  maxWidth: 600,
   margin: 'auto',
   marginTop: theme.spacing(4),
   padding: theme.spacing(3),
@@ -58,17 +58,30 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 const RegisterCard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [registerAttempted, setRegisterAttempted] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const loading = useSelector((state) => state.register.loading);
   const error = useSelector((state) => state.register.error);
   const usuario = useSelector((state) => state.register.usuario);
 
   const handleRegister = () => {
-    const userData = { name:name, email:email, password:password };
+    setRegisterAttempted(true);
+
+    if (!name || !email || !password) {
+      setOpen(true);
+      return;
+    }
+
+    const userData = { name: name, email: email, password: password };  
     dispatch(carregarCadastro(userData));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -78,44 +91,68 @@ const RegisterCard = () => {
   }, [usuario, router]);
 
   return (
-    <StyledCard>
-      <CardContent>
-        <StyledTextField
-          fullWidth
-          label="Nome"
-          variant="outlined"
-          margin="normal"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <StyledTextField
-          fullWidth
-          label="Email"
-          type="email"
-          variant="outlined"
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <StyledTextField
-          fullWidth
-          label="Senha"
-          type="password"
-          variant="outlined"
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <StyledButton
-          variant="contained"
-          onClick={handleRegister}
-          disabled={loading}
-        >
-          Registrar
-        </StyledButton>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </CardContent>
-    </StyledCard>
+    <>
+      <StyledCard>
+        <CardContent>
+          <StyledTextField
+            fullWidth
+            label="Nome"
+            variant="outlined"
+            margin="normal"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={registerAttempted && !name}
+            helperText={registerAttempted && !name && "Nome é obrigatório"}
+          />
+          <StyledTextField
+            fullWidth
+            label="Email"
+            type="email"
+            variant="outlined"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={registerAttempted && !email}
+            helperText={registerAttempted && !email && "Email é obrigatório"}
+          />
+          <StyledTextField
+            fullWidth
+            label="Senha"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={registerAttempted && !password}
+            helperText={registerAttempted && !password && "Senha é obrigatória"}
+          />
+          <StyledButton
+            variant="contained"
+            onClick={handleRegister}
+            disabled={loading}
+          >
+            {loading ? 'Registrando...' : 'Registrar'}
+          </StyledButton>
+        </CardContent>
+      </StyledCard>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        {usuario ? (
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            Cadastro realizado com sucesso!
+          </Alert>
+        ) : (
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            {error || 'Preencha todos os campos corretamente.'}
+          </Alert>
+        )}
+      </Snackbar>
+    </>
   );
 };
 

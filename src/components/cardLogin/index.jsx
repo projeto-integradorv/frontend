@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ import { carregarLogin } from '../../lib/features/login/loginSlice';
 import { useRouter } from 'next/navigation';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 400,
+  maxWidth: 600,
   margin: 'auto',
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
@@ -86,24 +86,25 @@ const LoginCard = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [open, setOpen] = useState(false);
+  const [loginAttempted, setLoginAttempted] = useState(false);
   const router = useRouter();
 
   const handleLogin = () => {
-    if (email && senha) {
-      dispatch(carregarLogin({ username: email, password: senha }));
-    }
-  };
+    setLoginAttempted(true);
 
-  useEffect(() => {
-    
-    if (success) {
+    if (!email || !senha) {
       setOpen(true);
-      setTimeout(() => {
-      }, 2000); 
-    } else if (error) {
-      setOpen(true);
+      return;
     }
-  }, [success, error, router]);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setOpen(true);
+      return;
+    }
+
+    dispatch(carregarLogin({ username: email, password: senha }));
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -121,6 +122,8 @@ const LoginCard = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
+            error={loginAttempted && !email}
+            helperText={loginAttempted && !email && "Email é obrigatório"}
           />
           <StyledTextField
             fullWidth
@@ -131,6 +134,8 @@ const LoginCard = () => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             autoComplete="current-password"
+            error={loginAttempted && !senha}
+            helperText={loginAttempted && !senha && "Senha é obrigatória"}
           />
           <StyledButton
             variant="contained"
@@ -163,7 +168,7 @@ const LoginCard = () => {
           </Alert>
         ) : (
           <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-            Erro no login: {error}
+            Erro no login: {error || 'Preencha todos os campos corretamente.'}
           </Alert>
         )}
       </Snackbar>

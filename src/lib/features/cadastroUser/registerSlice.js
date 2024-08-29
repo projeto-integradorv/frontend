@@ -1,6 +1,5 @@
 import { createSlice, createAction } from '@reduxjs/toolkit';
 
-// Estado inicial
 const initialState = {
   loading: false,
   usuario: null,

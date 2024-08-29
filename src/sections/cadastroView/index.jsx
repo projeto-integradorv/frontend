@@ -33,10 +33,10 @@ export default function CadastroView() {
                     <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Criar Conta
                     </Typography>
-                    <Typography variant="body1" color="textSecondary" sx={{ marginBottom: 4 }}>
+                    <Typography variant="body1" color="textSecondary" sx={{ marginBottom: 1 }}>
                         Preencha o formulário abaixo para criar uma nova conta.
                     </Typography>
-                    <Box sx={{ width: '100%', marginY: 4 }}>
+                    <Box sx={{ width: '100%' }}>
                         <RegisterCard />
                     </Box>
                 </Container>

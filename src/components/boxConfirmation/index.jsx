@@ -58,7 +58,7 @@ export default function BoxConfirmation({
         customer: userId,
         total: String(valorFinal),
         order_status: 'Pendente',
-        order_type:'Mesa',
+        order_type: 'Mesa',
         payment_type: 'Dinheiro',
       }
     ))
@@ -66,7 +66,6 @@ export default function BoxConfirmation({
     handleRedirectToConfirm();
 
   }
-
 
 
   const handleAddToCart = async () => {
