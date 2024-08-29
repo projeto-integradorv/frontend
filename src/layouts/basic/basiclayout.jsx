@@ -10,7 +10,7 @@ export default function BasicLayout({ children, titulo}) {
             <Navbar />
             <Header titulo={titulo}  />
             {children }
-            <BellWaiter />
+            {/* <BellWaiter /> */}
 
         </>
     );
