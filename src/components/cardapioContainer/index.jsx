@@ -1,7 +1,7 @@
 'use client';
 import Img from '@/assets/x-salada.jpg';
 import CardFood from "@/components/cardFodd";
-import ModalProduto from "@/components/modalCategory"; 
+import ModalProduto from "@/components/modalIsertUpdate"; 
 import { carregarProdutos, apagarProduto } from "@/lib/features/produtos/produtoSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";

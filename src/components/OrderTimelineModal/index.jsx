@@ -8,22 +8,22 @@ const TimelineModal = ({ open, onClose, orderId }) => {
   const selectedOrder = useSelector(state => state.pedidos.selectedOrder);
   const [orderStatus, setOrderStatus] = useState('');
 
+  useEffect(() => {
+    if (orderId.id) {
+      const buscarPedidosAutomaticamente = () => {
+        dispatch(buscarPedidoPorId(orderId.id));
+      };
+      buscarPedidosAutomaticamente();
+      const intervalId = setInterval(buscarPedidosAutomaticamente, 10000);
+      return () => clearInterval(intervalId);
+    }
+  }, [dispatch, orderId]);
 
   useEffect(() => {
-    const buscarPedidosAutomaticamente = () => {
-      dispatch(buscarPedidoPorId(orderId?.id));
-    };
-    buscarPedidosAutomaticamente();
-    const intervalId = setInterval(buscarPedidosAutomaticamente, 1000);
-    return () => clearInterval(intervalId);
-  }, [dispatch]);
-  
-
-  useEffect(() => {
-    if (selectedOrder) {
+    if (selectedOrder && selectedOrder.id === orderId.id) {
       setOrderStatus(selectedOrder.order_status);
     }
-  }, [selectedOrder]);
+  }, [selectedOrder, orderId.id]);
 
   const steps = [
     'Pendente',
@@ -32,7 +32,7 @@ const TimelineModal = ({ open, onClose, orderId }) => {
     'Pronto para entrega',
     'Em entrega',
     'Entregue com sucesso',
-    'Não encontrado'
+    'Não encontrado',
   ];
 
   const getActiveStep = (status) => {
@@ -43,12 +43,21 @@ const TimelineModal = ({ open, onClose, orderId }) => {
     <Modal open={open} onClose={onClose}>
       <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 2 }}>
         <Typography variant="h6" mb={2}>
-          Status do Pedido #{orderId.order_status }
+          Status do Pedido #{orderId.order_status}
         </Typography>
         <Stepper activeStep={getActiveStep(orderStatus)} orientation="vertical">
-          {steps.map((label) => (
+          {steps.map((label, index) => (
             <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+              <StepLabel
+                sx={{
+                  color: label === 'Não encontrado' ? 'red' : undefined,
+                  '& .MuiStepIcon-root': {
+                    color: label === 'Não encontrado' ? 'red' : undefined,
+                  }
+                }}
+              >
+                {label}
+              </StepLabel>
             </Step>
           ))}
         </Stepper>

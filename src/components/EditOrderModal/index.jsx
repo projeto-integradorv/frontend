@@ -16,7 +16,7 @@ import {
   atualizarPedido,
 } from '@/lib/features/pedidos/pedidoSlice';
 import Swal from 'sweetalert2';
-import '../categoria/Swall.css';
+import '../categoria/Swall.css'; // Verifique o caminho do CSS
 
 export default function OrderModal({ open, onClose, orderId }) {
   const dispatch = useDispatch();
@@ -25,9 +25,11 @@ export default function OrderModal({ open, onClose, orderId }) {
   const error = useSelector((state) => state.pedidos.error);
   const [orderStatus, setOrderStatus] = useState('');
 
+  console.log('order status', orderStatus);
+
   useEffect(() => {
     if (orderId) {
-      dispatch(buscarPedidoPorId(orderId?.id));
+      dispatch(buscarPedidoPorId(orderId.id));
     }
   }, [orderId, dispatch]);
 
@@ -81,7 +83,7 @@ export default function OrderModal({ open, onClose, orderId }) {
 
       dispatch(
         atualizarPedido({
-          id: orderId?.id,
+          id: orderId.id,
           order_status: orderStatus,
           cart: selectedOrder.cart?.id,
           customer: selectedOrder.customer,
@@ -89,8 +91,8 @@ export default function OrderModal({ open, onClose, orderId }) {
           order_type: selectedOrder.order_type,
         })
       )
-
-      dispatch(buscarPedidoPorId(orderId?.id));
+        dispatch(buscarPedidoPorId(orderId?.id));
+      
     }
   };
 
@@ -128,7 +130,7 @@ export default function OrderModal({ open, onClose, orderId }) {
                             <ListItemText
                               primary={
                                 <Typography variant="body2">
-                                  -   {additional.quantity}x  {additional.additional.name}  
+                                  - {additional.quantity}x {additional.additional.name}
                                 </Typography>
                               }
                             />
@@ -176,7 +178,7 @@ export default function OrderModal({ open, onClose, orderId }) {
           <Typography variant="h6" gutterBottom>
             Pedido #{selectedOrder.id}
           </Typography>
-          <Typography variant='body-1' component={'p'} >
+          <Typography variant='body-1' component={'p'}>
             <strong>Tipo:</strong> {selectedOrder.order_type}
           </Typography>
           <Typography variant='body-1' component={'p'}>
@@ -190,7 +192,7 @@ export default function OrderModal({ open, onClose, orderId }) {
           </Typography>
           <Typography variant='body-1' component={'p'}>
             <strong>Total:</strong> R$ {selectedOrder.total_price}
-          </Typography >
+          </Typography>
           {selectedOrder.observation && (
             <Typography variant='body-1' component={'p'}>
               <strong>Observação:</strong> {selectedOrder.observation}
@@ -208,7 +210,7 @@ export default function OrderModal({ open, onClose, orderId }) {
               getOptionLabel={(option) => option.label}
               value={
                 statusOptions.find((option) => option.value === orderStatus) ||
-                null
+                ''
               }
               onChange={(event, newValue) => {
                 if (newValue) {

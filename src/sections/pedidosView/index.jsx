@@ -21,18 +21,25 @@ export default function PedidosView() {
 
   useEffect(() => {
 
-    if (pathname === '/pedidos') {
+    if (!pathname === '/admin') {
       const fetchOrders = () => {
         dispatch(buscarPedidos());
       };
 
       fetchOrders();
-      const intervalId = setInterval(fetchOrders, 1000);
+      const intervalId = setInterval(fetchOrders, 10000);
 
       return () => clearInterval(intervalId);
-    }
+    } else {
 
-    dispatch(buscarPedidos());
+      const fetchOrders = () => {
+        dispatch(buscarPedidos());
+      };
+      fetchOrders();
+      const intervalId = setInterval(fetchOrders, 30000);
+      return () => clearInterval(intervalId);
+
+    }
   }, [dispatch]);
 
 
@@ -77,7 +84,6 @@ export default function PedidosView() {
     .reduce((acc, value) => acc + value, 0)
     .toFixed(2);
 
-  // Grid de pedidos
   const orderGridAdmin = (
     <Grid container spacing={2} wrap="wrap">
       {orders.map((order) => (
@@ -88,7 +94,6 @@ export default function PedidosView() {
     </Grid>
   );
 
-  // Botão para adicionar mais itens
   const orderButton = (
     <Button
       onClick={handleRedirect}
