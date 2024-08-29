@@ -3,11 +3,17 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { StoreProvider } from "./StoreProvider";
 import PropTypes from 'prop-types';
+import { usePathname } from "next/navigation";
+import { checkPublicRoute } from "@/function/checkRoutes";
+import PrivateRouter from "@/components/privateRoute";
 
 const inter = Inter({ subsets: ["latin"] });
-
-
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
+  const isPublicPage = checkPublicRoute(pathname);
+
+
   return (
     <html lang="PT-BR">
       <head>
@@ -21,7 +27,12 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <StoreProvider>
-          { children }
+          {isPublicPage && children}
+          {!isPublicPage &&
+            <PrivateRouter>
+              {children}
+            </PrivateRouter>
+          }
         </StoreProvider>
       </body>
     </html>
