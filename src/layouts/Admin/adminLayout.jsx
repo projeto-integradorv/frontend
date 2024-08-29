@@ -15,7 +15,7 @@ export default function AdminLayout() {
     const [selectedComponent, setSelectedComponent] = useState("pedidos");
     const [loading, setLoading] = useState(true);
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md')); 
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [open, setOpen] = useState(!isMobile);
 
     const handleDrawerToggle = () => {
@@ -46,6 +46,12 @@ export default function AdminLayout() {
 
         return () => clearTimeout(timer);
     }, [selectedComponent]);
+
+    const userData = JSON.parse(localStorage.getItem('userData'));
+
+    if (!userData || !userData.token || userData.user_type !== 'Manager') {
+        return <Slide direction="left" in={true} mountOnEnter unmountOnExit><Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Acesso negado!</Box></Slide>;
+    }
 
     return (
         <Box sx={{ display: 'flex', minHeight: '100vh' }}>
