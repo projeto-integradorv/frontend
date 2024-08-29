@@ -4,23 +4,34 @@ import { HOST_API } from '@/config-global';
 
 // ----------------------------------------------------------------------
 
-let authToken = '';
-
-if (typeof window !== 'undefined') { 
+const getAuthToken = () => {
+  if (typeof window !== 'undefined') {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
-        const parsedUserData = JSON.parse(storedUserData);
-        authToken = parsedUserData.token || '';
+      const parsedUserData = JSON.parse(storedUserData);
+      return parsedUserData.token || '';
     }
-}
+  }
+  return '';
+};
 
 const axiosInstance = axios.create({
-    baseURL: HOST_API,
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${authToken}`,
-    }
+  baseURL: HOST_API,
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = getAuthToken();
+    if (token) {
+      config.headers['Authorization'] = `Token ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 axiosInstance.interceptors.response.use(
   (res) => res,
