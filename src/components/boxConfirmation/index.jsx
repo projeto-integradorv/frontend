@@ -46,11 +46,7 @@ export default function BoxConfirmation({
 
     const cartId = parsedUserData.cart_id?.id;
     const userId = parsedUserData.user_id;
-    const customer = parsedUserData.user_type;
-
-    console.log('cartId', cartId);
-    console.log('userId', userId);
-    console.log('valorFinal', valorFinal);
+    
 
     dispatch(adicionarPedido(
       {

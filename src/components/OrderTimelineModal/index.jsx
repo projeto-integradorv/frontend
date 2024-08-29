@@ -14,7 +14,7 @@ const TimelineModal = ({ open, onClose, orderId }) => {
       dispatch(buscarPedidoPorId(orderId?.id));
     };
     buscarPedidosAutomaticamente();
-    const intervalId = setInterval(buscarPedidosAutomaticamente, 10000);
+    const intervalId = setInterval(buscarPedidosAutomaticamente, 1000);
     return () => clearInterval(intervalId);
   }, [dispatch]);
   
