@@ -102,8 +102,15 @@ const LoginCard = () => {
       setOpen(true);
       return;
     }
-
+    
     dispatch(carregarLogin({ username: email, password: senha }));
+
+    if (success) {
+      router.push('/' || '/admin');
+    } else {
+      setOpen(true);
+    }
+  
   };
 
   const handleClose = () => {

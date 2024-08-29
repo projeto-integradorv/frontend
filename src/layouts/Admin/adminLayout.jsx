@@ -122,7 +122,7 @@ export default function AdminLayout() {
                 )}
                 <Navbar />
                 <Box sx={{ padding: "16px", backgroundColor: '#E5E5E5' }}>
-                    <Search />
+
                     {loading ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                             <CircularProgress sx={{

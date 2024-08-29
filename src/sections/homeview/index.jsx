@@ -9,7 +9,6 @@ export default function HomeView() {
         <div>
             <BasicLayout titulo="Seja Bem-vindo ao LitMatch" >
                 <div style={{ height: '100px', width: '100%', display: "flex", justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5E5E5' }}>
-                    <Search />
                 </div>
                 <main className={styles.main}>
                     <CategoriaCarrossel />

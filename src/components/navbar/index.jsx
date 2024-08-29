@@ -27,10 +27,10 @@ export default function Navbar() {
 
         if (storedUserData) {
             const parsedUserData = JSON.parse(storedUserData);
-
             setUserType(parsedUserData.user_type);
         }
     }, []);
+
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
     };
@@ -40,7 +40,7 @@ export default function Navbar() {
         setDrawerOpen(false);
     };
 
-    const handlecardapioClick = () => {
+    const handleCardapioClick = () => {
         router.push('/cardapio');
         setDrawerOpen(false);
     };
@@ -67,7 +67,7 @@ export default function Navbar() {
     const handleLogoutClick = () => {
         dispatch(logoutUser());
         localStorage.removeItem('userData');
-        setUserType(null);
+        setUserType('');
         router.push('/login');
     }
 
@@ -75,9 +75,7 @@ export default function Navbar() {
         <Container disableGutters={true} maxWidth='' sx={{ backgroundColor: '#FF9800', width: '100%' }}>
             <Container maxWidth='lg' sx={{ display: 'flex', flexWrap: "wrap", width: '100%' }} disableGutters={true}>
                 <Box width={'20%'} display='flex' alignItems='center' justifyContent='flex-start'>
-                    {pathname === '/' ? (
-                        ''
-                    ) : (
+                    {pathname !== '/' && (
                         <Button sx={{ color: 'white', display: 'flex', gap: '5px' }} onClick={handleVoltarClick}>
                             <Image src={Voltar} width={8} alt='voltar' />
                             Voltar
@@ -90,7 +88,7 @@ export default function Navbar() {
                     </IconButton>
 
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: '10px' }}>
-                        <Button sx={{ color: 'white', display: 'flex', gap: '5px' }} onClick={handlecardapioClick}>
+                        <Button sx={{ color: 'white', display: 'flex', gap: '5px' }} onClick={handleCardapioClick}>
                             <Image src={Rectangle} width={15} alt='cardapio' />
                             Cardápio
                         </Button>
@@ -98,7 +96,7 @@ export default function Navbar() {
                             <Image src={shopping} width={13} alt='pedido' />
                             Pedidos
                         </Button>
-                
+                        {!userType ? (
                             <>
                                 <Button onClick={handleLoginClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
                                     <Image src={ImgLogin} width={13} alt='login' />
@@ -109,17 +107,20 @@ export default function Navbar() {
                                     Cadastro
                                 </Button>
                             </>
-                       
-                        {!userType && (
-                            <Button onClick={handleAdminClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
-                                <AdminPanelSettingsIcon sx={{ width: 20 }} />
-                                Admin
-                            </Button>
+                        ) : (
+                            <>
+                                {userType === 'Manager' && (
+                                    <Button onClick={handleAdminClick} sx={{ color: 'white', display: 'flex', gap: '5px' }}>
+                                        <AdminPanelSettingsIcon sx={{ width: 20 }} />
+                                        Admin
+                                    </Button>
+                                )}
+                                <Button onClick={handleLogoutClick} sx={{ color: 'white', display: 'flex', gap: '5px', cursor: 'pointer' }}>
+                                    <ExitToAppOutlined sx={{ width: 20 }} />
+                                    Logout
+                                </Button>
+                            </>
                         )}
-                        <Button onClick={handleLogoutClick} sx={{ color: 'white', display: 'flex', gap: '5px', cursor:'pointer' }}>
-                            <ExitToAppOutlined sx={{ width: 20 }} />
-                            Logout
-                        </Button>
                     </Box>
 
                     <Drawer
@@ -135,7 +136,7 @@ export default function Navbar() {
                         onClose={handleDrawerToggle}
                     >
                         <List sx={{ backgroundColor: '#FF9800', color: 'white' }}>
-                            <ListItem sx={{ gap: '5px' }} ListItemButton onClick={handlecardapioClick}>
+                            <ListItem sx={{ gap: '5px' }} ListItemButton onClick={handleCardapioClick}>
                                 <Image src={Rectangle} width={15} alt='cardapio' />
                                 <ListItemText primary='Cardápio' />
                             </ListItem>
@@ -143,7 +144,7 @@ export default function Navbar() {
                                 <Image src={shopping} width={13} alt='pedido' />
                                 <ListItemText primary='Pedidos' />
                             </ListItem>
-                            {!userType && (
+                            {!userType ? (
                                 <>
                                     <ListItem ListItemButton sx={{ gap: '5px' }} onClick={handleLoginClick}>
                                         <Image src={ImgLogin} width={13} alt='login' />
@@ -154,12 +155,19 @@ export default function Navbar() {
                                         <ListItemText primary='Cadastro' />
                                     </ListItem>
                                 </>
-                            )}
-                            {userType === 'Admin' && (
-                                <ListItem ListItemButton sx={{ gap: '5px' }} onClick={handleAdminClick}>
-                                    <AdminPanelSettingsIcon sx={{ width: 20 }} />
-                                    <ListItemText primary='Admin' />
-                                </ListItem>
+                            ) : (
+                                <>
+                                    {userType === 'Manager' && (
+                                        <ListItem ListItemButton sx={{ gap: '5px' }} onClick={handleAdminClick}>
+                                            <AdminPanelSettingsIcon sx={{ width: 20 }} />
+                                            <ListItemText primary='Admin' />
+                                        </ListItem>
+                                    )}
+                                    <ListItem ListItemButton sx={{ gap: '5px' }} onClick={handleLogoutClick}>
+                                        <ExitToAppOutlined sx={{ width: 20 }} />
+                                        <ListItemText primary='Logout' />
+                                    </ListItem>
+                                </>
                             )}
                         </List>
                     </Drawer>
