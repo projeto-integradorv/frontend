@@ -75,8 +75,8 @@ orderListener.startListening({
       const response = await updateOrder(pedido?.id, pedido);
 
 
-      if (response && response.id) {
-        dispatch(atualizarOrder(response));
+      if (response ) {
+        dispatch(buscarPedidoPorId(pedido?.id));
       } else {
         throw new Error('Resposta inesperada da API.');
       }

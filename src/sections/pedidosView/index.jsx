@@ -20,8 +20,21 @@ export default function PedidosView() {
   const [selectedOrder, setSelectedOrder] = React.useState(null);
 
   useEffect(() => {
+
+    if (pathname === '/pedidos') {
+      const fetchOrders = () => {
+        dispatch(buscarPedidos());
+      };
+
+      fetchOrders();
+      const intervalId = setInterval(fetchOrders, 1000);
+
+      return () => clearInterval(intervalId);
+    }
+
     dispatch(buscarPedidos());
   }, [dispatch]);
+
 
   const handleRedirect = () => {
     router.push('/');
@@ -29,12 +42,10 @@ export default function PedidosView() {
 
   const handleOpenModal = (order) => {
     if (pathname === '/admin') {
-      // Encontre o pedido completo pelo ID
       const fullOrder = orders.find(o => o.id === order.id);
       setSelectedOrder(fullOrder);
       setModalOpen(true);
     } else {
-      // Defina o pedido selecionado e abra o modal de linha do tempo
       setSelectedOrder(order);
       setTimelineOpen(true);
     }
@@ -129,7 +140,6 @@ export default function PedidosView() {
               {orderGridAdmin}
               {orderButton}
             </Container>
-            <BoxConfirmation valorFinal={totalValue} />
           </Container>
         </BasicLayout>
       )}

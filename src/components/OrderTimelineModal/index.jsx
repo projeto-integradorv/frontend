@@ -10,10 +10,14 @@ const TimelineModal = ({ open, onClose, orderId }) => {
 
 
   useEffect(() => {
-    if (orderId) {
+    const buscarPedidosAutomaticamente = () => {
       dispatch(buscarPedidoPorId(orderId?.id));
-    }
-  }, [orderId, dispatch]);
+    };
+    buscarPedidosAutomaticamente();
+    const intervalId = setInterval(buscarPedidosAutomaticamente, 10000);
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
+  
 
   useEffect(() => {
     if (selectedOrder) {
