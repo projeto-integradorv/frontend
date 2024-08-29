@@ -1,13 +1,15 @@
 'use client';  // Garantir que o código seja executado no lado do cliente
 
-import React, { useEffect } from "react";
-import BasicLayout from "@/layouts/basic/basiclayout";
-import { Button, Container } from "@mui/material";
 import BoxConfirmation from "@/components/boxConfirmation";
 import CardFood from "@/components/cardFodd"; // Corrigido o nome do componente
-import { useRouter } from "next/navigation";
+import BasicLayout from "@/layouts/basic/basiclayout";
+import { apagarItemCart, buscarCarrinhoById, removerDoCarrinho, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { apagarItemCart, atualizarCarrinhoInteiro, buscarCarrinhoById, removerDoCarrinho, resetarCarrinho, zerarCarrinho } from "@/lib/features/carrinho/carrinhoSlice";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
+import '../../components/categoria/Swall.css';
 
 function CartView() {
     const dispatch = useAppDispatch();
@@ -15,8 +17,6 @@ function CartView() {
     const carrinho = useAppSelector(state => state.carrinho.items || []);
     const status = useAppSelector(state => state.carrinho.status);
     const error = useAppSelector(state => state.carrinho.error);
-
-   
 
     useEffect(() => {
         const storedCartData = localStorage.getItem('userData');
@@ -51,39 +51,69 @@ function CartView() {
     };
 
     const handleReset = () => {
-        const storedCartData = localStorage.getItem('userData');
-
-        if (storedCartData) {
-            const parsedCartData = JSON.parse(storedCartData);
-            const cartId = parsedCartData.cart_id?.id;
-
-            if (cartId) {
-                console.log('cartId:', cartId);
-                dispatch(zerarCarrinho(cartId));
-                dispatch(resetarCarrinho());
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: "Isso vai zerar todo o carrinho!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, resetar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const storedCartData = localStorage.getItem('userData');
+                if (storedCartData) {
+                    const parsedCartData = JSON.parse(storedCartData);
+                    const cartId = parsedCartData.cart_id?.id;
+                    if (cartId) {
+                        dispatch(zerarCarrinho(cartId));
+                        dispatch(resetarCarrinho());
+                        Swal.fire(
+                            'Resetado!',
+                            'Seu carrinho foi zerado.',
+                            'success'
+                        );
+                    }
+                }
             }
-        }
-
+        });
     };
 
-    const handleDelete = (id) => {
-        const storedCartData = localStorage.getItem('userData');
+    const handleDelete = async (id) => {
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: "Isso vai remover o item do carrinho!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, remover!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const storedCartData = localStorage.getItem('userData');
+                if (storedCartData) {
+                    const parsedCartData = JSON.parse(storedCartData);
+                    const cartId = parsedCartData.cart_id?.id;
 
-        if (storedCartData) {
-            const parsedCartData = JSON.parse(storedCartData);
-            const cartId = parsedCartData.cart_id;
-
-            if (cartId) {
-                dispatch(apagarItemCart(id));
-                dispatch(buscarCarrinhoById(cartId?.id));
-                dispatch(removerDoCarrinho(cartId));
+                    if (cartId) {
+                        dispatch(apagarItemCart(id));
+                        dispatch(buscarCarrinhoById(cartId));
+                        dispatch(removerDoCarrinho(id)); // Corrigido para remover o item específico pelo ID
+                        Swal.fire(
+                            'Removido!',
+                            'O item foi removido do carrinho.',
+                            'success'
+                        );
+                    }
+                }
             }
-        }
-        
+        });
     };
 
     if (status === 'loading') return <p>Carregando...</p>;
-    if (status === 'failed') return <p>Erro: {error.message}</p>;
+    if (status === 'failed') return <p>Erro: {error?.message || 'Ocorreu um erro ao carregar o carrinho.'}</p>;
 
     return (
         <BasicLayout titulo="Carrinho/Comanda">
@@ -121,7 +151,7 @@ function CartView() {
                                 nome={item.product?.name || "Nome desconhecido"}
                                 descricao={item.product?.description || "Descrição não disponível"}
                                 preco={item.product?.price || "0.00"}
-                                imagem={item.product?.image || null}
+                                imagem={item.product?.image || ''}
                                 id={item.product?.id || `item-${idx}`}
                                 quant={item.quantity || 0}
                                 obs={item.observation || 'sem Observação'}
@@ -133,7 +163,11 @@ function CartView() {
                             />
                         ))
                     ) : (
-                        <p>Nenhum item no carrinho.</p>
+                        <Box width={'100%'} height={'20vh'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+
+                            <Typography variant={'h6'} sx={{ color: 'gray' }}>Nenhum item no carrinho</Typography>
+
+                        </Box>
                     )}
                     <Button
                         onClick={handleRedirect}

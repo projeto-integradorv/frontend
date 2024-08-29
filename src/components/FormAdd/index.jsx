@@ -218,17 +218,6 @@ export default function FormAdd({ produto }) {
     );
 }
 
-FormAdd.propTypes = {
-    produto: PropTypes.shape({
-        id: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number,
-        description: PropTypes.string,
-        image: PropTypes.string,
-        additionals: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
-            name: PropTypes.string,
-            price: PropTypes.number,
-        })),
-    }),
+FormAdd.prototype = {
+    produto: PropTypes.object.isRequired,
 };

@@ -59,7 +59,6 @@ export default function CardFood({ nome, descricao, preco, imagem, id, quant, on
                                 alt={nome}
                                 layout='fill'
                                 objectFit='cover'
-                                objectPosition='center'
                             />
                         </Box>
 

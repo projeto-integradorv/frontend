@@ -11,11 +11,7 @@ const getOrderById = async (id) => {
 };
 
 const createOrder = async (data) => {
-    const response = await axiosInstance.post('/order/', data, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    const response = await axiosInstance.post('/order/', data);
     return response.data;
 };
 

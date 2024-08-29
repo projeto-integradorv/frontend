@@ -25,7 +25,7 @@ const createCart = (data) => {
 const updateItem = (data) => {
     try {
         const response = axiosInstance.post(`/item-cart/`, data);
-        return response;
+        return response.data;
     }
     catch (error) {
         console.error('Erro ao atualizar o carrinho:', error);
@@ -68,6 +68,7 @@ const atualizarItems = (data) => {
 const apagarItem = (id) => {
     try {
         const response = axiosInstance.delete(`/item-cart/${id}/`);
+        console.log('response', response);
         return response;
     }
     catch (error) {

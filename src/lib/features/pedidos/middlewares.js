@@ -51,7 +51,10 @@ orderListener.startListening({
   effect: async (action, { dispatch }) => {
     try {
       const pedido = action.payload;
+      
       const response = await createOrder(pedido);
+
+      console.log('response', response);
 
       if (response && response.data) {
         dispatch(adicionarOrder(response.data));

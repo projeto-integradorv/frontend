@@ -1,19 +1,26 @@
 'use client';
 import axios from 'axios';
-
 import { HOST_API } from '@/config-global';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create(
-    { 
-        baseURL: HOST_API,
-        headers: {
-            'Content-Type': 'application/json',   
-            'Authorization': `Token 3836735c2f9d8993f29c2c0eaa5ce2f585283d3d`
-        }
+let authToken = '';
+
+if (typeof window !== 'undefined') { // Verifica se está no ambiente do cliente
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+        const parsedUserData = JSON.parse(storedUserData);
+        authToken = parsedUserData.token || '';
     }
-);
+}
+
+const axiosInstance = axios.create({
+    baseURL: HOST_API,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${authToken}`, // Insere o token no cabeçalho de autorização
+    }
+});
 
 axiosInstance.interceptors.response.use(
   (res) => res,
@@ -21,4 +28,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
